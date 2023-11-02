@@ -1,0 +1,11 @@
+<% if @inn.errors.any? %>
+  <% @inn.errors.full_messages.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+<% end %>
+
+<% if !@address.nil? && @address.errors.any? %>
+  <% @address.errors.full_messages.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+<% end %>

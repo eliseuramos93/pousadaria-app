@@ -1,0 +1,126 @@
+<%= form_with model: @inn do |f| %>
+  <section id="inn-data">
+    <div id="brand-name">
+      <%= f.label :brand_name %>
+      <%= f.text_field :brand_name %>
+    </div>
+    <div id="registration_number">
+      <%= f.label :registration_number %>
+      <%= f.text_field :registration_number %>
+    </div>
+    <div id="phone-number">
+      <%= f.label :phone_number %>
+      <%= f.text_field :phone_number %>
+    </div>
+  </section>
+  <br><br>
+  <section id="address-data">
+    <%= fields_for @address do |address_f| %>
+      <div id="street-name">
+        <%= address_f.label :street_name %>
+        <%= address_f.text_field :street_name %>
+      </div>
+      <div id="number">
+        <%= address_f.label :number %>
+        <%= address_f.text_field :number %>
+      </div>
+      <div id="complement">
+        <%= address_f.label :complement %>
+        <%= address_f.text_field :complement %>
+      </div>
+      <div id="neighborhood">
+        <%= address_f.label :neighborhood %>
+        <%= address_f.text_field :neighborhood %>
+      </div>
+      <div id="city">
+        <%= address_f.label :city %>
+        <%= address_f.text_field :city %>
+      </div>
+      <div id="state">
+        <%= address_f.label :state %>
+        <%= address_f.text_field :state %>
+      </div>
+      <div id="zip-code">
+        <%= address_f.label :zip_code %>
+        <%= address_f.text_field :zip_code %>
+      </div>
+    <% end %>
+  </section>
+  <br><br>
+  <section id="inn-policies">
+    <div id="description">
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+    </div>
+    <br>
+    <div id="pet-friendly">
+      <%= f.label :pet_friendly %> <br>
+      <%= f.radio_button :pet_friendly, true %>
+      <%= f.label :is_pet_friendly %> <br>
+      <%= f.radio_button :pet_friendly, false %>
+      <%= f.label :not_pet_friendly %>
+    </div>
+    <br>
+    <div id="inn-policy">
+      <%= f.label :policy %>
+      <%= f.text_area :policy %>
+    </div>
+    <br>
+    <div id="checkin-time">
+      <%= f.label :checkin_time %>
+      <%= f.time_field :checkin_time %>
+    </div>
+    <br>
+    <div id="checkout-time">
+      <%= f.label :checkout_time %>
+      <%= f.time_field :checkout_time %>
+    </div>
+  </section>
+  <br><br>
+  <section id="payment-methods">
+    <%= fields_for :payment_method do |payment_f| %>
+      <h2>Meios de pagamento</h2>
+      <div id="pix">
+        <%= payment_f.label :bank_transfer %> <br>
+        <%= payment_f.radio_button :bank_transfer, true %>
+        <%= payment_f.label :accepts %> <br>
+        <%= payment_f.radio_button :bank_transfer, false %>
+        <%= payment_f.label :refuses %>
+      </div>
+      <br>
+      <div id="credit-card">
+        <%= payment_f.label :credit_card %> <br>
+        <%= payment_f.radio_button :credit_card, true %>
+        <%= payment_f.label :accepts %> <br>
+        <%= payment_f.radio_button :credit_card, false %>
+        <%= payment_f.label :refuses %>
+      </div>
+      <br>
+      <div id="debit-card">
+        <%= payment_f.label :debit_card %> <br>
+        <%= payment_f.radio_button :debit_card, true %>
+        <%= payment_f.label :accepts %> <br>
+        <%= payment_f.radio_button :debit_card, false %>
+        <%= payment_f.label :refuses %>
+      </div>
+      <br>
+      <div id="cash">
+        <%= payment_f.label :cash %> <br>
+        <%= payment_f.radio_button :cash, true %>
+        <%= payment_f.label :accepts %> <br>
+        <%= payment_f.radio_button :cash, false %>
+        <%= payment_f.label :refuses %>
+      </div>
+      <br>
+      <div id="deposit">
+        <%= payment_f.label :deposit %> <br>
+        <%= payment_f.radio_button :deposit, true %>
+        <%= payment_f.label :accepts %> <br>
+        <%= payment_f.radio_button :deposit, false %>
+        <%= payment_f.label :refuses %>
+      </div>
+    <% end %>
+  </section>
+
+  <%= f.submit %>
+<% end %>

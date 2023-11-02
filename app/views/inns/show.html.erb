@@ -1,0 +1,76 @@
+<h1><%= @inn.brand_name %></h1>
+
+<% if user_signed_in? && @inn.user == current_user %>
+  <h3>Área do Proprietário</h3>
+  <section id="owner-options">
+    <%= link_to 'Editar Pousada', edit_inn_path(@inn.id) %> <br>
+    <div id="inn-status">
+      <% if @inn.active? %>
+        <p>Pousada Disponível</p> 
+        <%= button_to 'Marcar como Indisponível', inactive_inn_path(@inn) %>
+      <% else %>
+        <p>Pousada Indisponível</p>
+        <%= button_to 'Marcar como Disponível', active_inn_path(@inn) %>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<section id="inn-information">
+  <h3>Sobre <%= @inn.brand_name %></h3>
+  <div>
+    <%= @inn.description %>
+  </div>
+  <dl>
+    <div>
+      <dt>Horário de check-in:</dt>
+      <dd><%= @inn.checkin_time.to_fs(:time)%></dd>
+    </div>
+    <div>
+      <dt>Horário de check-out:</dt>
+      <dd><%= @inn.checkout_time.to_fs(:time)%></dd>
+    </div>
+    <div>
+      <dt>Telefone para contato:</dt>
+      <dd><%= @inn.phone_number %></dd>
+    </div>
+  </dl>
+</section>
+
+<section id="inn-policies">
+  <h3>Políticas de <%= @inn.brand_name %></h3>
+  <% if (@inn.description.nil? || @inn.description.empty?) && @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
+    <p>Ainda não foram informadas as políticas desse local.</p>
+  <% else %>
+    <div>
+      <%= @inn.description %>
+    </div>
+    <dl>
+      <% unless @inn.pet_friendly.nil? %>
+        <div>
+          <dt>Animais de estimação:</dt>
+          <% if @inn.pet_friendly? %>
+            <dd>Aceita animais de estimação</dd>
+          <% else %>
+            <dd>Não aceita animais de estimação</dd>
+          <% end %>
+        </div>
+      <% end %>
+      <% unless @inn.policy.nil? || @inn.policy.empty? %>
+        <div>
+          <dt>Informações adicionais:</dt>
+          <dd><%= @inn.policy %></dd>
+        </div>
+      <% end %>
+    </dl>
+  <% end %>
+</section>
+
+<section id="inn-address">
+  <h3>Endereço</h3>
+  <div>
+    <p><%= "#{@inn.address.street_name}, #{@inn.address.number}" %></p>
+    <p><%= @inn.address.formatted_neighborhood_city_state %></p>
+    <p><%= "CEP: #{@inn.address.zip_code}" %></p>
+  </div>
+</section>

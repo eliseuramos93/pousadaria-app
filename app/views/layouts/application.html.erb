@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pousadaria</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div id="page-title">
+      <%= link_to root_path do %>
+        <h1>Pousadaria</h1>
+      <% end %>
+    </div>
+    <nav>
+      <% if user_signed_in? %>
+        <%= current_user.email %> | 
+        <%= link_to 'Minha Pousada', my_inn_path %> | 
+        <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to 'Seja um Pousadeiro', new_user_registration_path %> |
+        <%= link_to 'Entrar', new_user_session_path %>
+      <% end %>
+    </nav>
+
+    <div id="flash-msgs">
+      <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+    </div>
+    <%= yield %>
+  </body>
+</html>
