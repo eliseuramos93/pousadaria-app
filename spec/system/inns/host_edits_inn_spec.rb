@@ -1,6 +1,25 @@
 require 'rails_helper'
 
-describe 'User visits inn edit page' do
+describe 'Host visits inn edit page' do
+  it 'only when authenticated' do
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
+    inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                      registration_number: '58277983000198', 
+                      phone_number: '(11) 976834383', checkin_time: '18:00',
+                      checkout_time: '11:00', address_attributes: {
+                        street_name: 'Av. da Pousada', number: '10', 
+                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                        state: 'SP', zip_code: '05616-090'})
+
+    # act
+    visit edit_inn_path(inn.id)
+
+    # assert
+    expect(current_path).to eq new_user_session_path
+  end
+
   it 'from the inn details page' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password',

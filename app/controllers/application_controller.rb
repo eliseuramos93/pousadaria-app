@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def force_inn_creation_for_owners
+  def force_inn_creation_for_hosts
     if user_signed_in? && current_user.inn.nil? && current_user.host?
       return redirect_to new_inn_path, alert: 'É necessário cadastrar uma pousada para continuar.'
     end

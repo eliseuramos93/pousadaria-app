@@ -1,5 +1,5 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :my_inn, 
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :my_inn, 
                                                  :inactive, :active]
   before_action :set_inn, only: [:show, :edit, :update, :inactive, :active]
   before_action :check_if_user_is_host, only: [:new, :create, :edit, :update, :inactive, :active]

@@ -11,6 +11,20 @@ describe 'User visits the inn creation page' do
     expect(current_path).to eq new_user_session_path
   end
 
+  it 'only if has chosen to be a host' do
+    # arrange
+    user = User.create!(email: 'billy@gmail.com', password: 'password', 
+                        role: :regular)
+
+    # act
+    login_as user
+    visit new_inn_path
+
+    # assert
+    expect(current_path).to eq root_path
+    expect(page).to have_content 'Você não possui autorização para essa ação.'
+  end
+
   it 'by being redirected after registration' do 
     # arrange
 
@@ -202,5 +216,6 @@ describe 'User visits the inn creation page' do
 
     # assert
     expect(page).to have_content 'Sua Pousada foi registrada com sucesso!'
+    expect(current_path).to eq inn_path(Inn.first.id)
   end
 end
