@@ -1,0 +1,23 @@
+pt-BR:
+  amenities:
+    has_bathroom:
+      true: Possui banheiro próprio
+      false: Não possui banheiro próprio]
+    has_balcony:
+      true: Possui varanda
+      false: Não possui varanda
+    has_air_conditioner:
+      true: Possui ar condicionado
+      false: Não possui ar condicionado
+    has_tv:
+      true: Possui TV
+      false: Não possui TV
+    has_wardrobe:
+      true: Possui guarda-roupas
+      false: Não possui guarda-roupas
+    has_vault:
+      true: Possui cofre
+      false: Não possui cofre
+    is_accessible:
+      true: Quarto projetado com acessibilidade
+      false: Quarto não foi projetado com acessibilidade

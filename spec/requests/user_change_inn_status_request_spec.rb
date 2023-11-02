@@ -33,6 +33,7 @@ describe 'User requests to change a specific inn status' do
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
+
     # act
     login_as another_user
     post active_inn_path(inn.id)
@@ -54,6 +55,13 @@ describe 'User requests to change a specific inn status' do
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
+    another_user.create_inn!(brand_name: 'Pousada Teste 2', 
+                        registration_number: '582779834230198', 
+                        phone_number: '(11) 564651321', checkin_time: '18:00',
+                        checkout_time: '11:00', address_attributes: {
+                          street_name: 'Av. da Pousada', number: '10', 
+                          neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                          state: 'SP', zip_code: '05616-090'})
     # act
     login_as another_user
     post active_inn_path(inn.id)

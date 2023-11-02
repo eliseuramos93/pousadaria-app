@@ -4,6 +4,7 @@
   <h3>Área do Proprietário</h3>
   <section id="owner-options">
     <%= link_to 'Editar Pousada', edit_inn_path(@inn.id) %> <br>
+    <%= link_to 'Adicionar Quarto', create_new_room_path %>
     <div id="inn-status">
       <% if @inn.active? %>
         <p>Pousada Disponível</p> 

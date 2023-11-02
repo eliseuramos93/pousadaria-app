@@ -7,6 +7,8 @@ class Inn < ApplicationRecord
   has_one :payment_method
   accepts_nested_attributes_for :payment_method
 
+  has_many :rooms
+
   enum :status, { active: 2, inactive: 0 }
   
   validates :brand_name, :registration_number, :phone_number, :checkin_time,
