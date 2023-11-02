@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   end
   
   get 'my_inn', to: 'inns#my_inn'
+  
 end

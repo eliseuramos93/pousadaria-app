@@ -139,7 +139,8 @@ end
 describe 'User visits own inn details page' do
   it 'from any page through the navigation bar' do 
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',

@@ -21,6 +21,8 @@ describe 'User visits the inn creation page' do
     fill_in 'E-mail', with: 'teste@gmail.com'
     fill_in 'Senha', with: 'senhaforte1234!'
     fill_in 'Confirme sua senha', with: 'senhaforte1234!'
+    choose 'Sim'
+
     click_on 'Criar Conta'
 
     # assert
@@ -29,7 +31,7 @@ describe 'User visits the inn creation page' do
 
   it "and sees the fields to input the inn's data" do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', role: :host)
 
     # act
     login_as user
@@ -56,7 +58,7 @@ describe 'User visits the inn creation page' do
 
   it 'and sees the fields to input the accepted payment methods' do 
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', role: :host)
 
     # act
     login_as user
@@ -93,7 +95,8 @@ describe 'User visits the inn creation page' do
 
   it "and can't visit homepage before registering an inn" do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
     
     # act
     login_as user
@@ -105,7 +108,8 @@ describe 'User visits the inn creation page' do
 
   it 'but fails to create a inn with missing data for the inn' do 
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'passwordftw')
+    user = User.create!(email: 'test@gmail.com', password: 'passwordftw',
+                        role: :host)
     
     # act
     login_as user
@@ -125,10 +129,11 @@ describe 'User visits the inn creation page' do
 
   it 'but fails to create a inn without a valid address' do
     # arrange
-    billy = User.create!(email: 'billy@gmail.com', password: 'password')
+    user = User.create!(email: 'billy@gmail.com', password: 'password',
+                         role: :host)
 
     # act
-    login_as billy
+    login_as user
     visit root_path
 
     fill_in 'Logradouro', with: ''
@@ -153,7 +158,8 @@ describe 'User visits the inn creation page' do
 
   it 'but fails to create a inn without both checkin and checkout times' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password',
+                        role: :host)
 
     # act
     login_as user
@@ -171,7 +177,8 @@ describe 'User visits the inn creation page' do
 
   it 'and creates an inn successfully' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password',
+                        role: :host)
 
     # act
     login_as user

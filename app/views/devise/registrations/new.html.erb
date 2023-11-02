@@ -21,6 +21,14 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <div class="host">
+    <%= f.label 'Deseja ser anfitrião?' %> <br>
+    <%= f.radio_button :role, :host %>
+    <%= f.label :role, 'Sim', value: :host %> <br>
+    <%= f.radio_button :role, :regular %>
+    <%= f.label :role, 'Não', value: :regular %> <br>
+  </div>
+
   <div class="actions">
     <%= f.submit "Criar Conta" %>
   </div>

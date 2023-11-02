@@ -19,7 +19,9 @@
     <nav>
       <% if user_signed_in? %>
         <%= current_user.email %> | 
-        <%= link_to 'Minha Pousada', my_inn_path %> | 
+        <% if current_user.host? %>
+          <%= link_to 'Minha Pousada', my_inn_path %> |
+        <% end %>
         <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
       <% else %>
         <%= link_to 'Seja um Pousadeiro', new_user_registration_path %> |

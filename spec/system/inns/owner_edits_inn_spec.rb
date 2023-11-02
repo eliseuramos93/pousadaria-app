@@ -3,7 +3,8 @@ require 'rails_helper'
 describe 'User visits inn edit page' do
   it 'from the inn details page' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password',
+                        role: :host)
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -68,7 +69,8 @@ describe 'User visits inn edit page' do
 
   it 'and is not allowed to remove any of the mandatory fields' do
     # arrange
-    billy = User.create!(email: 'billy@mail.com', password: 'password')
+    billy = User.create!(email: 'billy@mail.com', password: 'password',
+                         role: :host)
     billy_inn = billy.create_inn!(brand_name: 'Pousada do Billy', 
                                 registration_number: '94466613000162',
                                 phone_number: '(11) 98765-4321',

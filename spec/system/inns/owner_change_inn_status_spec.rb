@@ -22,7 +22,8 @@ describe 'Owner change the status for its own inn' do
 
   it 'from active to inactive' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -44,7 +45,8 @@ describe 'Owner change the status for its own inn' do
 
   it 'from inactive to active' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',

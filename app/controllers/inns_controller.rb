@@ -2,6 +2,7 @@ class InnsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :my_inn, 
                                                  :inactive, :active]
   before_action :set_inn, only: [:show, :edit, :update, :inactive, :active]
+  before_action :check_if_user_is_host, only: [:new, :create, :edit, :update, :inactive, :active]
   before_action :check_user, only: [:edit, :update, :inactive, :active]
 
   def new
@@ -86,6 +87,12 @@ class InnsController < ApplicationController
 
   def check_user
     unless @inn.user == current_user
+      redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
+    end
+  end
+
+  def check_if_user_is_host
+    unless current_user.host?
       redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
     end
   end
