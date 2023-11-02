@@ -134,10 +134,8 @@ describe 'User visits the inn details page' do
     # assert
     expect(current_path).to eq root_path
   end
-end
 
-describe 'User visits own inn details page' do
-  it 'from any page through the navigation bar' do 
+  it 'and sees a list of the available rooms' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
@@ -148,22 +146,32 @@ describe 'User visits own inn details page' do
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
-
+    room_a = inn.rooms.create!(name: 'Bedroom #1', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+    room_b = inn.rooms.create!(name: 'Bedroom #2', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+    room_c = inn.rooms.create!(name: 'Bedroom #3', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    room_d = inn.rooms.create!(name: 'Bedroom #4', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+    room_e = inn.rooms.create!(name: 'Bedroom #5', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    
     # act
-    login_as user
-    visit root_path
-    click_on 'Minha Pousada'
-
+    visit inn_path(inn.id)
+    
     # assert
-    expect(current_path).to eq my_inn_path
-    expect(page).to have_content inn.brand_name
-    expect(page).to have_content inn.phone_number
-    expect(page).to have_link 'Editar', href: edit_inn_path(inn.id)
+    expect(page).to have_link 'Bedroom #1', href: inn_room_path(inn.id, room_a.id)
+    expect(page).to have_link 'Bedroom #2', href: inn_room_path(inn.id, room_b.id)
+    expect(page).not_to have_link 'Bedroom #3', href: inn_room_path(inn.id, room_c.id)
+    expect(page).to have_link 'Bedroom #4', href: inn_room_path(inn.id, room_d.id)
+    expect(page).not_to have_link 'Bedroom #5', href: inn_room_path(inn.id, room_e.id)
   end
 
-  it 'using the my_inn route only when authenticated' do
+  it 'sees a warning of no available rooms in this inn' do
     # arrange
-    user = User.create!(email: 'test@gmail.com', password: 'password')
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -171,11 +179,26 @@ describe 'User visits own inn details page' do
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
-
+    room_a = inn.rooms.create!(name: 'Bedroom #1', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    room_b = inn.rooms.create!(name: 'Bedroom #2', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    room_c = inn.rooms.create!(name: 'Bedroom #3', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    room_d = inn.rooms.create!(name: 'Bedroom #4', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    room_e = inn.rooms.create!(name: 'Bedroom #5', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :inactive)
+    
     # act
-    visit my_inn_path
-
+    visit inn_path(inn.id)
+    
     # assert
-    expect(current_path).to eq new_user_session_path
+    expect(page).not_to have_link 'Bedroom #1', href: inn_room_path(inn.id, room_a.id)
+    expect(page).not_to have_link 'Bedroom #2', href: inn_room_path(inn.id, room_b.id)
+    expect(page).not_to have_link 'Bedroom #3', href: inn_room_path(inn.id, room_c.id)
+    expect(page).not_to have_link 'Bedroom #4', href: inn_room_path(inn.id, room_d.id)
+    expect(page).not_to have_link 'Bedroom #5', href: inn_room_path(inn.id, room_e.id)
+    expect(page).to have_content 'A pousada não possui quartos disponíveis para consulta.'
   end
 end

@@ -2,7 +2,7 @@ pt-BR:
   amenities:
     has_bathroom:
       true: Possui banheiro próprio
-      false: Não possui banheiro próprio]
+      false: Não possui banheiro próprio
     has_balcony:
       true: Possui varanda
       false: Não possui varanda

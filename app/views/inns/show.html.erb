@@ -75,3 +75,16 @@
     <p><%= "CEP: #{@inn.address.zip_code}" %></p>
   </div>
 </section>
+
+<section id="available-rooms">
+  <h2>Quartos disponíveis</h2>
+  <dl>
+    <% if @inn.rooms.active.any? %>
+      <% @inn.rooms.active.each do |room| %>
+        <dd><%= link_to room.name, [@inn, room] %></dd>
+      <% end %>
+    <% else %>
+      <dd>A pousada não possui quartos disponíveis para consulta.</dd>
+    <% end %>
+  </dl>
+</section>

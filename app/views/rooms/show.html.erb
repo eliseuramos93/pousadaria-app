@@ -1,4 +1,5 @@
 <h1><%= "Quarto #{@room.name}" %></h1>
+<%= link_to "Voltar para #{@inn.brand_name}", inn_path(@inn) %>
 
 <% if user_signed_in? && @inn.user == current_user %>
   <%= @room.active? ? "Quarto disponível para reservas" : "Quarto indisponível para reservas" %>

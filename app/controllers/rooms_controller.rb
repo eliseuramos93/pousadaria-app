@@ -21,6 +21,10 @@ class RoomsController < ApplicationController
   def show
     @inn = Inn.find(params[:inn_id])
     @room = @inn.rooms.where(id: params[:id]).first
+
+    if @room.inactive?
+      redirect_to root_path, notice: 'Este quarto não está disponível no momento.'
+    end
   end
 
   private
