@@ -2,7 +2,8 @@
 <%= link_to "Voltar para #{@inn.brand_name}", inn_path(@inn) %>
 
 <% if user_signed_in? && @inn.user == current_user %>
-  <%= @room.active? ? "Quarto disponível para reservas" : "Quarto indisponível para reservas" %>
+  <%= @room.active? ? "Quarto disponível para reservas" : "Quarto indisponível para reservas" %> <br>
+  <%= link_to 'Editar Quarto', edit_inn_room_path(@inn, @room) %>
 <% end %>
 
 <section id="room-info">

@@ -215,7 +215,7 @@ describe 'User visits the inn creation page' do
     click_on 'Criar Pousada'
 
     # assert
-    expect(page).to have_content 'Sua Pousada foi registrada com sucesso!'
+    expect(page).to have_content 'Sua pousada foi registrada com sucesso!'
     expect(current_path).to eq inn_path(Inn.first.id)
   end
 end

@@ -1,10 +1,11 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :my_inn, 
-                                                 :inactive, :active]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, 
+                                            :my_inn, :inactive, :active]
   before_action :force_inn_creation_for_hosts, except: [:new, :create]
-  before_action :set_inn, only: [:show, :edit, :update, :inactive, :active]
-  before_action :check_if_user_is_host, only: [:new, :create, :edit, :update, :inactive, :active]
-  before_action :check_user, only: [:edit, :update, :inactive, :active]
+  before_action :find_inn_by_id, only: [:show, :edit, :update, :inactive, :active]
+  before_action :check_if_user_is_host, only: [:new, :create, :edit, :update, 
+                                               :inactive, :active]
+  before_action :ensure_user_owns_inn, only: [:edit, :update, :inactive, :active]
 
   def new
     @inn = Inn.new
@@ -18,7 +19,7 @@ class InnsController < ApplicationController
     @payment_method = @inn.build_payment_method(payment_method_params)
 
     if @inn.save
-      redirect_to @inn, notice: 'Sua Pousada foi registrada com sucesso!'
+      redirect_to @inn, notice: 'Sua pousada foi registrada com sucesso!'
     else
       flash.now[:notice] = 'Não foi possível concluir o registro da sua pousada.'
       render 'new', status: :unprocessable_entity
@@ -82,11 +83,15 @@ class InnsController < ApplicationController
     end
   end
 
-  def set_inn
-    @inn = Inn.find(params[:id])
+  def find_inn_by_id
+    if Inn.where(id: params[:id]).exists?
+      @inn = Inn.find(params[:id])
+    else
+      redirect_to root_path, notice: 'Essa página não existe'
+    end
   end
 
-  def check_user
+  def ensure_user_owns_inn
     unless @inn.user == current_user
       redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
     end

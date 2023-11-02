@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-describe 'User creates a new room for an inn' do
-  it 'only when authenticated' do
+describe 'Host edits a room of an inn' do
+  it 'only if authenticated' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
+
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -13,17 +14,57 @@ describe 'User creates a new room for an inn' do
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
 
+    room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+    
     # act
-    visit create_new_room_path
+    visit edit_inn_room_path(inn.id, room.id)
 
     # assert
     expect(current_path).to eq new_user_session_path
   end
 
-  it 'starting from the homepage' do
+  it 'that belongs to him/her' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
+    another_user = User.create!(email: 'billy@gmail.com', password: 'testpass',
+                                role: :host)
+
+    inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                      registration_number: '58277983000198', 
+                      phone_number: '(11) 976834383', checkin_time: '18:00',
+                      checkout_time: '11:00', address_attributes: {
+                        street_name: 'Av. da Pousada', number: '10', 
+                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                        state: 'SP', zip_code: '05616-090'})
+    another_user.create_inn!(brand_name: 'Outra Pousada Teste', 
+                              registration_number: '58277983000198', 
+                              phone_number: '(11) 976834383', 
+                              checkin_time: '18:00', checkout_time: '11:00', 
+                              address_attributes: {
+                                street_name: 'Av. da Pousada', number: '10', 
+                                neighborhood: 'Bairro da Pousada', 
+                                city: 'São Paulo', state: 'SP', 
+                                zip_code: '05616-090'})
+
+    room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
+    # act
+    login_as another_user
+    visit edit_inn_room_path(inn.id, room.id)
+
+    # assert
+    expect(page).to have_content 'Você não possui autorização para essa ação.'
+    expect(current_path).to eq root_path
+  end
+
+  it 'from the homepage' do
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
+
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -32,14 +73,19 @@ describe 'User creates a new room for an inn' do
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
 
+    room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
     # act
     login_as user
     visit root_path
     click_on 'Minha Pousada'
-    click_on 'Adicionar Quarto'
+    click_on 'Bedroom'
+    click_on 'Editar Quarto'
 
     # assert
-    expect(current_path).to eq create_new_room_path
+    expect(current_path).to eq edit_inn_room_path(inn.id, room.id)
+    expect(page).to have_content 'Editar Bedroom'
     expect(page).to have_field 'Nome do Quarto'
     expect(page).to have_field 'Descrição do Quarto'
     expect(page).to have_field 'Área do Quarto (m²)'
@@ -58,13 +104,14 @@ describe 'User creates a new room for an inn' do
     expect(page).to have_content 'Disponibilidade do Quarto'
     expect(page).to have_field 'Marcar Quarto como Disponível'
 
-    expect(page).to have_button 'Criar Quarto'
+    expect(page).to have_button 'Atualizar Quarto'
   end
 
-  it 'successfully' do
+  it 'sucessfully' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
+
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -73,9 +120,15 @@ describe 'User creates a new room for an inn' do
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
 
+    room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
     # act
     login_as user
-    visit create_new_room_path
+    visit root_path
+    click_on 'Minha Pousada'
+    click_on 'Bedroom'
+    click_on 'Editar Quarto'
 
     fill_in 'Nome do Quarto', with: 'The Legend of Zelda'
     fill_in 'Descrição do Quarto', with: 'Um quarto baseado na melhor franquia dos games!'
@@ -92,11 +145,11 @@ describe 'User creates a new room for an inn' do
     check 'Quarto acessível para PCD'
 
     check 'Marcar Quarto como Disponível'
-    click_on 'Criar Quarto'
+    click_on 'Atualizar Quarto'
 
     # assert
     expect(current_path).to eq inn_room_path(inn.id, inn.rooms.first.id)
-    expect(page).to have_content 'Quarto criado com sucesso'
+    expect(page).to have_content 'Quarto atualizado com sucesso'
     expect(page).to have_content 'Quarto The Legend of Zelda'
     expect(page).to have_content 'Quarto disponível para reservas'
     expect(page).to have_content 'Um quarto baseado na melhor franquia dos games!'
@@ -112,10 +165,11 @@ describe 'User creates a new room for an inn' do
     expect(page).to have_content 'Quarto projetado com acessibilidade'
   end
 
-  it 'only by filling all of the mandatory fields' do
+  it 'and is not allowed to remove any of the mandatory fields' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
+
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
                       registration_number: '58277983000198', 
                       phone_number: '(11) 976834383', checkin_time: '18:00',
@@ -124,23 +178,36 @@ describe 'User creates a new room for an inn' do
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
                         state: 'SP', zip_code: '05616-090'})
 
+    room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
     # act
     login_as user
-    visit create_new_room_path
+    visit root_path
+    click_on 'Minha Pousada'
+    click_on 'Bedroom'
+    click_on 'Editar Quarto'
 
     fill_in 'Nome do Quarto', with: ''
     fill_in 'Descrição do Quarto', with: ''
     fill_in 'Área do Quarto (m²)', with: ''
     fill_in 'Máximo de Hóspedes', with: ''
     fill_in 'Valor da Diária', with: ''
-    click_on 'Criar Quarto'
+
+    check 'Marcar Quarto como Disponível'
+    click_on 'Atualizar Quarto'
 
     # assert
-    expect(page).to have_content 'Não foi possível criar novo quarto'
+    expect(page).to have_content 'Não foi possível atualizar o quarto'
     expect(page).to have_content 'Nome do Quarto não pode ficar em branco'
     expect(page).to have_content 'Descrição do Quarto não pode ficar em branco'
     expect(page).to have_content 'Área do Quarto (m²) não pode ficar em branco'
     expect(page).to have_content 'Máximo de Hóspedes não pode ficar em branco'
     expect(page).to have_content 'Valor da Diária não pode ficar em branco'
+    expect(page).to have_field 'Nome do Quarto'
+    expect(page).to have_field 'Descrição do Quarto'
+    expect(page).to have_field 'Área do Quarto (m²)'
+    expect(page).to have_field 'Máximo de Hóspedes'
+    expect(page).to have_field 'Valor da Diária'
   end
 end
