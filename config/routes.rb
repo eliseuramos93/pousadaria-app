@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     post 'inactive', on: :member
     post 'active', on: :member
 
-    resources :rooms, only: [:create, :show, :edit, :update]
+    resources :rooms, only: [:create, :show, :edit, :update] do
+      resources :seasonal_rates, only: [:new, :create]
+    end
   end
   
   get 'my_inn', to: 'inns#my_inn'

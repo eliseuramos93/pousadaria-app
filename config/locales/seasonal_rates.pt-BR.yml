@@ -1,0 +1,11 @@
+pt-BR:
+  activerecord:
+    models:
+      seasonal_rate:
+        one: Preço de Temporada
+        others: Preços de Temporada
+    attributes:
+      seasonal_rate:
+        start_date: Data de início
+        end_date: Data de término
+        price: Preço de temporada

@@ -2,10 +2,13 @@ class InnsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, 
                                             :my_inn, :inactive, :active]
   before_action :force_inn_creation_for_hosts, except: [:new, :create]
-  before_action :find_inn_by_id, only: [:show, :edit, :update, :inactive, :active]
-  before_action :check_if_user_is_host, only: [:new, :create, :edit, :update, 
-                                               :inactive, :active]
-  before_action :ensure_user_owns_inn, only: [:edit, :update, :inactive, :active]
+  before_action :ensure_inn_exists, only: [:show, :edit, :update, :inactive, 
+                                           :active]
+  before_action :ensure_user_is_host, only: [:new, :create, :edit, :update, 
+                                             :inactive, :active]
+  before_action :ensure_user_owns_inn, only: [:edit, :update, :inactive, 
+                                              :active]
+  before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   def new
     @inn = Inn.new
@@ -28,16 +31,10 @@ class InnsController < ApplicationController
 
   def show; end
 
-  def edit
-    @address = @inn.address
-    @payment_method = @inn.payment_method
-  end
+  def edit; end
 
   def update
-    @address = @inn.address
     @address.update(address_params)
-
-    @payment_method = @inn.payment_method
     @payment_method.update(payment_method_params) unless payment_method_params.nil?
 
     if @inn.update(inn_params)
@@ -52,7 +49,7 @@ class InnsController < ApplicationController
     @inn = current_user.inn
     render 'show'
   end
-
+  
   def inactive
     @inn.inactive!
     redirect_to @inn
@@ -83,10 +80,10 @@ class InnsController < ApplicationController
     end
   end
 
-  def find_inn_by_id
-    if Inn.where(id: params[:id]).exists?
-      @inn = Inn.find(params[:id])
-    else
+  def ensure_inn_exists
+    @inn = Inn.find_by(id: params[:id])
+
+    if @inn.nil?
       redirect_to root_path, notice: 'Essa página não existe'
     end
   end
@@ -97,9 +94,14 @@ class InnsController < ApplicationController
     end
   end
 
-  def check_if_user_is_host
+  def ensure_user_is_host
     unless current_user.host? 
       redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
     end
+  end
+
+  def fetch_address_and_payment_methods
+    @address = @inn.address
+    @payment_method = @inn.payment_method
   end
 end
