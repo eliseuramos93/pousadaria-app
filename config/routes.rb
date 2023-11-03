@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     post 'active', on: :member
 
     resources :rooms, only: [:create, :show, :edit, :update] do
-      resources :seasonal_rates, only: [:new, :create]
+      resources :seasonal_rates, only: [:index, :new, :create, :edit, :update]
     end
   end
   

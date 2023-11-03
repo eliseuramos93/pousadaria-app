@@ -24,7 +24,7 @@ describe 'Host edits a room of an inn' do
     expect(current_path).to eq new_user_session_path
   end
 
-  it 'that belongs to him/her' do
+  it 'only if it belongs to him/her' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)

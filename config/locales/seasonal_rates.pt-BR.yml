@@ -9,3 +9,8 @@ pt-BR:
         start_date: Data de início
         end_date: Data de término
         price: Preço de temporada
+  errors:
+    messages:
+      end_before_start: não pode ser anterior à data de início
+      start_date_on_past: não pode ser no passado
+      conflict_with_another_object: Preço de Temporada não pode ter conflito de datas com outros Preços de Temporadas

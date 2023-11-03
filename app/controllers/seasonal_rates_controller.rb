@@ -3,6 +3,12 @@ class SeasonalRatesController < ApplicationController
   before_action :force_inn_creation_for_hosts
   before_action :redirect_invalid_inn_or_room
   before_action :ensure_user_owns_inn
+  before_action :redirect_invalid_rate_params, only: [:edit, :update]
+  before_action :block_past_seasonal_rates_alteration, only: [:edit, :update]
+
+  def index
+    @seasonal_rates = @room.seasonal_rates
+  end
 
   def new
     @seasonal_rate = @room.seasonal_rates.build
@@ -16,6 +22,18 @@ class SeasonalRatesController < ApplicationController
     else
       flash.now[:notice] = 'Não foi possível criar novo preço de temporada'
       render 'new'
+    end
+  end
+
+  def edit; end
+
+  def update
+    if @seasonal_rate.update(seasonal_rate_params)
+      redirect_to inn_room_seasonal_rates_path(@inn, @room), 
+        notice: 'Seu preço de temporada foi atualizado com sucesso'
+    else
+      flash.now[:notice] = 'Não foi possível atualizar seu preço de temporada'
+      render 'edit'
     end
   end
 
@@ -37,6 +55,21 @@ class SeasonalRatesController < ApplicationController
   def ensure_user_owns_inn
     unless current_user.host? && current_user == @inn.user
       redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
+    end
+  end
+
+  def redirect_invalid_rate_params
+    @seasonal_rate = @room.seasonal_rates.find_by(params[:id])
+
+    if @seasonal_rate.nil?
+      redirect_to root_path, notice: 'A página não existe'
+    end
+  end
+
+  def block_past_seasonal_rates_alteration
+    if @seasonal_rate.start_date.past?
+      redirect_to inn_room_seasonal_rates_path(@inn, @room),
+        notice: 'Não é possível alterar um preço de temporada que já iniciou'
     end
   end
 end

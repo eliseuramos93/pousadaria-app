@@ -200,4 +200,70 @@ describe 'Host creates a seasonal rate for a room' do
     expect(page).to have_content 'Data de término não pode ficar em branco'
     expect(page).to have_content 'Preço de temporada não pode ficar em branco'
   end
+
+  it 'but fails by informing a past start date' do 
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
+
+    inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                      registration_number: '58277983000198', 
+                      phone_number: '(11) 976834383', checkin_time: '18:00',
+                      checkout_time: '11:00', address_attributes: {
+                        street_name: 'Av. da Pousada', number: '10', 
+                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                        state: 'SP', zip_code: '05616-090'})
+
+    room = inn.rooms.create!(name: 'Quarto', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
+    # act
+    login_as user
+    visit new_inn_room_seasonal_rate_path(inn.id, room.id)
+    fill_in 'Data de início', with: 1.day.ago
+    fill_in 'Data de término', with: 1.day.from_now
+    fill_in 'Preço de temporada', with: '199.99'
+    click_on 'Criar Preço de Temporada'
+
+    # assert
+    expect(page).to have_content 'Não foi possível criar novo preço de temporada'
+    expect(page).to have_content 'Data de início não pode ser no passado'
+  end
+
+  it "that doesn't overlap with already existent seasonal rate" do
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
+
+    inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                      registration_number: '58277983000198', 
+                      phone_number: '(11) 976834383', checkin_time: '18:00',
+                      checkout_time: '11:00', address_attributes: {
+                        street_name: 'Av. da Pousada', number: '10', 
+                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                        state: 'SP', zip_code: '05616-090'})
+
+    room = inn.rooms.create!(name: 'Quarto de Aluguel', description: 'Nice', area: 10,
+                             max_capacity: 2, rent_price: 50, status: :active)
+
+    rate = room.seasonal_rates.create!(start_date: 10.days.from_now,
+                                       end_date: 20.days.from_now,
+                                       price: '69.99')
+
+    # act
+    login_as user
+    visit root_path
+    click_on 'Minha Pousada'
+    click_on 'Quarto de Aluguel'
+    click_on 'Adicionar Preço de Temporada'
+
+    fill_in 'Data de início', with: 5.days.from_now
+    fill_in 'Data de término', with: 15.days.from_now
+    fill_in 'Preço de temporada', with: '99.99'
+    click_on 'Criar Preço de Temporada'
+
+    # assert
+    expect(page).to have_content 'Não foi possível criar novo preço de temporada'
+    expect(page).to have_content 'Preço de Temporada não pode ter conflito de datas com outros Preços de Temporadas'
+  end
 end

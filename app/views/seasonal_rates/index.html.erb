@@ -1,0 +1,17 @@
+<h2>Meus Preços de Temporada para <%= @room.name %></h2>
+
+<% if @seasonal_rates.any? %>
+  <dl>
+    <% @seasonal_rates.each do |rate| %>
+      <dt><%= "Entre #{l rate.start_date} e #{l rate.end_date}: #{number_to_currency rate.price}" %></dt>
+      <% unless rate.start_date.past? %>
+        <dd>
+          <%= link_to 'Editar', edit_inn_room_seasonal_rate_path(@inn, @room, rate) %>
+        </dd>
+      <% end %>
+    <% end %>
+  </dl>
+<% else %>
+  <p>Não existem Preços de Temporada para este quarto ainda.</p>
+  <p>Você pode criar um <%= link_to 'clicando aqui', new_inn_room_seasonal_rate_path(@inn, @room) %>.</p>
+<% end %>
