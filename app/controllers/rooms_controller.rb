@@ -1,10 +1,14 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :force_inn_creation_for_hosts
-  before_action :redirect_invalid_inn, only: [:show, :create, :edit, :update]
+  before_action :redirect_invalid_inn, only: [:index, :show, :create, :edit, :update]
   before_action :redirect_invalid_room, only: [:show, :edit, :update]
-  before_action :ensure_user_owns_inn, only: [:create, :edit, :update]
+  before_action :ensure_user_owns_inn, only: [:index, :create, :edit, :update]
   before_action :ensure_room_belongs_to_inn, only: [:edit, :update]
+
+  def index
+    @rooms = @inn.rooms
+  end
 
   def create_new_room
     @inn = current_user.inn
@@ -24,7 +28,7 @@ class RoomsController < ApplicationController
   end
 
   def show
-    if @room.inactive?
+    if @room.inactive? && @inn.user != current_user
       redirect_to root_path, notice: 'Este quarto não está disponível no momento.'
     end
   end
@@ -53,7 +57,7 @@ class RoomsController < ApplicationController
     @inn = Inn.find_by(id: params[:inn_id])
 
     if @inn.nil?
-      redirect_to root_path, notice: 'Essa página não existe'
+      redirect_to root_path, alert: 'Essa página não existe'
     end
   end
 
@@ -61,19 +65,19 @@ class RoomsController < ApplicationController
     @room = @inn.rooms.find_by(id: params[:id])
 
     if @room.nil?
-      redirect_to root_path, notice: 'Essa página não existe'
+      redirect_to root_path, alert: 'Essa página não existe'
     end
   end
 
   def ensure_user_owns_inn
     unless current_user.host? && current_user == @inn.user
-      redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
+      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
     end
   end
 
   def ensure_room_belongs_to_inn
     unless @inn.rooms.exists?(id: @room.id)
-      redirect_to root_path, notice: 'Essa página não existe' 
+      redirect_to root_path, alert: 'Essa página não existe' 
     end
   end
 end

@@ -1,19 +1,27 @@
 <h2 class="inn-name"><%= "Pousada #{@inn.brand_name}" %></h1>
 
 <% if user_signed_in? && @inn.user == current_user %>
-  <section id="owner-options">
+  <section class="owner-options">
     <h3 class="section-title">Área do Proprietário</h3>
     <div id="inn-status">
       <% if @inn.active? %>
         <p class="status-active">Pousada Disponível</p> 
-        <%= button_to 'Marcar como Indisponível', inactive_inn_path(@inn), class: 'btn-to page-btn' %>
       <% else %>
         <p class="status-inactive">Pousada Indisponível</p>
-        <%= button_to 'Marcar como Disponível', active_inn_path(@inn), class: 'btn-to page-btn' %>
+        
       <% end %>
     </div>
-    <%= link_to 'Editar Pousada', edit_inn_path(@inn.id), class: 'page-btn' %> <br>
-    <%= link_to 'Adicionar Quarto', create_new_room_path, class: 'page-btn' %>
+
+    <div class="owner-buttons">
+      <% if @inn.active? %>
+        <%= button_to 'Marcar como Indisponível', inactive_inn_path(@inn), class: 'btn-to page-btn' %>
+      <% else %>
+        <%= button_to 'Marcar como Disponível', active_inn_path(@inn), class: 'btn-to page-btn' %>
+      <% end %>
+      <%= link_to 'Editar Pousada', edit_inn_path(@inn.id), class: 'page-btn' %> <br>
+      <%= link_to 'Adicionar Quarto', create_new_room_path, class: 'page-btn' %> <br>
+      <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %>
+    </div>
   </section>
 <% end %>
 
@@ -22,7 +30,7 @@
   <section id="inn-information">
     <h3 class="section-title">Sobre a pousada</h3>
     <div>
-      <%= @inn.description %>
+      <%= @inn.description unless @inn.description.nil? %>
     </div>
     <dl>
       <dt>Horário de check-in:</dt>
@@ -36,12 +44,9 @@
 
   <section id="inn-policies">
     <h3 class="section-title">Políticas da pousada</h3>
-    <% if (@inn.description.nil? || @inn.description.empty?) && @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
+    <% if (@inn.description.empty?) && @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
       <p>Ainda não foram informadas as políticas desse local.</p>
     <% else %>
-      <div>
-        <%= @inn.description %>
-      </div>
       <dl>
         <% unless @inn.pet_friendly.nil? %>
           <dt>Animais de estimação:</dt>

@@ -25,7 +25,11 @@ class InnsController < ApplicationController
     end
   end
 
-  def show; end
+  def show 
+    if current_user != @inn.user && @inn.inactive?
+      redirect_to root_path, alert: 'A página não está disponível'
+    end
+  end
 
   def edit; end
 
@@ -80,19 +84,19 @@ class InnsController < ApplicationController
     @inn = Inn.find_by(id: params[:id])
 
     if @inn.nil?
-      redirect_to root_path, notice: 'Essa página não existe'
+      redirect_to root_path, alert: 'Essa página não existe'
     end
   end
 
   def ensure_user_owns_inn
     if @inn.user != current_user
-      redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
+      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
     end
   end
 
   def ensure_user_is_host
     unless current_user.host? 
-      redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
+      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
     end
   end
 

@@ -93,7 +93,7 @@ describe 'Host edits a seasonal rate for a room' do
     visit root_path
     click_on 'Minha Pousada'
     click_on 'Quarto de Aluguel'
-    click_on 'Ver meus Preços de Temporada para este quarto'
+    click_on 'Ver Preços de Temporada deste quarto'
     click_on 'Editar'
 
     # assert

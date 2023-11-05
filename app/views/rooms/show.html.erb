@@ -1,43 +1,53 @@
-<%= link_to "Voltar para #{@inn.brand_name}", inn_path(@inn) %> <br>
+<%= link_to "Voltar para #{@inn.brand_name}", inn_path(@inn), class: 'clean-link' %> <br>
 
-<h1><%= "Quarto #{@room.name}" %></h1>
+<h2 class="section-title"><%= "Quarto #{@room.name}" %></h2>
 
 <% if user_signed_in? && @inn.user == current_user %>
-  <%= @room.active? ? "Quarto disponível para reservas" : "Quarto indisponível para reservas" %> <br>
-  <%= link_to 'Editar Quarto', edit_inn_room_path(@inn, @room) %> <br>
-  <%= link_to 'Adicionar Preço de Temporada', new_inn_room_seasonal_rate_path(@inn, @room) %> <br>
-  <%= link_to 'Ver meus Preços de Temporada para este quarto', inn_room_seasonal_rates_path(@inn, @room) %>
+  <section class="owner-options">  
+    <h3 class="section-title">Área do Proprietário</h3>
+    <% if @room.active? %>
+      <p class="status-active">Quarto disponível para reservas</p>
+    <% else %>
+      <p class="status-inactive">Quarto indisponível para reservas</p>
+    <% end %>
+    <div class="owner-buttons">
+      <%= link_to 'Editar Quarto', edit_inn_room_path(@inn, @room), class: 'page-btn' %>
+      <%= link_to 'Adicionar Preço de Temporada', new_inn_room_seasonal_rate_path(@inn, @room), class: 'page-btn' %>
+      <%= link_to 'Ver Preços de Temporada deste quarto', inn_room_seasonal_rates_path(@inn, @room), class: 'page-btn' %>
+    </div>
+  </section>
 <% end %>
 
-<section id="room-info">
-  <h2>Sobre o Quarto</h2>
-  
-  <p><%= @room.description %></p>
-  <dl>
-    <dt>Área:</dt>
-    <dd><%= "#{@room.area} m²" %></dd>
-    <dt>Capacidade:</dt>
-    <dd><%= "#{@room.max_capacity} pessoas" %></dd>
-    <dt>Valor da Diária:</dt>
-    <dd><%= number_to_currency @room.rent_price %></dd>
-  </dl>
-</section>
+<div id="room-data">
+  <section id="room-info">
+    <h3 class="section-title">Sobre o Quarto</h3>
+    <p><%= @room.description %></p>
+    <dl>
+      <dt>Área:</dt>
+      <dd><%= "#{@room.area} m²" %></dd>
+      <dt>Capacidade:</dt>
+      <dd><%= "#{@room.max_capacity} pessoas" %></dd>
+      <dt>Valor da Diária:</dt>
+      <dd><%= number_to_currency @room.rent_price %></dd>
+    </dl>
+  </section>
 
-<section id="room-amenities">
-  <h2>Comodidades do Quarto</h2>
-  <dl>
-    <dd><%= I18n.t("amenities.has_bathroom.#{@room.has_bathroom?}") %></dd>
-    <dd><%= I18n.t("amenities.has_balcony.#{@room.has_balcony?}") %></dd>
-    <dd><%= I18n.t("amenities.has_air_conditioner.#{@room.has_air_conditioner?}") %></dd>
-    <dd><%= I18n.t("amenities.has_tv.#{@room.has_tv?}") %></dd>
-    <dd><%= I18n.t("amenities.has_wardrobe.#{@room.has_wardrobe?}") %></dd>
-    <dd><%= I18n.t("amenities.has_vault.#{@room.has_vault?}") %></dd>
-    <dd><%= I18n.t("amenities.is_accessible.#{@room.is_accessible?}") %></dd>
-  </dl>
-</section>
+  <section id="room-amenities">
+    <h3 class="section-title">Comodidades do Quarto</h3>
+    <dl>
+      <dd><%= I18n.t("amenities.has_bathroom.#{@room.has_bathroom?}") %></dd>
+      <dd><%= I18n.t("amenities.has_balcony.#{@room.has_balcony?}") %></dd>
+      <dd><%= I18n.t("amenities.has_air_conditioner.#{@room.has_air_conditioner?}") %></dd>
+      <dd><%= I18n.t("amenities.has_tv.#{@room.has_tv?}") %></dd>
+      <dd><%= I18n.t("amenities.has_wardrobe.#{@room.has_wardrobe?}") %></dd>
+      <dd><%= I18n.t("amenities.has_vault.#{@room.has_vault?}") %></dd>
+      <dd><%= I18n.t("amenities.is_accessible.#{@room.is_accessible?}") %></dd>
+    </dl>
+  </section>
+</div>
 
 <section id="room-seasonal-prices">
-  <h2>Preços Diferenciados para <%= @room.name %></h2>
+  <h3 class="section-title">Preços Diferenciados para <%= @room.name %></h3>
   <dl>
     <% if @room.seasonal_rates.any? %>
       <% @room.seasonal_rates.each do |rate| %>

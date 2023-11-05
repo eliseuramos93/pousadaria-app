@@ -26,6 +26,10 @@ h3 {
 section {
   width: 80vw;
   max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #page-title {
@@ -76,7 +80,6 @@ nav > p,
   list-style: none outside none;
   margin: 0;
   padding: 0;
-  text-align: left;
   text-decoration: none;
   text-indent: 0;
 }
@@ -94,13 +97,14 @@ nav {
 
 .nav-button {
   color: #000;
-  padding: 0.2rem;
+  padding: 0.4rem;
   border-radius: 5px;
   transition: 0.2s;
 }
 
 .nav-button:hover {
-  background-color: goldenrod;
+  background-color: #000;
+  color: #FFF;
 }
 
 header > a {
@@ -120,14 +124,15 @@ header > a {
 
 .clean-link {
   text-decoration: none;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
   color: #000;
   padding: 0.5rem;
   transition: 0.3s;
 }
 
 .clean-link:hover {
-  background-color: #000;
-  color: #FFF;
+  color: goldenrod;
 }
 
 #views-area {
@@ -143,27 +148,39 @@ header > a,
 #page-title {
   font-family: 'Cinzel', serif;
   margin: 1rem auto;
+  text-align: center;
 }
 
-#owner-options,
+.owner-options,
 #inn-information, 
 #inn-policies,
 #inn-address,
 #available-rooms,
-#inn-status {
+#inn-status,
+#room-info,
+#room-amenities,
+#room-seasonal-prices {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#owner-options {
+.owner-options {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
+  margin-bottom: 2rem;
 }
 
-#inn-data {
+.owner-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.1rem;
+}
+
+#inn-data,
+#room-data {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -173,7 +190,7 @@ header > a,
 .status-active,
 .status-inactive {
   color: #FFF;
-  padding: 0.5rem;
+  padding: 0.3rem;
 }
 
 .status-active {
@@ -194,7 +211,12 @@ dd {
 }
 
 .page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   background-color: #000;
+  width: 150px;
   color: #FFF;
   padding: 0.5rem;
   border-radius: 5px;
@@ -205,4 +227,12 @@ dd {
 .page-btn:hover {
   background-color: goldenrod;
   color: #000;
+}
+
+.rooms-list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

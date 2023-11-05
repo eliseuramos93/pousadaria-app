@@ -71,7 +71,7 @@ describe 'Host edits a room of an inn' do
                       checkout_time: '11:00', address_attributes: {
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                        state: 'SP', zip_code: '05616-090'}, status: 'active')
 
     room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)

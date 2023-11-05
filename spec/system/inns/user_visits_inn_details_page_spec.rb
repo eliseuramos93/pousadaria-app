@@ -1,6 +1,26 @@
 require 'rails_helper'
 
 describe 'User visits the inn details page' do
+  it 'only when the inn is active' do
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                        role: :host)
+    inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                      registration_number: '58277983000198', 
+                      phone_number: '(11) 976834383', checkin_time: '18:00',
+                      checkout_time: '11:00', address_attributes: {
+                        street_name: 'Av. da Pousada', number: '10', 
+                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                        state: 'SP', zip_code: '05616-090'}, status: 'inactive')
+
+    # act
+    visit inn_path(inn)
+
+    # assert
+    expect(current_path).to eq root_path
+    expect(page).to have_content 'A página não está disponível'
+  end
+
   it 'and sees the inn data' do
     # arrange
     billy = User.create!(email: 'billy@mail.com', password: 'password')
@@ -11,7 +31,7 @@ describe 'User visits the inn details page' do
                                 address_attributes: {street_name: 'Rua do Billy',
                                 number: '10C', neighborhood: 'ABC',
                                 city: 'Mongaguá', state: 'SP',
-                                zip_code: '16000-000'})
+                                zip_code: '16000-000'}, status: 'active')
     
     # act
     visit inn_path(billy_inn.id)
@@ -40,7 +60,7 @@ describe 'User visits the inn details page' do
                                 address_attributes: {street_name: 'Rua do Billy',
                                 number: '10C', neighborhood: 'ABC',
                                 city: 'Mongaguá', state: 'SP',
-                                zip_code: '16000-000'})
+                                zip_code: '16000-000'}, status: 'active')
     
     # act
     visit inn_path(billy_inn.id)
@@ -65,7 +85,7 @@ describe 'User visits the inn details page' do
                                 address_attributes: {street_name: 'Rua do Billy',
                                 number: '10C', neighborhood: 'ABC',
                                 city: 'Mongaguá', state: 'SP',
-                                zip_code: '16000-000'})
+                                zip_code: '16000-000'}, status: 'active')
     
     # act
     visit inn_path(billy_inn.id)
@@ -87,7 +107,7 @@ describe 'User visits the inn details page' do
                                 address_attributes: {street_name: 'Rua do Billy',
                                 number: '10C', neighborhood: 'ABC',
                                 city: 'Mongaguá', state: 'SP',
-                                zip_code: '16000-000'})
+                                zip_code: '16000-000'}, status: 'active')
     
     # act
     visit inn_path(billy_inn.id)
@@ -96,10 +116,10 @@ describe 'User visits the inn details page' do
     expect(page).to have_content 'Ainda não foram informadas as políticas desse local.'
   end
 
-  it "and doesn't see the edit inn button if not authenticated" do
+  it "and doesn't see the owner section if not authenticated" do
     # arrange
-    billy = User.create!(email: 'billy@mail.com', password: 'password')
-    billy_inn = billy.create_inn!(brand_name: 'Pousada do Billy', 
+    user = User.create!(email: 'billy@mail.com', password: 'password')
+    inn = user.create_inn!(brand_name: 'Pousada do Billy', 
                                 registration_number: '94466613000162',
                                 phone_number: '(11) 98765-4321',
                                 checkin_time: '20:00', checkout_time: '12:00',
@@ -109,10 +129,50 @@ describe 'User visits the inn details page' do
                                 zip_code: '16000-000'})
 
     # act
-    visit inn_path(billy_inn.id)
+    visit inn_path(inn)
 
     # assert
-    expect(page).not_to have_link 'Editar', href: edit_inn_path(billy_inn.id)
+    expect(page).not_to have_button 'Marcar como Indisponível'
+    expect(page).not_to have_link 'Editar Pousada', href: edit_inn_path(inn)
+    expect(page).not_to have_link 'Adicionar Quarto', href: create_new_room_path
+    expect(page).not_to have_link 'Ver Meus Quartos', href: inn_rooms_path(inn)
+  end
+
+  it "and doesn't see the owner section if the inn does not belong to him/her" do
+    # arrange
+    user_a = User.create!(email: 'andre@gmail.com', password: 'password', 
+                      role: 'host')
+    user_b = User.create!(email: 'bento@gmail.com', password: 'password', 
+                      role: 'host')
+
+    inn_a = user_a.create_inn!(brand_name: "Pousada do André", 
+                        registration_number: '12345612318', 
+                        phone_number: '(11) 109238019', 
+                        checkin_time: '19:00', checkout_time: '12:00',
+                        address_attributes: {
+                          street_name: 'Av. Angelica', number: '1',
+                          neighborhood: 'Bairro A', city: 'São Paulo',
+                          state: 'SP', zip_code: '01000-000' },
+                        status: 'active')
+    inn_b = user_b.create_inn!(brand_name: "BNB do Bento", 
+                         registration_number: '18273981731', 
+                         phone_number: '(11) 189237189', 
+                         checkin_time: '20:00', checkout_time: '11:00',
+                         address_attributes: {
+                            street_name: 'R. Birigui', number: '12',
+                            neighborhood: 'Bairro B', city: 'São Paulo',
+                            state: 'SP', zip_code: '02000-000' },
+                         status: 'inactive')
+
+    # act
+    login_as user_b
+    visit inn_path(inn_a)
+
+    # assert
+    expect(page).not_to have_button 'Marcar como Indisponível'
+    expect(page).not_to have_link 'Editar Pousada', href: edit_inn_path(inn_a)
+    expect(page).not_to have_link 'Adicionar Quarto', href: create_new_room_path
+    expect(page).not_to have_link 'Ver Meus Quartos', href: inn_rooms_path(inn_a)
   end
 
   it 'and returns to homepage' do
@@ -145,7 +205,7 @@ describe 'User visits the inn details page' do
                       checkout_time: '11:00', address_attributes: {
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                        state: 'SP', zip_code: '05616-090'}, status: 'active')
     room_a = inn.rooms.create!(name: 'Bedroom #1', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)
     room_b = inn.rooms.create!(name: 'Bedroom #2', description: 'Nice', area: 10,
@@ -178,7 +238,8 @@ describe 'User visits the inn details page' do
                       checkout_time: '11:00', address_attributes: {
                         street_name: 'Av. da Pousada', number: '10', 
                         neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                        state: 'SP', zip_code: '05616-090'}, status: 'active')
+
     room_a = inn.rooms.create!(name: 'Bedroom #1', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :inactive)
     room_b = inn.rooms.create!(name: 'Bedroom #2', description: 'Nice', area: 10,

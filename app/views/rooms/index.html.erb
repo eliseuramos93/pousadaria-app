@@ -1,0 +1,18 @@
+<h2 class="section-title">Quartos de <%= @inn.brand_name %></h2>
+
+<section id="rooms-list">
+  <% if @rooms.empty? %>
+    <p>Não existem quartos registrados nesta pousada.</p>
+  <% else %>
+    <% @rooms.each do |room| %>
+      <div class="rooms-list-item">
+        <h3><%= link_to room.name, [@inn, room], class: 'clean-link' %></h3>
+        <% if room.active? %>
+        <p class="status-active">Disponível</p>
+        <% else %>
+          <p class="status-inactive">Indisponível</p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</section>
