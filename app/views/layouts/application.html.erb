@@ -11,28 +11,35 @@
   </head>
 
   <body>
-    <div id="page-title">
+    <header>
       <%= link_to root_path do %>
-        <h1>Pousadaria</h1>
+        <h1 id="page-title">Pousadaria</h1>
       <% end %>
-    </div>
+    </header>
     <nav>
       <% if user_signed_in? %>
-        <%= current_user.email %> | 
+        <p><%= current_user.email %></p>
         <% if current_user.host? %>
-          <%= link_to 'Minha Pousada', my_inn_path %> |
+          <%= link_to 'Minha Pousada', my_inn_path, class: 'nav-button' %>
         <% end %>
-        <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
+        <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'nav-button' %>
       <% else %>
-        <%= link_to 'Seja um Pousadeiro', new_user_registration_path %> |
-        <%= link_to 'Entrar', new_user_session_path %>
+        <%= link_to 'Seja um Pousadeiro', new_user_registration_path, class: 'nav-button' %>
+        <%= link_to 'Entrar', new_user_session_path, class: 'nav-button' %>
       <% end %>
     </nav>
 
-    <div id="flash-msgs">
-      <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
+      <div id="flash-msgs">
+        <% if notice.present? %>
+          <p class="notice"><%= notice %></p>
+        <% end %>
+        <% if alert.present? %>
+          <p class="alert"><%= alert %></p>
+        <% end %>
+      </div>
+
+    <div id="views-area">
+      <%= yield %>
     </div>
-    <%= yield %>
   </body>
 </html>

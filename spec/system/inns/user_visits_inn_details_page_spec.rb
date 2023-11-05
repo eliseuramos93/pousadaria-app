@@ -17,7 +17,7 @@ describe 'User visits the inn details page' do
     visit inn_path(billy_inn.id)
 
     # assert
-    expect(page).to have_content 'Sobre Pousada do Billy'
+    expect(page).to have_content 'Sobre a pousada'
     expect(page).to have_content 'Telefone para contato: (11) 98765-4321'
     expect(page).to have_content 'Horário de check-in: 20:00'
     expect(page).to have_content 'Horário de check-out: 12:00'

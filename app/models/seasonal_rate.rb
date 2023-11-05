@@ -6,9 +6,12 @@ class SeasonalRate < ApplicationRecord
   validate :has_no_conflict_with_another_seasonal_rate
 
   def has_conflict_with_another_seasonal_rate?
+    self_range = (self.start_date..self.end_date)
+
     self.room.seasonal_rates.any? do |rate|
       unless rate.id == self.id
-        (self.start_date..self.end_date).overlaps?(rate.start_date..rate.end_date)
+        rate_range = (rate.start_date..rate.end_date)
+        self_range.overlaps? rate_range
       end
     end
   end
@@ -16,7 +19,7 @@ class SeasonalRate < ApplicationRecord
   private
 
   def end_date_greater_or_equal_to_start_date
-    if !(start_date.nil? || end_date.nil?) && (end_date < start_date)
+    if (start_date.present? && end_date.present?) && (end_date < start_date)
       errors.add(:end_date, :end_before_start)
     end
   end

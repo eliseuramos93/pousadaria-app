@@ -1,6 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :authenticate_user!, only: [:create_new_room, :create, :edit,
-                                            :update]
+  before_action :authenticate_user!, except: [:show]
   before_action :force_inn_creation_for_hosts
   before_action :redirect_invalid_inn, only: [:show, :create, :edit, :update]
   before_action :redirect_invalid_room, only: [:show, :edit, :update]
@@ -74,7 +73,7 @@ class RoomsController < ApplicationController
 
   def ensure_room_belongs_to_inn
     unless @inn.rooms.exists?(id: @room.id)
-      redirect_to root_path, notice: 'Essa página não existe'
+      redirect_to root_path, notice: 'Essa página não existe' 
     end
   end
 end

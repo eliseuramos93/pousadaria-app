@@ -1,13 +1,9 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, 
-                                            :my_inn, :inactive, :active]
+  before_action :authenticate_user!, except: [:show]
   before_action :force_inn_creation_for_hosts, except: [:new, :create]
-  before_action :ensure_inn_exists, only: [:show, :edit, :update, :inactive, 
-                                           :active]
-  before_action :ensure_user_is_host, only: [:new, :create, :edit, :update, 
-                                             :inactive, :active]
-  before_action :ensure_user_owns_inn, only: [:edit, :update, :inactive, 
-                                              :active]
+  before_action :ensure_inn_exists, except: [:new, :create, :my_inn]
+  before_action :ensure_user_is_host, except: [:show, :my_inn]
+  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show]
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   def new
@@ -74,7 +70,7 @@ class InnsController < ApplicationController
   end
 
   def payment_method_params
-    unless params[:payment_method].nil?
+    if params[:payment_method].present?
       params.require(:payment_method).permit(:bank_transfer, :credit_card, 
                                             :debit_card, :cash, :deposit)
     end
@@ -89,7 +85,7 @@ class InnsController < ApplicationController
   end
 
   def ensure_user_owns_inn
-    unless @inn.user == current_user
+    if @inn.user != current_user
       redirect_to root_path, notice: 'Você não possui autorização para essa ação.'
     end
   end

@@ -1,0 +1,208 @@
+/* html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section { display: block;}
+body { line-height: 1;}
+ol,ul { list-style: none;}
+blockquote,q { quotes: none;}
+blockquote:before,blockquote:after,q:before,q:after { content: ''; content: none;}
+table { border-collapse: collapse; border-spacing: 0;} */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+  font-size: 2.5rem;
+  border-bottom: 1px dotted black;
+}
+
+h3 {
+  font-size: 1.5rem;
+  border-bottom: 1px dotted black;
+}
+
+section {
+  width: 80vw;
+  max-width: 400px;
+}
+
+#page-title {
+  margin: auto;
+  color: black;
+  padding: 1.5rem;
+  font-size: 4rem;
+}
+
+#flash-msgs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notice, .alert {
+  width: 50vw;
+  padding: 0.5rem;
+  border-radius: 15px;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notice {
+  background-color: goldenrod;
+  color: black;
+}
+
+.alert {
+  background-color: salmon;
+  color: black;
+}
+
+nav > a,
+nav > form > button,
+nav > p,
+.room-link,
+.btn-to {
+  background: none repeat scroll 0 0 transparent;
+  border: medium none;
+  border-spacing: 0;
+  font-family: 'Roboto',sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0;
+}
+
+nav {
+  border-top: 1px dotted #000;
+  border-bottom: 1px dotted #000;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.nav-button {
+  color: #000;
+  padding: 0.2rem;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.nav-button:hover {
+  background-color: goldenrod;
+}
+
+header > a {
+  display: flex;
+  width: 100%;
+  background: none repeat scroll 0 0 transparent;
+  border: medium none;
+  border-spacing: 0;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.42rem;
+  list-style: none outside none;
+  padding: 0;
+  text-decoration: none;
+  text-indent: 0;
+}
+
+.clean-link {
+  text-decoration: none;
+  color: #000;
+  padding: 0.5rem;
+  transition: 0.3s;
+}
+
+.clean-link:hover {
+  background-color: #000;
+  color: #FFF;
+}
+
+#views-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header > a, 
+.inn-name, 
+.section-title,
+#page-title {
+  font-family: 'Cinzel', serif;
+  margin: 1rem auto;
+}
+
+#owner-options,
+#inn-information, 
+#inn-policies,
+#inn-address,
+#available-rooms,
+#inn-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#owner-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+#inn-data {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.status-active,
+.status-inactive {
+  color: #FFF;
+  padding: 0.5rem;
+}
+
+.status-active {
+  background-color: #018749;
+}
+
+.status-inactive {
+  background-color: salmon;
+}
+
+dt {
+  font-weight: bold;
+  text-decoration: underline;
+}
+dd {
+  margin: 0;
+  padding: 0 0 0.5em 0;
+}
+
+.page-btn {
+  background-color: #000;
+  color: #FFF;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: 0.2s;
+  text-decoration: none;
+}
+
+.page-btn:hover {
+  background-color: goldenrod;
+  color: #000;
+}

@@ -1,0 +1,5 @@
+<h2 class='section-title'>Pousadas disponíveis</h2>
+
+<% @inns.each do |inn| %>
+  <h3 class="section-title"><%= link_to "Pousada #{inn.brand_name}", inn, class: 'clean-link' %></h3>
+<% end %>
