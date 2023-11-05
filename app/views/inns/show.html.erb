@@ -30,7 +30,7 @@
   <section id="inn-information">
     <h3 class="section-title">Sobre a pousada</h3>
     <div>
-      <%= @inn.description unless @inn.description.nil? %>
+      <%= @inn.description %>
     </div>
     <dl>
       <dt>Horário de check-in:</dt>
@@ -44,7 +44,7 @@
 
   <section id="inn-policies">
     <h3 class="section-title">Políticas da pousada</h3>
-    <% if (@inn.description.empty?) && @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
+    <% if @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
       <p>Ainda não foram informadas as políticas desse local.</p>
     <% else %>
       <dl>
