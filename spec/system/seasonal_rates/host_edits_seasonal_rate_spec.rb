@@ -7,12 +7,12 @@ describe 'Host edits a seasonal rate for a room' do
                         role: :host)
 
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
-                      registration_number: '58277983000198', 
-                      phone_number: '(11) 976834383', checkin_time: '18:00',
-                      checkout_time: '11:00', address_attributes: {
-                        street_name: 'Av. da Pousada', number: '10', 
-                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                           registration_number: '58277983000198', 
+                           phone_number: '(11) 976834383', checkin_time: '18:00',
+                           checkout_time: '11:00', address_attributes: {
+                             street_name: 'Av. da Pousada', number: '10', 
+                             neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                             state: 'SP', zip_code: '05616-090'})
 
     room = inn.rooms.create!(name: 'Quarto', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)
@@ -36,12 +36,12 @@ describe 'Host edits a seasonal rate for a room' do
                                 role: :host)
 
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
-                      registration_number: '58277983000198', 
-                      phone_number: '(11) 976834383', checkin_time: '18:00',
-                      checkout_time: '11:00', address_attributes: {
-                        street_name: 'Av. da Pousada', number: '10', 
-                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                           registration_number: '58277983000198', 
+                           phone_number: '(11) 976834383', checkin_time: '18:00',
+                           checkout_time: '11:00', address_attributes: {
+                             street_name: 'Av. da Pousada', number: '10', 
+                             neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                             state: 'SP', zip_code: '05616-090'})
     another_user.create_inn!(brand_name: 'Outra Pousada Teste', 
                               registration_number: '58277983000198', 
                               phone_number: '(11) 976834383', 
@@ -74,12 +74,12 @@ describe 'Host edits a seasonal rate for a room' do
                         role: :host)
 
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
-                      registration_number: '58277983000198', 
-                      phone_number: '(11) 976834383', checkin_time: '18:00',
-                      checkout_time: '11:00', address_attributes: {
-                        street_name: 'Av. da Pousada', number: '10', 
-                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                           registration_number: '58277983000198', 
+                           phone_number: '(11) 976834383', checkin_time: '18:00',
+                           checkout_time: '11:00', address_attributes: {
+                             street_name: 'Av. da Pousada', number: '10', 
+                             neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                             state: 'SP', zip_code: '05616-090'})
 
     room = inn.rooms.create!(name: 'Quarto de Aluguel', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)
@@ -111,12 +111,12 @@ describe 'Host edits a seasonal rate for a room' do
                         role: :host)
 
     inn = user.create_inn!(brand_name: 'Pousada Teste', 
-                      registration_number: '58277983000198', 
-                      phone_number: '(11) 976834383', checkin_time: '18:00',
-                      checkout_time: '11:00', address_attributes: {
-                        street_name: 'Av. da Pousada', number: '10', 
-                        neighborhood: 'Bairro da Pousada', city: 'São Paulo',
-                        state: 'SP', zip_code: '05616-090'})
+                           registration_number: '58277983000198', 
+                           phone_number: '(11) 976834383', checkin_time: '18:00',
+                           checkout_time: '11:00', address_attributes: {
+                             street_name: 'Av. da Pousada', number: '10', 
+                             neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                             state: 'SP', zip_code: '05616-090'})
 
     room = inn.rooms.create!(name: 'Quarto de Aluguel', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)
@@ -240,7 +240,8 @@ describe 'Host edits a seasonal rate for a room' do
   end
 
   # had to turn off a few validations to run this test. it passed, so i left it 
-  # as xit to avoid to have always a test failing.
+  # as xit to avoid to have always a test failing but also have the register
+  # of the tested situation.
   xit 'but fails due to the fact that the seasonal rate has already started' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 

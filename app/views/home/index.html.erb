@@ -1,5 +1,19 @@
-<h2 class='section-title'>Pousadas disponíveis</h2>
+<h1 class='section-title'>Novidades em Pousadaria</h2>
 
-<% @inns.each do |inn| %>
-  <h3 class="section-title"><%= link_to "#{inn.brand_name}", inn, class: 'clean-link' %></h3>
-<% end %>
+<section id="recent-inns">
+    <% @recent_inns.each do |inn| %>  
+      <div class="recent-inn-div">
+        <%= link_to inn, class: 'clean-link' do %>
+        <h3 class="section-title"><%= inn.brand_name %></h3>
+        <p class="section-title"><%= inn.address.city %></p>
+        <% end %>
+      </div>
+    <% end %>
+</section>
+
+<section id="remaining-inns">
+  <h2 class="section-title">Demais Pousadas</h2>
+  <% @inns.each do |inn| %>
+    <h3 class="section-title"><%= link_to "#{inn.brand_name}", inn, class: 'clean-link' %></h3>
+  <% end %>
+</section>

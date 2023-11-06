@@ -7,13 +7,13 @@ class SeasonalRate < ApplicationRecord
 
   def has_conflict_with_another_seasonal_rate?
     return false if self.room.nil?
-    
+
     self_range = (self.start_date..self.end_date)
 
     self.room.seasonal_rates.any? do |rate|
       unless rate.id == self.id
         rate_range = (rate.start_date..rate.end_date)
-        self_range.overlaps? rate_range
+        self_range.overlaps?(rate_range)
       end
     end
   end

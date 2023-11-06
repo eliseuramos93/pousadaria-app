@@ -236,3 +236,9 @@ dd {
   justify-content: center;
   gap: 1rem;
 }
+
+.recent-inn-div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
