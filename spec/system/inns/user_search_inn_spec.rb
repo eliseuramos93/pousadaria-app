@@ -34,7 +34,7 @@ describe 'User searches for an inn' do
                                 neighborhood: 'Bairro A', city: 'São Paulo',
                                 state: 'SP', zip_code: '01000-000' },
                               status: 'active')
-    inn_b = user_b.create_inn!(brand_name: "Bento torce pro São Paulo", 
+    inn_b = user_b.create_inn!(brand_name: "Bento torce pro São Paulo FC", 
                                registration_number: '18273981731', 
                                phone_number: '(11) 189237189', 
                                checkin_time: '20:00', checkout_time: '11:00',
@@ -74,6 +74,7 @@ describe 'User searches for an inn' do
     expect(page).to have_link 'Bento torce pro São Paulo', href: inn_path(inn_b)
     expect(page).to have_link 'Canto do Celso', href: inn_path(inn_c)
     expect(page).not_to have_link 'Divino do Diego', href: inn_path(inn_d)
+    expect(page).to have_content "Bento torce pro São Paulo FC\nCanto do Celso\nPousada do André"
   end
 
   it 'but has zero returns' do

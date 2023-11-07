@@ -7,7 +7,7 @@
   </p>
   <div id="search-results">
     <% @inns.order(:brand_name).each do |inn| %>
-      <%= link_to inn.brand_name, inn, class: 'clean-link' %>
+      <h3 class="section-title"><%= link_to inn.brand_name, inn, class: 'clean-link' %></h3>
     <% end %>
   </div>
 <% else %>

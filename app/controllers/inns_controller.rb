@@ -65,13 +65,14 @@ class InnsController < ApplicationController
   end
 
   def city_list
-    @inns = Inn.active.joins(:address).where('city LIKE ?', params[:city]).order(:brand_name)
+    @inns = Inn.active.joins(:address)
+               .where('city LIKE ?', params[:city]).order(:brand_name)
   end
 
   def search
     @query = params[:query]
-    sql = 'city LIKE ? OR neighborhood LIKE ? OR brand_name LIKE ?'
-    @inns = Inn.active.joins(:address).where(sql, "%#{@query}%", "%#{@query}%", "%#{@query}%")
+    sql = 'city LIKE :query OR neighborhood LIKE :query OR brand_name LIKE :query'
+    @inns = Inn.active.joins(:address).where(sql, query: "%#{@query}%")
   end
 
   private
