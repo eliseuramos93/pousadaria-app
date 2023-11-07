@@ -3,7 +3,7 @@ pt-BR:
     models:
       inn:
         one: Pousada
-        others: Pousadas
+        other: Pousadas
     attributes:
       inn:
         brand_name: Nome fantasia

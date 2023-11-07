@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     post 'inactive', on: :member
     post 'active', on: :member
     get 'city_list', on: :collection
+    get 'search', on: :collection
 
     resources :rooms, only: [:create, :show, :edit, :update, :index] do
       resources :seasonal_rates, only: [:index, :new, :create, :edit, :update]

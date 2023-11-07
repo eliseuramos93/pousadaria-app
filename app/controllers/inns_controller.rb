@@ -1,9 +1,13 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :city_list]
-  before_action :force_inn_creation_for_hosts, except: [:new, :create, :city_list]
-  before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list]
-  before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list]
-  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, :city_list]
+  before_action :authenticate_user!, except: [:show, :city_list, :search]
+  before_action :force_inn_creation_for_hosts, except: [:new, :create, 
+                                                        :city_list, :search]
+  before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list, 
+                                            :search]
+  before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list, 
+                                              :search]
+  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, 
+                                                :city_list, :search]
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   def new
@@ -62,6 +66,12 @@ class InnsController < ApplicationController
 
   def city_list
     @inns = Inn.active.joins(:address).where('city LIKE ?', params[:city]).order(:brand_name)
+  end
+
+  def search
+    @query = params[:query]
+    sql = 'city LIKE ? OR neighborhood LIKE ? OR brand_name LIKE ?'
+    @inns = Inn.active.joins(:address).where(sql, "%#{@query}%", "%#{@query}%", "%#{@query}%")
   end
 
   private

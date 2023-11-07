@@ -1,0 +1,15 @@
+<h2 id="section-title">Resultados de pesquisa por <%= @query %></h2>
+
+<% if @inns.any? %>
+  <p>
+    <%= @inns.count %>
+    <%= (Inn.model_name.human count: @inns.count).downcase %>
+  </p>
+  <div id="search-results">
+    <% @inns.order(:brand_name).each do |inn| %>
+      <%= link_to inn.brand_name, inn, class: 'clean-link' %>
+    <% end %>
+  </div>
+<% else %>
+  <p>Não foram encontrados resultados para <%= @query %>.</p>
+<% end %>
