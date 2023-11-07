@@ -1,9 +1,9 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :force_inn_creation_for_hosts, except: [:new, :create]
-  before_action :ensure_inn_exists, except: [:new, :create, :my_inn]
-  before_action :ensure_user_is_host, except: [:show, :my_inn]
-  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show]
+  before_action :authenticate_user!, except: [:show, :city_list]
+  before_action :force_inn_creation_for_hosts, except: [:new, :create, :city_list]
+  before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list]
+  before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list]
+  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, :city_list]
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   def new
@@ -58,6 +58,10 @@ class InnsController < ApplicationController
   def active
     @inn.active!
     redirect_to @inn
+  end
+
+  def city_list
+    @inns = Inn.active.joins(:address).where('city LIKE ?', params[:city]).order(:brand_name)
   end
 
   private

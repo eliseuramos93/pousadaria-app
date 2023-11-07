@@ -242,3 +242,10 @@ dd {
   flex-direction: column;
   gap: 0;
 }
+
+#home-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 10rem;
+}

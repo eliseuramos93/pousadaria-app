@@ -1,28 +1,7 @@
 require 'rails_helper'
 
-describe 'User visits homepage' do
-  it 'and sees the name of the application' do
-    # arrange
-
-    # act
-    visit root_path
-
-    # assert
-    expect(page).to have_content 'Pousadaria'
-  end
-
-  it 'and sees a link to create a new inn owner account' do
-    # arrange
-
-    # act
-    visit root_path
-
-    # assert
-    expect(page).to have_link 'Seja um Pousadeiro', 
-                               href: new_user_registration_path
-  end
-
-  it 'and sees a list of links for the three most recent active inns' do
+describe 'User uses the Cities menu' do
+  it 'from the home page' do
     # arrange
     user_a = User.create!(email: 'andre@gmail.com', password: 'password', 
                       role: 'host')
@@ -41,7 +20,7 @@ describe 'User visits homepage' do
                               checkin_time: '19:00', checkout_time: '12:00',
                               address_attributes: {
                                 street_name: 'Av. Angelica', number: '1',
-                                neighborhood: 'Bairro A', city: 'São Paulo',
+                                neighborhood: 'Bairro A', city: 'Americana',
                                 state: 'SP', zip_code: '01000-000' },
                               status: 'active')
     inn_b = user_b.create_inn!(brand_name: "BNB do Bento", 
@@ -50,7 +29,7 @@ describe 'User visits homepage' do
                                checkin_time: '20:00', checkout_time: '11:00',
                                address_attributes: {
                                   street_name: 'R. Birigui', number: '12',
-                                  neighborhood: 'Bairro B', city: 'São Paulo',
+                                  neighborhood: 'Bairro B', city: 'Barueri',
                                   state: 'SP', zip_code: '02000-000' },
                                status: 'active')
     inn_c = user_c.create_inn!(brand_name: "Canto do Celso", 
@@ -59,7 +38,7 @@ describe 'User visits homepage' do
                                checkin_time: '20:00', checkout_time: '11:00',
                                address_attributes: {
                                   street_name: 'R. Cubatão', number: '33',
-                                  neighborhood: 'Bairro C', city: 'São Paulo',
+                                  neighborhood: 'Bairro C', city: 'Campinas',
                                   state: 'SP', zip_code: '03000-000' },
                                status: 'active')
     inn_d = user_d.create_inn!(brand_name: "Divino do Diego", 
@@ -68,7 +47,7 @@ describe 'User visits homepage' do
                                 checkin_time: '18:00', checkout_time: '10:00',
                                 address_attributes: {
                                    street_name: 'R. Dourados', number: '45',
-                                   neighborhood: 'Bairro D', city: 'Peruibe',
+                                   neighborhood: 'Bairro D', city: 'Diadema',
                                    state: 'SP', zip_code: '04000-000' },
                                 status: 'active')
     inn_e = user_e.create_inn!(brand_name: "Estadia da Elisa", 
@@ -77,7 +56,7 @@ describe 'User visits homepage' do
                                   checkin_time: '21:00', checkout_time: '13:00',
                                   address_attributes: {
                                      street_name: 'Av. Eliseu de Almeida', number: '500',
-                                     neighborhood: 'Bairro E', city: 'Bragança Paulista',
+                                     neighborhood: 'Bairro E', city: 'Embu das Artes',
                                      state: 'SP', zip_code: '04500-000' },
                                   status: 'active')
 
@@ -85,19 +64,16 @@ describe 'User visits homepage' do
     visit root_path
 
     # assert
-    within "#recent-inns" do
-      expect(page).not_to have_link 'Pousada do André', href: inn_path(inn_a.id)
-      expect(page).not_to have_link 'BNB do Bento', href: inn_path(inn_b.id)
-      expect(page).to have_link 'Canto do Celso', href: inn_path(inn_c.id)
-      expect(page).to have_content 'São Paulo'
-      expect(page).to have_link 'Divino do Diego', href: inn_path(inn_d.id)
-      expect(page).to have_content 'Peruibe'
-      expect(page).to have_link 'Estadia da Elisa', href: inn_path(inn_e.id)
-      expect(page).to have_content 'Bragança Paulista'
+    within '#city-links' do
+      expect(page).to have_link 'Americana'
+      expect(page).to have_link 'Barueri'
+      expect(page).to have_link 'Campinas'
+      expect(page).to have_link 'Diadema'
+      expect(page).to have_link 'Embu das Artes'
     end
   end
 
-  it 'and sees the remaining inns in a separated list' do
+  it 'and sees a list of inns of the respective city' do
     # arrange
     user_a = User.create!(email: 'andre@gmail.com', password: 'password', 
                       role: 'host')
@@ -116,7 +92,7 @@ describe 'User visits homepage' do
                               checkin_time: '19:00', checkout_time: '12:00',
                               address_attributes: {
                                 street_name: 'Av. Angelica', number: '1',
-                                neighborhood: 'Bairro A', city: 'São Paulo',
+                                neighborhood: 'Bairro A', city: 'Americana',
                                 state: 'SP', zip_code: '01000-000' },
                               status: 'active')
     inn_b = user_b.create_inn!(brand_name: "BNB do Bento", 
@@ -125,7 +101,7 @@ describe 'User visits homepage' do
                                checkin_time: '20:00', checkout_time: '11:00',
                                address_attributes: {
                                   street_name: 'R. Birigui', number: '12',
-                                  neighborhood: 'Bairro B', city: 'São Paulo',
+                                  neighborhood: 'Bairro B', city: 'Americana',
                                   state: 'SP', zip_code: '02000-000' },
                                status: 'active')
     inn_c = user_c.create_inn!(brand_name: "Canto do Celso", 
@@ -134,7 +110,7 @@ describe 'User visits homepage' do
                                checkin_time: '20:00', checkout_time: '11:00',
                                address_attributes: {
                                   street_name: 'R. Cubatão', number: '33',
-                                  neighborhood: 'Bairro C', city: 'São Paulo',
+                                  neighborhood: 'Bairro C', city: 'Barueri',
                                   state: 'SP', zip_code: '03000-000' },
                                status: 'active')
     inn_d = user_d.create_inn!(brand_name: "Divino do Diego", 
@@ -143,7 +119,7 @@ describe 'User visits homepage' do
                                 checkin_time: '18:00', checkout_time: '10:00',
                                 address_attributes: {
                                    street_name: 'R. Dourados', number: '45',
-                                   neighborhood: 'Bairro D', city: 'São Paulo',
+                                   neighborhood: 'Bairro D', city: 'Americana',
                                    state: 'SP', zip_code: '04000-000' },
                                 status: 'active')
     inn_e = user_e.create_inn!(brand_name: "Estadia da Elisa", 
@@ -152,20 +128,22 @@ describe 'User visits homepage' do
                                   checkin_time: '21:00', checkout_time: '13:00',
                                   address_attributes: {
                                      street_name: 'Av. Eliseu de Almeida', number: '500',
-                                     neighborhood: 'Bairro E', city: 'São Paulo',
+                                     neighborhood: 'Bairro E', city: 'Barueri',
                                      state: 'SP', zip_code: '04500-000' },
                                   status: 'active')
 
     # act
     visit root_path
+    within '#city-links' do
+      click_on 'Americana'
+    end
 
     # assert
-    within "#remaining-inns" do
-      expect(page).to have_link 'Pousada do André', href: inn_path(inn_a.id)
-      expect(page).to have_link 'BNB do Bento', href: inn_path(inn_b.id)
-      expect(page).not_to have_link 'Canto do Celso', href: inn_path(inn_c.id)
-      expect(page).not_to have_link 'Divino do Diego', href: inn_path(inn_d.id)
-      expect(page).not_to have_link 'Estadia da Elisa', href: inn_path(inn_e.id)
-    end
+    expect(page).to have_link 'Pousada do André', href: inn_path(inn_a)
+    expect(page).to have_link 'BNB do Bento', href: inn_path(inn_b)
+    expect(page).not_to have_link 'Canto do Celso', href: inn_path(inn_c)
+    expect(page).to have_link 'Divino do Diego', href: inn_path(inn_d)
+    expect(page).not_to have_link 'Estadia da Elisa', href: inn_path(inn_e)
   end
+
 end

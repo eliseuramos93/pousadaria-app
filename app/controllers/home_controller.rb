@@ -4,5 +4,6 @@ class HomeController < ApplicationController
   def index 
     @recent_inns = Inn.active.last(3)
     @inns = Inn.active.to_a.difference(@recent_inns)
+    @locations = Address.select(:city).distinct
   end
 end

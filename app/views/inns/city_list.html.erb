@@ -1,0 +1,3 @@
+<% @inns.each do |inn| %>
+  <%= link_to inn.brand_name, inn_path(inn), class: 'clean-link' %> <br>
+<% end %>
