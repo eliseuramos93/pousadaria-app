@@ -250,3 +250,8 @@ dd {
   gap: 10rem;
 }
 
+#city-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

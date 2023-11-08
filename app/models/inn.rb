@@ -12,7 +12,5 @@ class Inn < ApplicationRecord
   enum :status, { active: 2, inactive: 0 }
   
   validates :brand_name, :registration_number, :phone_number, :checkin_time,
-            :checkout_time, presence: true
-
-  
+            :checkout_time, presence: true  
 end

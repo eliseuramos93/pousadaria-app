@@ -1,5 +1,6 @@
 <div id="home-content">
   <div id="city-links">
+    <h3 class="section-title">Cidades disponíveis</h3>
     <% @locations.each do |location| %>
       <%= link_to location.city, city_list_inns_path(city: "#{location.city}"), class: 'clean-link' %>
     <% end %>

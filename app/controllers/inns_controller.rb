@@ -98,7 +98,7 @@ class InnsController < ApplicationController
   def ensure_inn_exists
     @inn = Inn.find_by(id: params[:id])
 
-    if @inn.nil?
+    unless @inn.present?
       redirect_to root_path, alert: 'Essa página não existe'
     end
   end
