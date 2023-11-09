@@ -95,6 +95,13 @@ nav {
   padding: 0.5rem 1rem;
 }
 
+#nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .nav-button {
   color: #000;
   padding: 0.4rem;
@@ -138,7 +145,7 @@ header > a {
 #views-area {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: space-evenly;
   justify-content: center;
 }
 
@@ -246,12 +253,35 @@ dd {
 #home-content {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
   gap: 10rem;
 }
 
 #city-links {
+  justify-self: flex-start;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+#home-body {
+  justify-self: center;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#inn-show-view,
+#inn-search-view,
+#inn-cities-view,
+#room-show-view,
+#room-index-view,
+#form-page-view,
+#rates-index-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

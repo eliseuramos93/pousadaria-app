@@ -1,86 +1,88 @@
-<h2 class="inn-name"><%= "Pousada #{@inn.brand_name}" %></h1>
+<div id="inn-show-view">
+  <h2 class="inn-name"><%= "Pousada #{@inn.brand_name}" %></h1>
 
-<% if user_signed_in? && @inn.user == current_user %>
-  <section class="owner-options">
-    <h3 class="section-title">Área do Proprietário</h3>
-    <div id="inn-status">
-      <% if @inn.active? %>
-        <p class="status-active">Pousada Disponível</p> 
-      <% else %>
-        <p class="status-inactive">Pousada Indisponível</p>
-        
-      <% end %>
-    </div>
+  <% if user_signed_in? && @inn.user == current_user %>
+    <section class="owner-options">
+      <h3 class="section-title">Área do Proprietário</h3>
+      <div id="inn-status">
+        <% if @inn.active? %>
+          <p class="status-active">Pousada Disponível</p> 
+        <% else %>
+          <p class="status-inactive">Pousada Indisponível</p>
+          
+        <% end %>
+      </div>
 
-    <div class="owner-buttons">
-      <% if @inn.active? %>
-        <%= button_to 'Marcar como Indisponível', inactive_inn_path(@inn), class: 'btn-to page-btn' %>
-      <% else %>
-        <%= button_to 'Marcar como Disponível', active_inn_path(@inn), class: 'btn-to page-btn' %>
-      <% end %>
-      <%= link_to 'Editar Pousada', edit_inn_path(@inn.id), class: 'page-btn' %> <br>
-      <%= link_to 'Adicionar Quarto', create_new_room_path, class: 'page-btn' %> <br>
-      <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %>
-    </div>
-  </section>
-<% end %>
+      <div class="owner-buttons">
+        <% if @inn.active? %>
+          <%= button_to 'Marcar como Indisponível', inactive_inn_path(@inn), class: 'btn-to page-btn' %>
+        <% else %>
+          <%= button_to 'Marcar como Disponível', active_inn_path(@inn), class: 'btn-to page-btn' %>
+        <% end %>
+        <%= link_to 'Editar Pousada', edit_inn_path(@inn.id), class: 'page-btn' %> <br>
+        <%= link_to 'Adicionar Quarto', create_new_room_path, class: 'page-btn' %> <br>
+        <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %>
+      </div>
+    </section>
+  <% end %>
 
 
-<div id="inn-data">
-  <section id="inn-information">
-    <h3 class="section-title">Sobre a pousada</h3>
-    <div>
-      <%= @inn.description %>
-    </div>
-    <dl>
-      <dt>Horário de check-in:</dt>
-      <dd><%= @inn.checkin_time.to_fs(:time)%></dd>
-      <dt>Horário de check-out:</dt>
-      <dd><%= @inn.checkout_time.to_fs(:time)%></dd>
-      <dt>Telefone para contato:</dt>
-      <dd><%= @inn.phone_number %></dd>
-    </dl>
-  </section>
-
-  <section id="inn-policies">
-    <h3 class="section-title">Políticas da pousada</h3>
-    <% if @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
-      <p>Ainda não foram informadas as políticas desse local.</p>
-    <% else %>
+  <div id="inn-data">
+    <section id="inn-information">
+      <h3 class="section-title">Sobre a pousada</h3>
+      <div>
+        <%= @inn.description %>
+      </div>
       <dl>
-        <% unless @inn.pet_friendly.nil? %>
-          <dt>Animais de estimação:</dt>
-          <% if @inn.pet_friendly? %>
-            <dd>Aceita animais de estimação</dd>
-          <% else %>
-            <dd>Não aceita animais de estimação</dd>
-          <% end %>
-        <% end %>
-        <% unless @inn.policy.nil? || @inn.policy.empty? %>
-          <dt>Informações adicionais:</dt>
-          <dd><%= @inn.policy %></dd>
-        <% end %>
+        <dt>Horário de check-in:</dt>
+        <dd><%= @inn.checkin_time.to_fs(:time)%></dd>
+        <dt>Horário de check-out:</dt>
+        <dd><%= @inn.checkout_time.to_fs(:time)%></dd>
+        <dt>Telefone para contato:</dt>
+        <dd><%= @inn.phone_number %></dd>
       </dl>
-    <% end %>
+    </section>
+
+    <section id="inn-policies">
+      <h3 class="section-title">Políticas da pousada</h3>
+      <% if @inn.pet_friendly.nil? && (@inn.policy.nil? || @inn.policy.empty?) %>
+        <p>Ainda não foram informadas as políticas desse local.</p>
+      <% else %>
+        <dl>
+          <% unless @inn.pet_friendly.nil? %>
+            <dt>Animais de estimação:</dt>
+            <% if @inn.pet_friendly? %>
+              <dd>Aceita animais de estimação</dd>
+            <% else %>
+              <dd>Não aceita animais de estimação</dd>
+            <% end %>
+          <% end %>
+          <% unless @inn.policy.nil? || @inn.policy.empty? %>
+            <dt>Informações adicionais:</dt>
+            <dd><%= @inn.policy %></dd>
+          <% end %>
+        </dl>
+      <% end %>
+    </section>
+  </div>
+
+  <section id="inn-address">
+    <h3 class="section-title">Endereço</h3>
+    <div>
+      <p><%= "#{@inn.address.street_name}, #{@inn.address.number}" %></p>
+      <p><%= @inn.address.formatted_neighborhood_city_state %></p>
+      <p><%= "CEP: #{@inn.address.zip_code}" %></p>
+    </div>
+  </section>
+
+  <section id="available-rooms">
+    <h3 class="section-title">Quartos disponíveis</h2>
+      <% if @inn.rooms.active.any? %>
+        <% @inn.rooms.active.each do |room| %>
+          <h3 class='section-title'><%= link_to room.name, [@inn, room], class: 'clean-link' %></h3>
+        <% end %>
+      <% else %>
+      <p>A pousada não possui quartos disponíveis para consulta.</p>
+      <% end %>
   </section>
 </div>
-
-<section id="inn-address">
-  <h3 class="section-title">Endereço</h3>
-  <div>
-    <p><%= "#{@inn.address.street_name}, #{@inn.address.number}" %></p>
-    <p><%= @inn.address.formatted_neighborhood_city_state %></p>
-    <p><%= "CEP: #{@inn.address.zip_code}" %></p>
-  </div>
-</section>
-
-<section id="available-rooms">
-  <h3 class="section-title">Quartos disponíveis</h2>
-    <% if @inn.rooms.active.any? %>
-      <% @inn.rooms.active.each do |room| %>
-        <h3 class='section-title'><%= link_to room.name, [@inn, room], class: 'clean-link' %></h3>
-      <% end %>
-    <% else %>
-    <p>A pousada não possui quartos disponíveis para consulta.</p>
-    <% end %>
-</section>
