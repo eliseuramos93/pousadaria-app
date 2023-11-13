@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
     resources :rooms, only: [:create, :show, :edit, :update, :index] do
       resources :seasonal_rates, only: [:index, :new, :create, :edit, :update]
+      resources :reservations, shallow: true, except: [:destroy] do
+        get 'confirm', on: :member
+      end
     end
   end
   

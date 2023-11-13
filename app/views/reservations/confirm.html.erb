@@ -1,0 +1,14 @@
+<h2 id="section-title">Dados da sua Pré-Reserva</h2>
+
+<div id="reservation-info">
+  <dl>
+    <dt>Check-in:</dt>
+    <dd><%= I18n.localize @reservation.start_date.to_date %></dd>
+    <dt>Checkout:</dt>
+    <dd><%= I18n.localize @reservation.end_date.to_date %></dd>
+    <dt>Número de hóspedes:</dt>
+    <dd><%= @reservation.number_guests %></dd>
+    <dt>Valor total:</dt>
+    <dd><%= number_to_currency @reservation.price %></dd>
+  </dl>
+</div>

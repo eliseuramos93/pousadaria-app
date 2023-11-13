@@ -21,13 +21,13 @@ class SeasonalRate < ApplicationRecord
   private
 
   def end_date_greater_or_equal_to_start_date
-    if (start_date.present? && end_date.present?) && (end_date < start_date)
+    if (start_date && end_date) && (end_date < start_date)
       errors.add(:end_date, :end_before_start)
     end
   end
 
   def start_date_is_future
-    if start_date.present? && start_date.past?
+    if start_date && start_date.past?
       errors.add(:start_date, :start_date_on_past)
     end
   end

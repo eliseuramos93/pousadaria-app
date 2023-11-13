@@ -47,6 +47,10 @@
     </section>
   </div>
 
+  <div id="reservation-button">
+    <%= link_to 'Reservar', new_inn_room_reservation_path(@inn, @room), class: 'page-btn' %>
+  </div>
+
   <% if user_signed_in? && @inn.user == current_user %>
     <section id="room-seasonal-prices">
       <h3 class="section-title">Preços Diferenciados para <%= @room.name %></h3>

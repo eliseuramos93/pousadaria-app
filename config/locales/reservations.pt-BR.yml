@@ -1,0 +1,18 @@
+pt-BR:
+  activerecord:
+    models:
+      reservation:
+        one: Reserva
+        other: Reservas
+    attributes:
+      reservation:
+        start_date: Data de check-in
+        end_date: Data de checkout
+        number_guests: Número de hóspedes
+  errors: 
+    messages: 
+      guests_over_capacity: não pode ser maior que a capacidade do quarto
+      conflict_with_another_reservation: O quarto já está reservado neste período
+      invalid_past_date: não pode ser no passado
+      invalid_start_date_future: não pode ser depois do checkout
+    

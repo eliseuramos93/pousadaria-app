@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
          
   has_one :inn
+  has_many :reservations
 
   enum role: {regular: 0, host: 3, admin: 9}
 end
