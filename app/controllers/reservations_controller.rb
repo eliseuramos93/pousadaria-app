@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, only: [:confirm, :cancel] 
-  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel]
+  before_action :authenticate_user!, only: [:confirm, :cancel, :show] 
+  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel, :show]
   before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
   before_action :ensure_user_is_regular, only: [:confirm, :cancel]
 
@@ -17,6 +17,10 @@ class ReservationsController < ApplicationController
       flash.now[:notice] = 'Não foi possível seguir com sua reserva'
       render 'new'
     end
+  end
+
+  def show
+    @reservation = Reservation.find(params[:id])
   end
 
   def validate
