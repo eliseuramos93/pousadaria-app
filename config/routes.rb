@@ -19,6 +19,8 @@ Rails.application.routes.draw do
         get 'validate', on: :member
         post 'confirm', on: :member
         post 'cancel', on: :member
+        
+        resources :checkins, shallow: true, only: [:new]
       end
     end
   end

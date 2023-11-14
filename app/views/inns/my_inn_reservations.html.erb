@@ -4,7 +4,7 @@
 <div id="active-reservations">
   <h2 class="section-title">Estadias Ativas</h2>
   <% @reservations.active.each do |reservation| %>
-    <h3 class="section-title"><%= "Reserva #{reservation.code}" %></h3>
+    <h3 class="section-title"><%= link_to "Reserva #{reservation.code}", reservation_path(reservation), class: 'clean-link' %></h3>
     <p><%= "Quarto #{reservation.room.name}" %></p>
     <p><%= "Check-in: #{I18n.l(reservation.start_date.to_date)} - #{@inn.checkin_time.to_fs(:time)}" %></p>
     <p><%= "Check-out: #{I18n.l(reservation.end_date.to_date)} - #{@inn.checkout_time.to_fs(:time)}" %></p>
@@ -15,7 +15,7 @@
 
 <div id="general-reservations">
   <% @reservations.where.not(status: 'active').each do |reservation| %>
-    <h3 class="section-title"><%= "Reserva #{reservation.code}" %></h3>
+    <h3 class="section-title"><%= link_to "Reserva #{reservation.code}", reservation_path(reservation), class: 'clean-link' %></h3>
     <p><%= "Quarto #{reservation.room.name}" %></p>
     <p><%= "Check-in: #{I18n.l(reservation.start_date.to_date)} - #{@inn.checkin_time.to_fs(:time)}" %></p>
     <p><%= "Check-out: #{I18n.l(reservation.end_date.to_date)} - #{@inn.checkout_time.to_fs(:time)}" %></p>

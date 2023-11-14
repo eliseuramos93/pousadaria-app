@@ -1,0 +1,12 @@
+<h1 class="section-title"><%= "Reserva #{@reservation.code}" %></h1>
+
+<p><%= "Quarto #{@reservation.room.name}" %></p>
+<p><%= "Check-in: #{I18n.l(@reservation.start_date.to_date)} - #{@inn.checkin_time.to_fs(:time)}" %></p>
+<p><%= "Check-out: #{I18n.l(@reservation.end_date.to_date)} - #{@inn.checkout_time.to_fs(:time)}" %></p>
+<p><%= "Hóspedes: #{@reservation.number_guests}" %></p>
+<p><%= "Status: #{I18n.t("status.#{@reservation.status}")}" %></p>
+<p><%= "Valor: #{number_to_currency(@reservation.price)} "%></p>
+
+<% if user_signed_in? && @inn.user == current_user %>
+  <%= link_to 'Registrar Check-in', new_reservation_checkin_path(@reservation), class: 'page-btn' %>
+<% end %>
