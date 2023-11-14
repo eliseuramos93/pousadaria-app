@@ -28,6 +28,14 @@ class Reservation < ApplicationRecord
     end
   end
 
+  def early_for_checkin
+    if (self.start_date - Date.today) > 0
+      true
+    else
+      false
+    end
+  end
+
   private
 
   def generate_code
