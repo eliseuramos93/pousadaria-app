@@ -3,11 +3,11 @@ class InnsController < ApplicationController
   before_action :force_inn_creation_for_hosts, except: [:new, :create, 
                                                         :city_list, :search]
   before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list, 
-                                            :search]
+                                            :search, :my_inn_reservations]
   before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list, 
                                               :search]
   before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, 
-                                                :city_list, :search]
+                                                :city_list, :search, :my_inn_reservations]
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   def new
@@ -52,6 +52,11 @@ class InnsController < ApplicationController
   def my_inn
     @inn = current_user.inn
     render 'show'
+  end
+
+  def my_inn_reservations
+    @inn = current_user.inn
+    @reservations = @inn.reservations
   end
   
   def inactive

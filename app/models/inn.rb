@@ -9,6 +9,8 @@ class Inn < ApplicationRecord
 
   has_many :rooms
 
+  has_many :reservations, through: :rooms
+
   enum :status, { active: 2, inactive: 0 }
   
   validates :brand_name, :registration_number, :phone_number, :checkin_time,

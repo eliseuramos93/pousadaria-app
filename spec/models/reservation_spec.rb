@@ -167,7 +167,7 @@ RSpec.describe Reservation, type: :model do
           .to include 'O quarto já está reservado neste período'
       end
 
-      it 'if the conflicting reservation is not pending or canceled' do
+      it 'if the conflicting reservation is not canceled' do
         # arrange
         user = User.create!(email: 'test@gmail.com', password: 'password', 
                             role: :regular)
@@ -181,10 +181,6 @@ RSpec.describe Reservation, type: :model do
         room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
                                 max_capacity: 2, rent_price: 50, status: :active)
 
-        room.reservations.create!(start_date: 10.days.from_now,
-                                                end_date: 15.days.from_now,
-                                                number_guests: '2',
-                                                status: 'pending')
         room.reservations.create!(start_date: 8.days.from_now,
                                                 end_date: 13.days.from_now,
                                                 number_guests: '2',

@@ -1,7 +1,8 @@
 class Reservation < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :room
-  
+  has_one :inn, through: :room
+
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
 
   before_validation :generate_code, on: :create
@@ -56,7 +57,7 @@ class Reservation < ApplicationRecord
     return false if self.room.blank?
 
     selected_period = (self.start_date..self.end_date)
-    other_reservations = self.room.reservations.where.not(status: ['pending', 'canceled'])
+    other_reservations = self.room.reservations.where.not(status: 'canceled')
 
     other_reservations.any? do |reservation|
       unless self.id == reservation.id
@@ -67,12 +68,16 @@ class Reservation < ApplicationRecord
   end
 
   def start_date_is_future
+    return if self.status == 'finished'
+
     if start_date && start_date.past?
       errors.add(:start_date, :invalid_past_date)
     end
   end
 
   def end_date_is_future
+    return if self.status == 'finished'
+
     if end_date && end_date.past?
       errors.add(:end_date, :invalid_past_date)
     end
