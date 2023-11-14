@@ -1,8 +1,18 @@
 class CheckinsController < ApplicationController
   before_action :authenticate_user!
-  before_action :available_for_checkin, only: [:new]
+  before_action :available_for_checkin
 
   def new
+    @checkin = @reservation.build_checkin
+  end
+
+  def create
+    @checkin = @reservation.build_checkin
+
+    if @checkin.save
+      @reservation.active!
+      redirect_to my_inn_reservations_path, notice: 'Check-in registrado com sucesso!'
+    end
   end
 
   private

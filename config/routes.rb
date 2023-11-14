@@ -20,7 +20,7 @@ Rails.application.routes.draw do
         post 'confirm', on: :member
         post 'cancel', on: :member
         
-        resources :checkins, shallow: true, only: [:new]
+        resources :checkins, shallow: true, only: [:new, :create]
       end
     end
   end

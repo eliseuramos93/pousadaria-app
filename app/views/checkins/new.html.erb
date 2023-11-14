@@ -1,0 +1,7 @@
+<h1 class="section-title">Registrar Check-in - <%= @reservation.code %></h1>
+
+<p>Clique no botão abaixo para registrar o check-in dessa reserva</p>
+
+<%= form_with model: [@reservation, @checkin] do |f| %>
+  <%= f.submit "Confirmar Check-in", class: 'page-btn' %>
+<% end %>
