@@ -17,7 +17,7 @@ class Reservation < ApplicationRecord
   validate :start_date_after_end_date
   validate :no_conflict_with_another_reservation
 
-  def cancel_request_with_seven_or_more_days_ahead?
+  def guest_cancel_request_with_seven_or_more_days_ahead?
     return false if self.status == 'active'
     return false if self.status == 'finished'
     return false if self.status == 'canceled'
@@ -29,12 +29,13 @@ class Reservation < ApplicationRecord
     end
   end
 
-  def early_for_checkin
-    if (self.start_date - Date.today) > 0
-      true
-    else
-      false
-    end
+  def checkin_within_business_rules
+    return false if (self.start_date - Date.today) > 0
+    return false if self.status == 'active'
+    return false if self.status == 'canceled'
+    return false if self.status == 'finished'
+
+    true
   end
 
   private

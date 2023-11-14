@@ -34,7 +34,7 @@ class ReservationsController < ApplicationController
   end
 
   def cancel
-    if @reservation.cancel_request_with_seven_or_more_days_ahead?
+    if @reservation.guest_cancel_request_with_seven_or_more_days_ahead?
       @reservation.canceled!
       redirect_to my_reservations_path, notice: 'Sua reserva foi cancelada com sucesso!'
     else
