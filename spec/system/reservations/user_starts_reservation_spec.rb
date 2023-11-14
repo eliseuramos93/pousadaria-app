@@ -38,7 +38,9 @@ describe 'User starts to reserve a room' do
     start_date = I18n.localize 7.days.from_now.to_date
     end_date = I18n.localize 13.days.from_now.to_date
     expect(page).to have_content "Check-in: #{start_date}"
+    expect(page).to have_content "18:00"
     expect(page).to have_content "Checkout: #{end_date}"
+    expect(page).to have_content "11:00"
     expect(page).to have_content 'Número de hóspedes: 3'
     expect(page).to have_content "Valor total: R$ 500,00" 
   end

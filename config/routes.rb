@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations' }
+
+  devise_scope :user do 
+    get 'new_regular_user', to: 'registrations#new_regular'
+  end
+
   root to: 'home#index'
 
   resources :inns, only: [:new, :create, :show, :edit, :update] do
@@ -11,7 +16,8 @@ Rails.application.routes.draw do
     resources :rooms, only: [:create, :show, :edit, :update, :index] do
       resources :seasonal_rates, only: [:index, :new, :create, :edit, :update]
       resources :reservations, shallow: true, except: [:destroy] do
-        get 'confirm', on: :member
+        get 'validate', on: :member
+        post 'confirm', on: :member
       end
     end
   end

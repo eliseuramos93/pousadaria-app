@@ -1,0 +1,32 @@
+<h2 id="section-title">Dados da sua Pré-Reserva</h2>
+
+<div id="reservation-info">
+  <dl>
+    <dt>Check-in:</dt>
+    <dd><%= "#{I18n.localize @reservation.start_date.to_date} - #{@inn.checkin_time.to_fs(:time)}" %></dd>
+    <dt>Checkout:</dt>
+    <dd><%= "#{I18n.localize @reservation.end_date.to_date} - #{@inn.checkout_time.to_fs(:time)}" %></dd>
+    <dd><%=  %></dd>
+    <dt>Número de hóspedes:</dt>
+    <dd><%= @reservation.number_guests %></dd>
+    <dt>Valor total:</dt>
+    <dd><%= number_to_currency @reservation.price %></dd>
+  </dl>
+</div>
+
+<div id="inn-payment-methods">
+  <dl>
+    <dt>Métodos de pagamento:</dt>
+    <% if @inn.payment_method %>
+      <dd><%= I18n.t "payment_methods.bank_transfer.#{@inn.payment_method.bank_transfer?}" %></dd>
+      <dd><%= I18n.t "payment_methods.credit_card.#{@inn.payment_method.credit_card?}" %></dd>
+      <dd><%= I18n.t "payment_methods.debit_card.#{@inn.payment_method.debit_card?}" %></dd>
+      <dd><%= I18n.t "payment_methods.cash.#{@inn.payment_method.cash?}" %></dd>
+      <dd><%= I18n.t "payment_methods.deposit.#{@inn.payment_method.deposit?}" %></dd>
+    <% end %>
+  </dl>
+</div>
+
+<div id="confirm-reservation-div">
+  <%= button_to 'Confirmar Reserva', confirm_reservation_path(@reservation), method: :post, class: 'page-btn' %>
+</div>

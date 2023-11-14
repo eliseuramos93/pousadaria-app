@@ -1,6 +1,8 @@
 class Reservation < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :room
+  has_one :inn, through: :room
+  
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
   
   validates :start_date, :end_date, :number_guests, presence: true

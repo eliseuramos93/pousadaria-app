@@ -1,5 +1,6 @@
 class ReservationsController < ApplicationController
-  before_action :set_inn_and_room, except: [:confirm]
+  before_action :authenticate_user!, only: [:confirm]
+  before_action :set_inn_and_room, except: [:validate]
 
   def new
     @reservation = @room.reservations.build
@@ -12,15 +13,21 @@ class ReservationsController < ApplicationController
     @reservation.price = @room.calculate_total_price(start, finish)
 
     if @reservation.save
-      redirect_to confirm_reservation_path(@reservation)
+      redirect_to validate_reservation_path(@reservation)
     else
       flash.now[:notice] = 'Não foi possível seguir com sua reserva'
       render 'new'
     end
   end
 
+  def validate
+    @reservation = Reservation.find(params[:id])
+    @inn = @reservation.inn
+  end
+
   def confirm
     @reservation = Reservation.find(params[:id])
+    @reservation.confirmed!
   end
 
   private

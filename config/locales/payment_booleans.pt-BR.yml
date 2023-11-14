@@ -1,0 +1,17 @@
+pt-BR:
+  payment_methods:
+    bank_transfer:
+      true: Aceita PIX
+      false: Não aceita PIX
+    credit_card:
+      true: Aceita cartão de crédito
+      false: Não aceita cartão de crédito
+    debit_card:
+      true: Aceita cartão de débito
+      false: Não aceita cartão de débito
+    cash:
+      true: Aceita dinheiro
+      false: Não aceita dinheiro
+    deposit:
+      true: Aceita depósito bancário
+      false: Não aceita depósito bancário
