@@ -1,0 +1,10 @@
+<h2 class="section-title">Minhas Reservas</h2>
+
+<% @reservations.each do |reservation| %>
+  <h3 class="section-title"><%= reservation.inn.brand_name %></h3>
+  <p><%= "Quarto #{reservation.room.name}" %></p>
+  <p><%= "Check-in: #{I18n.l(reservation.start_date)} - #{reservation.inn.checkin_time.to_fs(:time)}" %></p>
+  <p><%= "Check-out: #{I18n.l(reservation.end_date)} - #{reservation.inn.checkout_time.to_fs(:time)}" %></p>
+  <p><%= "Valor: #{number_to_currency reservation.price}" %></p>
+  <p><%= "Código da reserva: #{reservation.code}" %></p>
+<% end %>

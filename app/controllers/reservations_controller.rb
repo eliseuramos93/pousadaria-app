@@ -27,7 +27,10 @@ class ReservationsController < ApplicationController
 
   def confirm
     @reservation = Reservation.find(params[:id])
+    @reservation.user = current_user
     @reservation.confirmed!
+    @reservation.save
+    redirect_to my_reservations_path, notice: 'Sua reserva foi criada com sucesso!'
   end
 
   private

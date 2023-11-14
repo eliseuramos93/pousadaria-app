@@ -24,4 +24,5 @@ Rails.application.routes.draw do
   
   get 'my_inn', to: 'inns#my_inn'
   get 'create_new_room', to: 'rooms#create_new_room'
+  get 'my_reservations', to: 'users#my_reservations'
 end

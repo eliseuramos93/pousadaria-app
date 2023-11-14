@@ -35,7 +35,7 @@ describe 'User visits the inn creation page' do
     fill_in 'E-mail', with: 'teste@gmail.com'
     fill_in 'Senha', with: 'senhaforte1234!'
     fill_in 'Confirme sua senha', with: 'senhaforte1234!'
-    choose 'Sim'
+    choose 'Anunciar Pousada'
 
     click_on 'Criar Conta'
 

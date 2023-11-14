@@ -4,8 +4,11 @@ class Reservation < ApplicationRecord
   has_one :inn, through: :room
   
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
+
+  before_validation :generate_code, on: :create
   
   validates :start_date, :end_date, :number_guests, presence: true
+  validates :code, uniqueness: true
   validate :respect_room_max_capacity
   validate :start_date_is_future
   validate :end_date_is_future
@@ -26,6 +29,10 @@ class Reservation < ApplicationRecord
   end
 
   private
+
+  def generate_code
+    self.code = SecureRandom.alphanumeric(8).upcase
+  end
 
   def respect_room_max_capacity
     if number_guests && number_guests > self.room.max_capacity
