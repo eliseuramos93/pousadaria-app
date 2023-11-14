@@ -242,7 +242,7 @@ describe 'Host edits a seasonal rate for a room' do
   # had to turn off a few validations to run this test. it passed, so i left it 
   # as xit to avoid to have always a test failing but also have the register
   # of the tested situation.
-  xit 'but fails due to the fact that the seasonal rate has already started' do
+  it 'but fails due to the fact that the seasonal rate has already started' do
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 
                         role: :host)
@@ -258,9 +258,10 @@ describe 'Host edits a seasonal rate for a room' do
     room = inn.rooms.create!(name: 'Quarto de Aluguel', description: 'Nice', area: 10,
                              max_capacity: 2, rent_price: 50, status: :active)
 
-    rate = room.seasonal_rates.create!(start_date: 1.day.ago,
+    rate = room.seasonal_rates.build(start_date: 1.day.ago,
                                        end_date: 2.days.from_now,
                                        price: '69.99')
+    rate.save(validate: false)
 
     # act
     login_as user

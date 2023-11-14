@@ -11,11 +11,11 @@ class Reservation < ApplicationRecord
   
   validates :start_date, :end_date, :number_guests, presence: true
   validates :code, uniqueness: true
-  validate :respect_room_max_capacity
-  validate :start_date_is_future
-  validate :end_date_is_future
-  validate :start_date_after_end_date
-  validate :no_conflict_with_another_reservation
+  validate :respect_room_max_capacity, on: :create
+  validate :start_date_is_future, on: :create
+  validate :end_date_is_future, on: :create
+  validate :start_date_after_end_date, on: :create
+  validate :no_conflict_with_another_reservation, on: :create
 
   def guest_cancel_request_with_seven_or_more_days_ahead?
     return false if self.status == 'active'
@@ -38,6 +38,13 @@ class Reservation < ApplicationRecord
     true
   end
 
+  def is_expired?
+    if (Date.today - self.start_date) > 2
+      true
+    else
+      false
+    end
+  end
   private
 
   def generate_code
@@ -79,6 +86,7 @@ class Reservation < ApplicationRecord
 
   def start_date_is_future
     return if self.status == 'finished'
+    return if self.status == 'confirmed'
 
     if start_date && start_date.past?
       errors.add(:start_date, :invalid_past_date)

@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:confirm, :cancel, :show] 
-  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel, :show]
+  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel, 
+                                              :show, :host_cancel_expired]
   before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
   before_action :ensure_user_is_regular, only: [:confirm, :cancel]
 
@@ -30,15 +31,30 @@ class ReservationsController < ApplicationController
 
   def confirm
     @reservation.update(status: 'confirmed', user: current_user)
-    redirect_to my_reservations_path, notice: 'Sua reserva foi criada com sucesso!'
+    redirect_to my_reservations_path, 
+      notice: 'Sua reserva foi criada com sucesso!'
   end
 
   def cancel
     if @reservation.guest_cancel_request_with_seven_or_more_days_ahead?
       @reservation.canceled!
-      redirect_to my_reservations_path, notice: 'Sua reserva foi cancelada com sucesso!'
+      redirect_to my_reservations_path, 
+        notice: 'Sua reserva foi cancelada com sucesso!'
     else
-      redirect_to my_reservations_path, notice: 'Não é possível cancelar uma reserva a menos de 7 dias do check-in'
+      redirect_to my_reservations_path, 
+        notice: 'Não é possível cancelar uma reserva a menos de 7 dias do check-in'
+    end
+  end
+
+  def host_cancel_expired
+    @reservation = Reservation.find(params[:id])
+
+    if @reservation.is_expired?
+      @reservation.canceled!
+      redirect_to my_inn_reservations_path, 
+        notice: 'A reserva foi cancelada com sucesso!'
+    else
+      redirect_to @reservation, alert: 'Não é possível cancelar a reserva com menos de 3 dias de atraso.'
     end
   end
 
@@ -61,7 +77,8 @@ class ReservationsController < ApplicationController
 
   def ensure_user_is_regular
     unless user_signed_in? && current_user.regular?
-      redirect_to root_path, alert: 'Você não possui autorização para acessar essa página'
+      redirect_to root_path, 
+        alert: 'Você não possui autorização para acessar essa página'
     end
   end
 end
