@@ -15,4 +15,10 @@ pt-BR:
       conflict_with_another_reservation: O quarto já está reservado neste período
       invalid_past_date: não pode ser no passado
       invalid_start_date_future: não pode ser depois do checkout
+  status:
+    pending: Pendente
+    canceled: Cancelada
+    confirmed: Confirmada
+    active: Ativa
+    finished: Concluída
     

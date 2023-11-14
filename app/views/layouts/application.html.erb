@@ -30,6 +30,7 @@
           <% if current_user.host? %>
             <%= link_to 'Minha Pousada', my_inn_path, class: 'nav-button' %>
           <% end %>
+          <%= link_to 'Minhas Reservas', my_reservations_path, class: 'nav-button' %>
           <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'nav-button btn-to' %>
         <% else %>
           <%= link_to 'Seja um Pousadeiro', new_user_registration_path, class: 'nav-button' %>

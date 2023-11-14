@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, only: [:confirm]
-  before_action :set_inn_and_room, except: [:validate]
+  before_action :authenticate_user!, only: [:confirm, :cancel] 
+  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel]
+  before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
 
   def new
     @reservation = @room.reservations.build
@@ -8,9 +9,6 @@ class ReservationsController < ApplicationController
 
   def create
     @reservation = @room.reservations.build(reservation_params)
-    start = @reservation.start_date.to_date if @reservation.start_date
-    finish = @reservation.end_date.to_date if @reservation.end_date
-    @reservation.price = @room.calculate_total_price(start, finish)
 
     if @reservation.save
       redirect_to validate_reservation_path(@reservation)
@@ -21,16 +19,21 @@ class ReservationsController < ApplicationController
   end
 
   def validate
-    @reservation = Reservation.find(params[:id])
-    @inn = @reservation.inn
+    @inn = @reservation.room.inn
   end
 
   def confirm
-    @reservation = Reservation.find(params[:id])
-    @reservation.user = current_user
-    @reservation.confirmed!
-    @reservation.save
+    @reservation.update(status: 'confirmed', user: current_user)
     redirect_to my_reservations_path, notice: 'Sua reserva foi criada com sucesso!'
+  end
+
+  def cancel
+    if @reservation.cancel_request_with_seven_or_more_days_ahead?
+      @reservation.canceled!
+      redirect_to my_reservations_path, notice: 'Sua reserva foi cancelada com sucesso!'
+    else
+      redirect_to my_reservations_path, notice: 'Não é possível cancelar uma reserva a menos de 7 dias do check-in'
+    end
   end
 
   private
@@ -39,8 +42,14 @@ class ReservationsController < ApplicationController
     params.require(:reservation).permit(:start_date, :end_date, :number_guests)
   end
 
-  def set_inn_and_room
-    @inn = Inn.find_by(params[:inn_id])
-    @room = Room.find_by(params[:room_id])
+  private 
+
+  def fetch_reservation
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def fetch_inn_and_room
+    @inn = Inn.find(params[:inn_id])
+    @room = Room.find(params[:room_id])
   end
 end

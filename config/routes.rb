@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :reservations, shallow: true, except: [:destroy] do
         get 'validate', on: :member
         post 'confirm', on: :member
+        post 'cancel', on: :member
       end
     end
   end

@@ -59,7 +59,8 @@ RSpec.describe Reservation, type: :model do
 
         reservation = room.reservations.create!(start_date: 10.days.from_now,
                                                 end_date: 15.days.from_now,
-                                                number_guests: '2')
+                                                number_guests: '2',
+                                                status: 'confirmed')
 
         new_reservation = room.reservations.build(start_date: 11.days.from_now,
                                                   end_date: 21.days.from_now,
@@ -89,7 +90,8 @@ RSpec.describe Reservation, type: :model do
 
         reservation = room.reservations.create!(start_date: 10.days.from_now,
                                                 end_date: 15.days.from_now,
-                                                number_guests: '2')
+                                                number_guests: '2',
+                                                status: 'confirmed')
 
         new_reservation = room.reservations.build(start_date: 11.days.from_now,
                                                   end_date: 14.days.from_now,
@@ -119,7 +121,8 @@ RSpec.describe Reservation, type: :model do
 
         reservation = room.reservations.create!(start_date: 10.days.from_now,
                                                 end_date: 15.days.from_now,
-                                                number_guests: '2')
+                                                number_guests: '2',
+                                                status: 'confirmed')
 
         new_reservation = room.reservations.build(start_date: 9.days.from_now,
                                                   end_date: 11.days.from_now,
@@ -149,7 +152,8 @@ RSpec.describe Reservation, type: :model do
 
         reservation = room.reservations.create!(start_date: 10.days.from_now,
                                                 end_date: 15.days.from_now,
-                                                number_guests: '2')
+                                                number_guests: '2',
+                                                status: 'confirmed')
 
         new_reservation = room.reservations.build(start_date: 9.days.from_now,
                                                   end_date: 16.days.from_now,
@@ -161,6 +165,40 @@ RSpec.describe Reservation, type: :model do
         # assert
         expect(new_reservation.errors.full_messages)
           .to include 'O quarto já está reservado neste período'
+      end
+
+      it 'if the conflicting reservation is not pending or canceled' do
+        # arrange
+        user = User.create!(email: 'test@gmail.com', password: 'password', 
+                            role: :regular)
+        inn = user.create_inn!(brand_name: 'Pousada Teste', 
+                              registration_number: '58277983000198', 
+                              phone_number: '(11) 976834383', checkin_time: '18:00',
+                              checkout_time: '11:00', address_attributes: {
+                                street_name: 'Av. da Pousada', number: '10', 
+                                neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                                state: 'SP', zip_code: '05616-090'})
+        room = inn.rooms.create!(name: 'Bedroom', description: 'Nice', area: 10,
+                                max_capacity: 2, rent_price: 50, status: :active)
+
+        room.reservations.create!(start_date: 10.days.from_now,
+                                                end_date: 15.days.from_now,
+                                                number_guests: '2',
+                                                status: 'pending')
+        room.reservations.create!(start_date: 8.days.from_now,
+                                                end_date: 13.days.from_now,
+                                                number_guests: '2',
+                                                status: 'canceled')
+
+        new_reservation = room.reservations.build(start_date: 9.days.from_now,
+                                                  end_date: 16.days.from_now,
+                                                  number_guests: '1')
+        
+        # act
+        new_reservation.valid?
+
+        # assert
+        expect(new_reservation.errors.include? :base).to be false
       end
     end
 

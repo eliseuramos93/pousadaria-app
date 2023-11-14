@@ -92,17 +92,4 @@ describe 'User concludes the reservation process' do
     expect(page).to have_content 'Valor: R$ 500,00'
     expect(page).to have_content 'Código da reserva: ABC12345'
   end
-
-  # user signs up
-  # user signs in
-  # user returns to confirm_reservation_path
-    # page must display:
-      # checkin date and time
-      # checkout date and time
-      # chosen room
-      # total amount for reservation
-      # list of payment methods
-      # button to confirm reservation
-  # user clicks on the confirm reservation button
-  # reservation must have an 8 random characters unique code
 end

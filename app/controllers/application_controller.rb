@@ -16,5 +16,4 @@ class ApplicationController < ActionController::Base
       redirect_to new_inn_path, alert: 'É necessário cadastrar uma pousada para continuar.'
     end
   end
-    
 end
