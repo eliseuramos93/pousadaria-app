@@ -1,14 +1,11 @@
 class ReservationsController < ApplicationController
+  before_action :set_inn_and_room, except: [:confirm]
 
   def new
-    @room = Room.find_by(params[:room_id])
-    @inn = Inn.find_by(params[:inn_id])
     @reservation = @room.reservations.build
   end
 
   def create
-    @inn = Inn.find_by(params[:inn_id])
-    @room = Room.find_by(params[:room_id])
     @reservation = @room.reservations.build(reservation_params)
     start = @reservation.start_date.to_date if @reservation.start_date
     finish = @reservation.end_date.to_date if @reservation.end_date
@@ -30,5 +27,10 @@ class ReservationsController < ApplicationController
 
   def reservation_params
     params.require(:reservation).permit(:start_date, :end_date, :number_guests)
+  end
+
+  def set_inn_and_room
+    @inn = Inn.find_by(params[:inn_id])
+    @room = Room.find_by(params[:room_id])
   end
 end
