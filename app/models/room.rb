@@ -1,12 +1,16 @@
 class Room < ApplicationRecord
+  # relationships
   belongs_to :inn
   has_many :seasonal_rates
   has_many :reservations
 
+  # validations
+  validates :name, :description, :area, :max_capacity, :rent_price, presence: true
+  
+  # enums
   enum :status, { active: 2, inactive: 0 }
 
-  validates :name, :description, :area, :max_capacity, :rent_price, presence: true
-
+  
   def calculate_rental_price(start_date, end_date)
     return 0 if start_date.blank?
     return 0 if end_date.blank?

@@ -1,15 +1,12 @@
 class Reservation < ApplicationRecord
+  # relationships
   belongs_to :user, optional: true
   belongs_to :room
   has_one :inn, through: :room
   has_one :checkin
   has_one :checkout
 
-  enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
-
-  before_validation :generate_code, on: :create
-  before_validation :get_reservation_price, on: :create
-  
+  # validations
   validates :start_date, :end_date, :number_guests, presence: true
   validates :code, uniqueness: true
   validate :respect_room_max_capacity, on: :create
@@ -17,6 +14,14 @@ class Reservation < ApplicationRecord
   validate :end_date_is_future, on: :create
   validate :start_date_after_end_date, on: :create
   validate :no_conflict_with_another_reservation, on: :create
+
+  # enums
+  enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
+
+  # callbacks
+  before_validation :generate_code, on: :create
+  before_validation :get_reservation_price, on: :create
+
 
   def guest_cancel_request_with_seven_or_more_days_ahead?
     return false if self.status == 'active'

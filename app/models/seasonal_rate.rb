@@ -1,5 +1,8 @@
 class SeasonalRate < ApplicationRecord
+  # relationships
   belongs_to :room
+  
+  # validations
   validates :start_date, :end_date, :price, presence: true
   validate :end_date_greater_or_equal_to_start_date
   validate :start_date_is_future

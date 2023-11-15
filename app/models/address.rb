@@ -1,6 +1,8 @@
 class Address < ApplicationRecord
+  # relationships
   belongs_to :inn
   
+  # validations
   validates :street_name, :number, :neighborhood, :city, :state, :zip_code,
             presence: true
 
