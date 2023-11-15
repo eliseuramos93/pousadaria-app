@@ -56,7 +56,7 @@ class Reservation < ApplicationRecord
     return nil unless self.start_date
     return nil unless self.end_date
 
-    self.price = self.room.calculate_total_price(self.start_date, self.end_date)
+    self.price = self.room.calculate_rental_price(self.start_date, self.end_date)
   end
 
   def respect_room_max_capacity

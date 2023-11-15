@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ActiveSupport::Testing::TimeHelpers
 
 describe 'Host registers a checkout for a reservation' do
   it 'only when authenticated' do
@@ -34,6 +35,7 @@ describe 'Host registers a checkout for a reservation' do
                                             status: 'active',
                                             code: 'ABC00001')
     reservation.save(validate: false)
+    reservation.create_checkin!
 
     # act
     login_as user
@@ -50,5 +52,52 @@ describe 'Host registers a checkout for a reservation' do
     expect(page).to have_content 'Status: Concluída'
   end
 
-  pending 'and updates the price correctly'
+  it 'and updates the price correctly' do
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                          role: :host)
+
+    inn = user.create_inn!(brand_name: 'Albergue do Billy', 
+                          registration_number: '58277983000198', 
+                          phone_number: '(11) 976834383', checkin_time: '18:00',
+                          checkout_time: '11:00', address_attributes: {
+                            street_name: 'Av. da Pousada', number: '10', 
+                            neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                            state: 'SP', zip_code: '05616-090'})
+
+    room_a = inn.rooms.create!(name: 'El Dormitorio', description: 'Nice', area: 10,
+                              max_capacity: 5, rent_price: 50, status: :active)
+    
+    allow(SecureRandom).to receive(:alphanumeric).and_return 'ABC00001'
+    reservation = room_a.reservations.create!(start_date: 0.days.ago,
+                                            end_date: 10.days.from_now,
+                                            number_guests: '2',
+                                            status: 'confirmed')
+    reservation.create_checkin!
+
+
+    # act
+    login_as user
+    visit root_path
+    click_on 'Reservas'
+    click_on 'ABC00001'
+    click_on 'Registrar Check-out'
+    
+    day = 5.days.from_now.day
+    month = 5.days.from_now.month
+    year = 5.days.from_now.year
+
+    travel_to Time.zone.local(year, month, day, 11, 1, 0) do 
+      select 'PIX', from: 'Forma de pagamento'
+      click_on 'Confirmar Check-out'
+    end
+
+    visit reservation_path(reservation)
+
+    # assert
+    expect(page).to have_content "Check-out: #{day}/#{month}/#{year}"
+    expect(page).to have_content 'Status: Concluída'
+    expect(page).to have_content 'Valor: R$ 300,00'
+    
+  end
 end

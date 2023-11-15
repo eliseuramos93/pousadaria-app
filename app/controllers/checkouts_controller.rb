@@ -11,7 +11,10 @@ class CheckoutsController < ApplicationController
     @checkout = @reservation.build_checkout(checkout_params)
 
     if @checkout.save
-      @reservation.finished!
+      new_price = @reservation.room.calculate_checkout_price(@reservation)
+      @reservation.update(end_date: Date.today, status: 'finished', 
+                          price: new_price)
+
       redirect_to my_inn_reservations_path, 
         notice: 'Check-out registrado com sucesso!'
     end

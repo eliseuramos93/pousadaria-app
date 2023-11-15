@@ -7,7 +7,7 @@ class Room < ApplicationRecord
 
   validates :name, :description, :area, :max_capacity, :rent_price, presence: true
 
-  def calculate_total_price(start_date, end_date)
+  def calculate_rental_price(start_date, end_date)
     return 0 if start_date.blank?
     return 0 if end_date.blank?
     
@@ -17,6 +17,20 @@ class Room < ApplicationRecord
     calculate_period_price(rates_hash)
   end
 
+  def calculate_checkout_price(reservation)
+    checkin_date = reservation.checkin.created_at.utc
+    checkout_date = reservation.checkout.created_at.utc
+
+    limit_checkout = Time.new(checkout_date.year, checkout_date.month,
+                                  checkout_date.day, self.inn.checkout_time.hour,
+                                  self.inn.checkout_time.min, 
+                                  self.inn.checkout_time.sec, 0)
+
+    checkout_date += 1.day if checkout_date > limit_checkout
+
+    calculate_rental_price(checkin_date.to_date, checkout_date.to_date)
+  end
+    
   private
 
   def generate_rates_hash(start_date, end_date)
