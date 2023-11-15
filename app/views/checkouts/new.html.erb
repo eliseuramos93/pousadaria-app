@@ -1,0 +1,11 @@
+<h2 class="section-title">Registrar Checkout - <%= @reservation.code %></h2>
+
+<%= form_with model: [@reservation, @checkout] do |f| %>
+  <%= f.label :payment_method %>
+  <%= f.select :payment_method, [["PIX", 'bank_transfer'], 
+                                 ['Cartão de Crédito', 'credit_card'],
+                                 ['Cartão de Débito', 'debit_card'],
+                                 ['Dinheiro', 'cash'],
+                                 ['Depósito bancário', 'deposit']] %>
+  <%= f.submit 'Confirmar Check-out' %>
+<% end %>

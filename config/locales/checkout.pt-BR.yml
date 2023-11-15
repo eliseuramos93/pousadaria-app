@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      checkout:
+        one: Check-out
+        others: Check-outs
+    attributes:
+      checkout:
+        payment_method: Forma de pagamento

@@ -3,6 +3,7 @@ class Reservation < ApplicationRecord
   belongs_to :room
   has_one :inn, through: :room
   has_one :checkin
+  has_one :checkout
 
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
 

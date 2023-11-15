@@ -10,4 +10,5 @@
 <% if user_signed_in? && @inn.user == current_user %>
   <%= link_to 'Registrar Check-in', new_reservation_checkin_path(@reservation), class: 'page-btn' %>
   <%= button_to 'Cancelar Reserva Expirada', host_cancel_expired_reservation_path(@reservation), method: :post, class: 'page-btn' %>
+  <%= link_to 'Registrar Check-out', new_reservation_checkout_path(@reservation), class: 'page-btn' %>
 <% end %>

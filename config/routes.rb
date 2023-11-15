@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         post 'host_cancel_expired', on: :member
         
         resources :checkins, shallow: true, only: [:new, :create]
+        resources :checkouts, shallow: true, only: [:new, :create]
       end
     end
   end
