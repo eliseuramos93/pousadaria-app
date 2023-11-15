@@ -27,7 +27,7 @@ describe 'Host cancels a reservation for a room' do
     room_a = inn.rooms.create!(name: 'El Dormitorio', description: 'Nice', area: 10,
                               max_capacity: 5, rent_price: 50, status: :active)
 
-    reservation = room_a.reservations.build(start_date: 3.days.ago,
+    reservation = room_a.reservations.build(start_date: 4.days.ago,
                                 end_date: 20.days.from_now,
                                 number_guests: '2',
                                 status: 'confirmed', code: 'ABC00001')
@@ -44,7 +44,7 @@ describe 'Host cancels a reservation for a room' do
     expect(page).to have_content 'A reserva foi cancelada com sucesso!'
     expect(page).to have_content 'Reserva ABC00001'
     expect(page).to have_content 'Quarto El Dormitorio'
-    expect(page).to have_content "Check-in: #{I18n.l(3.days.ago.to_date)} - 18:00"
+    expect(page).to have_content "Check-in: #{I18n.l(4.days.ago.to_date)} - 18:00"
     expect(page).to have_content "Check-out: #{I18n.l(20.days.from_now.to_date)} - 11:00"
     expect(page).to have_content "Hóspedes: 2"
     expect(page).to have_content "Status: Cancelada"

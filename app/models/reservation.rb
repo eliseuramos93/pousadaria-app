@@ -39,7 +39,7 @@ class Reservation < ApplicationRecord
   end
 
   def is_expired?
-    if (Date.today - self.start_date) > 2
+    if (Date.today - self.start_date.to_date) > 2
       true
     else
       false
