@@ -32,6 +32,7 @@ class ReservationsController < ApplicationController
 
   def confirm
     @reservation.update(status: 'confirmed', user: current_user)
+    session.delete(:reservation_id)
     redirect_to my_reservations_path, 
       notice: 'Sua reserva foi criada com sucesso!'
   end
