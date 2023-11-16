@@ -14,6 +14,7 @@ class ReservationsController < ApplicationController
 
     if @reservation.save
       redirect_to validate_reservation_path(@reservation)
+      session[:reservation_id] = @reservation.id
     else
       flash.now[:notice] = 'Não foi possível seguir com sua reserva'
       render 'new'
