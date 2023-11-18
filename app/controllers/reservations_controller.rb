@@ -1,7 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:confirm, :cancel, :show] 
   before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel, 
-                                              :show, :host_cancel_expired]
+                                              :show, :host_cancel]
   before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
   before_action :ensure_user_is_regular, only: [:confirm, :cancel]
 
@@ -48,10 +48,10 @@ class ReservationsController < ApplicationController
     end
   end
 
-  def host_cancel_expired
+  def host_cancel
     @reservation = Reservation.find(params[:id])
 
-    if @reservation.is_expired?
+    if @reservation.host_allowed_to_cancel?
       @reservation.canceled!
       redirect_to my_inn_reservations_path, 
         notice: 'A reserva foi cancelada com sucesso!'

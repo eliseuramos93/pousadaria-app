@@ -19,7 +19,7 @@ class Reservation < ApplicationRecord
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
 
   # callbacks
-  before_validation :generate_code, on: :create
+  before_validation :generate_reservation_code, on: :create
   before_validation :get_reservation_price, on: :create
 
 
@@ -35,7 +35,7 @@ class Reservation < ApplicationRecord
     end
   end
 
-  def checkin_within_business_rules
+  def checkin_within_business_rules?
     return false if (self.start_date - Date.today) > 0
     return false if self.status == 'active'
     return false if self.status == 'canceled'
@@ -44,7 +44,7 @@ class Reservation < ApplicationRecord
     true
   end
 
-  def is_expired?
+  def host_allowed_to_cancel?
     if (Date.today - self.start_date.to_date) > 2
       true
     else
@@ -53,7 +53,7 @@ class Reservation < ApplicationRecord
   end
   private
 
-  def generate_code
+  def generate_reservation_code
     self.code = SecureRandom.alphanumeric(8).upcase
   end
 

@@ -1,8 +1,6 @@
 class Checkout < ApplicationRecord
-  # relationships
   belongs_to :reservation
 
-  # validations
   validates :payment_method, presence: true
 
   # enums

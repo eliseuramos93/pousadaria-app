@@ -38,7 +38,7 @@ describe 'Host cancels a reservation for a room' do
     visit root_path
     click_on 'Reservas'
     click_on 'Reserva ABC00001'
-    click_on 'Cancelar Reserva Expirada'
+    click_on 'Cancelar Reserva'
 
     # assert
     expect(page).to have_content 'A reserva foi cancelada com sucesso!'
@@ -77,7 +77,7 @@ describe 'Host cancels a reservation for a room' do
     visit root_path
     click_on 'Reservas'
     click_on 'Reserva ABC00001'
-    click_on 'Cancelar Reserva Expirada'
+    click_on 'Cancelar Reserva'
 
     # assert
     expect(current_path).to eq reservation_path(reservation)

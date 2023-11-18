@@ -21,7 +21,7 @@ class CheckinsController < ApplicationController
   def ensure_valid_checkin
     @reservation = Reservation.find(params[:reservation_id])
 
-    unless @reservation.checkin_within_business_rules
+    unless @reservation.checkin_within_business_rules?
       start_date = @reservation.start_date.to_date
       redirect_to my_inn_reservations_path, notice: "Não é possível realizar check-in nessa reserva"
     end

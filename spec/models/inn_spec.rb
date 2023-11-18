@@ -10,6 +10,7 @@ RSpec.describe Inn, type: :model do
       inn.valid?
       # assert
       expect(inn.errors.include? :brand_name).to be true
+      expect(inn.errors.full_messages).to include 'Nome fantasia não pode ficar em branco'
     end
 
     it 'must have a registration number to be valid' do
@@ -20,6 +21,7 @@ RSpec.describe Inn, type: :model do
       inn.valid?
       # assert
       expect(inn.errors.include? :registration_number).to be true
+      expect(inn.errors.full_messages).to include 'CNPJ não pode ficar em branco'
     end
 
     it 'must have a phone number to be valid' do
@@ -30,6 +32,7 @@ RSpec.describe Inn, type: :model do
       inn.valid?
       # assert
       expect(inn.errors.include? :phone_number).to be true
+      expect(inn.errors.full_messages).to include 'Telefone não pode ficar em branco'
     end
 
     it 'must have a checkin time to be valid' do
@@ -40,6 +43,7 @@ RSpec.describe Inn, type: :model do
       inn.valid?
       # assert
       expect(inn.errors.include? :checkin_time).to be true
+      expect(inn.errors.full_messages).to include 'Horário de check-in não pode ficar em branco'
     end
 
     it 'must have a checkout time to be valid' do
@@ -50,6 +54,7 @@ RSpec.describe Inn, type: :model do
       inn.valid?
       # assert
       expect(inn.errors.include? :checkout_time).to be true
+      expect(inn.errors.full_messages).to include 'Horário de check-out não pode ficar em branco'
     end
   end
 end

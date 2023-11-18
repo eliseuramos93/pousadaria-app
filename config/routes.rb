@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         get 'validate', on: :member
         post 'confirm', on: :member
         post 'cancel', on: :member
-        post 'host_cancel_expired', on: :member
+        post 'host_cancel', on: :member
         
         resources :checkins, shallow: true, only: [:new, :create]
         resources :checkouts, shallow: true, only: [:new, :create]

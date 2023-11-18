@@ -2,67 +2,95 @@ require 'rails_helper'
 
 RSpec.describe SeasonalRate, type: :model do
   describe '#valid' do
-    it 'only if a start date, end date and price are present' do
-      # arrange
-      seasonal_rate = SeasonalRate.new
+    context 'presence' do
+      it 'only if a start date, end date and price are present' do
+        # arrange
+        seasonal_rate = SeasonalRate.new
 
-      # act
-      seasonal_rate.valid?
+        # act
+        seasonal_rate.valid?
 
-      # assert
-      expect(seasonal_rate.errors.include? :start_date).to be true
-      expect(seasonal_rate.errors.include? :end_date).to be true
-      expect(seasonal_rate.errors.include? :price).to be true
+        # assert
+        expect(seasonal_rate.errors.include? :start_date).to be true
+        expect(seasonal_rate.errors.include? :end_date).to be true
+        expect(seasonal_rate.errors.include? :price).to be true
+      end
     end
 
-    it 'if the end date is equal to the start date' do
-      # arrange
-      seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
-                                       end_date: 1.day.from_now)
+    context 'end_date_later_or_equal_to_start_date' do
+      it 'if the end date is before to the start date' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
+                                        end_date: 0.day.from_now)
 
-      # act
-      seasonal_rate.valid?
+        # act
+        seasonal_rate.valid?
 
-      # assert
-      expect(seasonal_rate.errors.include? :end_date).to be false
+        # assert
+        expect(seasonal_rate.errors.include? :end_date).to be true
+      end
+
+      it 'if the end date is equal to the start date' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
+                                        end_date: 1.day.from_now)
+
+        # act
+        seasonal_rate.valid?
+
+        # assert
+        expect(seasonal_rate.errors.include? :end_date).to be false
+      end
+
+      it 'if the end date is after than the start date' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
+                                        end_date: 2.days.from_now)
+
+        # act
+        seasonal_rate.valid?
+
+        # assert
+        expect(seasonal_rate.errors.include? :end_date).to be false
+      end
     end
 
-    it 'if the end date is greater than the start date' do
-      # arrange
-      seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
-                                       end_date: 2.days.from_now)
+    context 'start_date_is_future' do
+      it 'fails if the start date is past' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 1.day.ago)
 
-      # act
-      seasonal_rate.valid?
+        # act
+        seasonal_rate.valid?
 
-      # assert
-      expect(seasonal_rate.errors.include? :end_date).to be false
+        # assert
+        expect(seasonal_rate.errors.include? :start_date).to be true
+      end
+
+      it 'do not fail if the start date is today' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 0.day.ago)
+
+        # act
+        seasonal_rate.valid?
+
+        # assert
+        expect(seasonal_rate.errors.include? :start_date).to be false
+      end
+
+      it 'do not fail if the start date is future' do
+        # arrange
+        seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now)
+
+        # act
+        seasonal_rate.valid?
+
+        # assert
+        expect(seasonal_rate.errors.include? :start_date).to be false
+      end
     end
 
-    it 'fails if the end date is lower than the start date' do
-      # arrange
-      seasonal_rate = SeasonalRate.new(start_date: 1.day.from_now, 
-                                       end_date: 0.day.from_now)
-
-      # act
-      seasonal_rate.valid?
-
-      # assert
-      expect(seasonal_rate.errors.include? :end_date).to be true
-    end
-
-    it 'fails if the start date is past' do
-      # arrange
-      seasonal_rate = SeasonalRate.new(start_date: 1.day.ago)
-
-      # act
-      seasonal_rate.valid?
-
-      # assert
-      expect(seasonal_rate.errors.include? :start_date).to be true
-    end
-
-    context 'fails due to period conflict with another seasonal rate' do
+    context 'has_no_conflict_with_another_seasonal_rate' do
       it 'when the last day of the created rate conflicts with the first of an existing one' do
         # arrange
         user = User.create!(email: 'test@gmail.com', password: 'password', 

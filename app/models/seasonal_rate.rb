@@ -1,10 +1,8 @@
 class SeasonalRate < ApplicationRecord
-  # relationships
   belongs_to :room
   
-  # validations
   validates :start_date, :end_date, :price, presence: true
-  validate :end_date_greater_or_equal_to_start_date
+  validate :end_date_after_or_equal_to_start_date
   validate :start_date_is_future
   validate :has_no_conflict_with_another_seasonal_rate
 
@@ -23,7 +21,7 @@ class SeasonalRate < ApplicationRecord
 
   private
 
-  def end_date_greater_or_equal_to_start_date
+  def end_date_after_or_equal_to_start_date
     if (start_date && end_date) && (end_date < start_date)
       errors.add(:end_date, :end_before_start)
     end
