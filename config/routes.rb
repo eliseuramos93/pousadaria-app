@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post 'active', on: :member
     get 'city_list', on: :collection
     get 'search', on: :collection
+    get 'reviews_list', on: :member
 
     resources :rooms, shallow: true, only: [:new, :create, :show, :edit, :update, :index] do
       resources :seasonal_rates, shallow: true, only: [:index, :new, :create, :edit, :update]

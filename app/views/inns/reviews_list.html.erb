@@ -1,0 +1,31 @@
+<h2 class="section-title">
+  <%= "Avaliações - #{@inn.brand_name}" %>
+</h2>
+
+<p id="reviews-info">
+  <%= @reviews.length %>
+  <%= " #{Review.human_attribute_name(:comment, count: @reviews.length).downcase}" %>
+  <%= " - Nota média: #{number_with_precision(@inn.average_rating, precision: 2)}" %>
+</p>
+
+<dl>
+  <% @reviews.each do |review| %>
+    <dt>
+      <%= "Reserva #{review.reservation.code}" %>
+    </dt>
+    <dd>
+      <%= "Hóspede: #{review.user.first_name} #{review.user.last_name}" %>
+    </dd>
+    <dd>
+      <%= "Nota: #{review.rating}" %>
+    </dd>
+    <dd>
+      <%= "Comentário: #{review.comment}" %>
+    </dd>
+    <% if review.host_reply.present? %>
+      <dd>
+        <%= "Resposta do anfitrião: #{review.host_reply.text}" %>
+      </dd>
+    <% end %>
+  <% end %>
+</dl>

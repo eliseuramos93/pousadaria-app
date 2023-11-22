@@ -14,4 +14,8 @@ class Inn < ApplicationRecord
             :checkout_time, presence: true 
 
   enum :status, { active: 2, inactive: 0 }
+
+  def average_rating
+    return self.reviews.average('rating') if self.reviews.present?
+  end
 end

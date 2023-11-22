@@ -1,17 +1,20 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :city_list, :search]
+  before_action :authenticate_user!, except: [:show, :city_list, :search, 
+                                              :reviews_list]
   before_action :force_inn_creation_for_hosts, except: [:new, :create, 
                                                         :city_list, :search]
   before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list, 
                                             :search, :my_inn_reservations,
                                             :my_inn_reviews]
   before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list, 
-                                              :search]
+                                              :search, :reviews_list]
   before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, 
                                                 :city_list, :search, 
                                                 :my_inn_reservations, 
-                                                :my_inn_reviews] 
+                                                :my_inn_reviews, :reviews_list] 
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
+
+  # restful routes
 
   def new
     @inn = Inn.new
@@ -36,6 +39,9 @@ class InnsController < ApplicationController
     if current_user != @inn.user && @inn.inactive?
       redirect_to root_path, alert: 'A página não está disponível'
     end
+
+    @latest_reviews = @inn.reviews.last(3)
+    @reviews = @inn.reviews
   end
 
   def edit; end
@@ -52,6 +58,8 @@ class InnsController < ApplicationController
     end
   end
 
+  # custom routes
+
   def my_inn
     @inn = current_user.inn
     render 'show'
@@ -62,10 +70,16 @@ class InnsController < ApplicationController
     @reservations = @inn.reservations
   end
 
+  def reviews_list
+    @reviews = @inn.reviews
+  end
+
   def my_inn_reviews
     @inn = current_user.inn
     @reviews = @inn.reviews
   end
+
+  # change inn status routes
   
   def inactive
     @inn.inactive!
@@ -76,6 +90,8 @@ class InnsController < ApplicationController
     @inn.active!
     redirect_to @inn
   end
+
+  # search routes
 
   def city_list
     @inns = Inn.active.joins(:address)

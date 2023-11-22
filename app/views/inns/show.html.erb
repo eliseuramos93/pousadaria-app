@@ -85,4 +85,25 @@
       <p>A pousada não possui quartos disponíveis para consulta.</p>
       <% end %>
   </section>
+
+  <% if @latest_reviews && @latest_reviews.any? %>
+    <section id="inn-reviews">
+      <p id="reviews-info">
+        <%= @reviews.length %>
+        <%= " #{Review.human_attribute_name(:comment, count: @reviews.length).downcase}" %>
+        <%= " - Nota média: #{number_with_precision(@inn.average_rating, precision: 2)}" %>
+      </p>
+      
+      <dl>
+        <% @latest_reviews.each do |review| %>
+          <dt><%= review.user.first_name %></dt>
+          <dd><%= review.comment %></dd>
+        <% end %>
+      </dl>
+
+      <%= link_to 'Ver todos comentários', reviews_list_inn_path(@inn) %>
+    </section>
+  <% else %>
+    <p>Essa pousada ainda não recebeu avaliações.</p>
+  <% end %>
 </div>

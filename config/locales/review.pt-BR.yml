@@ -7,4 +7,6 @@ pt-BR:
     attributes:
       review:
         rating: Nota
-        comment: Comentário
+        comment:
+          one: Comentário
+          other: Comentários 
