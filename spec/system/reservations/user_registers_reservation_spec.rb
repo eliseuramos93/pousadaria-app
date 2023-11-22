@@ -83,13 +83,13 @@ describe 'User concludes the reservation process' do
     # assert
     expect(page).to have_content 'Sua reserva foi criada com sucesso!'
     expect(page).to have_content 'Minhas Reservas'
-    expect(page).to have_content 'Pousadinha do Teste'
+    expect(page).to have_content 'Pousada: Pousadinha do Teste'
     expect(page).to have_content 'Quarto El Testón'
     start_date = I18n.localize 7.days.from_now.to_date
     end_date = I18n.localize 13.days.from_now.to_date
     expect(page).to have_content "Check-in: #{start_date} - 18:00"
     expect(page).to have_content "Check-out: #{end_date} - 11:00"
     expect(page).to have_content 'Valor: R$ 500,00'
-    expect(page).to have_content 'Código da reserva: ABC12345'
+    expect(page).to have_link 'Reserva ABC12345', href: reservation_path(Reservation.first)
   end
 end

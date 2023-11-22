@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         
         resources :checkins, shallow: true, only: [:new, :create]
         resources :checkouts, shallow: true, only: [:new, :create]
+        resources :reviews, shallow: true, only: [:new, :create]
       end
     end
   end

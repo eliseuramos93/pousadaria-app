@@ -1,12 +1,11 @@
 class Reservation < ApplicationRecord
-  # relationships
   belongs_to :user, optional: true
   belongs_to :room
   has_one :inn, through: :room
   has_one :checkin
   has_one :checkout
+  has_one :review
 
-  # validations
   validates :start_date, :end_date, :number_guests, presence: true
   validates :code, uniqueness: true
   validate :respect_room_max_capacity, on: :create
@@ -15,10 +14,8 @@ class Reservation < ApplicationRecord
   validate :start_date_after_end_date, on: :create
   validate :no_conflict_with_another_reservation, on: :create
 
-  # enums
   enum status: {pending: 0, confirmed: 2, active: 4, finished: 6, canceled: 8}
 
-  # callbacks
   before_validation :generate_reservation_code, on: :create
   before_validation :get_reservation_price, on: :create
 
@@ -51,6 +48,14 @@ class Reservation < ApplicationRecord
       false
     end
   end
+
+  def able_to_be_reviewed?
+    return false if self.review.present?
+    return false unless self.finished?
+
+    true
+  end
+
   private
 
   def generate_reservation_code

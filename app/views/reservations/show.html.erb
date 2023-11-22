@@ -6,6 +6,14 @@
 <p><%= "Hóspedes: #{@reservation.number_guests}" %></p>
 <p><%= "Status: #{I18n.t("status.#{@reservation.status}")}" %></p>
 <p><%= "Valor: #{number_to_currency(@reservation.price)} "%></p>
+<% if @reservation.review.present? %>
+  <p><%= "Sua nota para estadia: #{@reservation.review.rating}" %></p>
+  <p><%= "Seu comentário sobre a estadia: #{@reservation.review.comment}" %></p>
+<% end %>
+
+<% if user_signed_in? && @reservation.user == current_user && @reservation.able_to_be_reviewed? %>
+  <%= link_to 'Avalie sua estadia', new_reservation_review_path(@reservation), class: 'page-btn' %>
+<% end %>
 
 <% if user_signed_in? && @inn.user == current_user %>
   <%= link_to 'Registrar Check-in', new_reservation_checkin_path(@reservation), class: 'page-btn' %>

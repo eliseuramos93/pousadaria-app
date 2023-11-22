@@ -1,0 +1,18 @@
+<h2 class="section-title"><%= "Nova avaliação - Reserva #{@reservation.code}" %></h2>
+<h3 class="section-title"><%= "#{@inn.brand_name} - Quarto #{@room.name}" %></h3>
+<h3 class="section-title"><%= "Entre #{I18n.l(@reservation.start_date)} e #{I18n.l(@reservation.end_date)}" %></h3>
+
+<% if @review.errors.any? %>
+  <% @review.errors.full_messages.each do |msg| %>
+    <%= msg %>
+  <% end %>
+<% end %>
+
+<%= form_with model: [@reservation, @review] do |f| %>
+  <%= f.label :rating %>
+  <%= f.select :rating, (0..5).to_a %> <br>
+  <p>Escolha uma nota entre 0 (péssima) e 5 (ótima)</p>
+  <%= f.label :comment %>
+  <%= f.text_area :comment %>
+  <%= f.submit %>
+<% end %>

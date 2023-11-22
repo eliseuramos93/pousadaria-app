@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      review:
+        one: Avaliação
+        others: Avaliações
+    attributes:
+      review:
+        rating: Nota
+        comment: Comentário
