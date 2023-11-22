@@ -82,9 +82,9 @@ describe "Host visits an inn's room list page" do
 
     # assert
     expect(page).to have_content "Quartos de #{inn.brand_name}"
-    expect(page).to have_link room_a.name, href: inn_room_path(inn, room_a)
-    expect(page).to have_link room_b.name, href: inn_room_path(inn, room_b)
-    expect(page).to have_link room_c.name, href: inn_room_path(inn, room_c)
+    expect(page).to have_link room_a.name, href: room_path(room_a)
+    expect(page).to have_link room_b.name, href: room_path(room_b)
+    expect(page).to have_link room_c.name, href: room_path(room_c)
     expect(page).to have_content('Disponível').twice
     expect(page).to have_content('Indisponível').once
   end

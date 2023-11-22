@@ -22,7 +22,7 @@ describe 'Host edits a seasonal rate for a room' do
                                        price: '60.99')
 
     # act
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
 
     # assert
     expect(current_path).to eq new_user_session_path
@@ -61,7 +61,7 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as another_user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
 
     # assert
     expect(current_path).to eq root_path
@@ -97,7 +97,7 @@ describe 'Host edits a seasonal rate for a room' do
     click_on 'Editar'
 
     # assert
-    expect(current_path).to eq edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    expect(current_path).to eq edit_seasonal_rate_path(rate)
     expect(page).to have_content 'Editar Preço de Temporada para Quarto de Aluguel'
     expect(page).to have_field 'Data de início'
     expect(page).to have_field 'Data de término'
@@ -127,14 +127,14 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
     fill_in 'Data de início', with: ''
     fill_in 'Data de término', with: ''
     fill_in 'Preço de temporada', with: ''
     click_on 'Atualizar Preço de Temporada'
 
     # assert
-    expect(current_path).not_to eq inn_room_seasonal_rates_path(inn.id, room.id)
+    expect(current_path).not_to eq room_seasonal_rates_path(room.id)
     expect(page).to have_content 'Não foi possível atualizar seu preço de temporada'
     expect(page).to have_content 'Data de início não pode ficar em branco'
     expect(page).to have_content 'Data de término não pode ficar em branco'
@@ -163,12 +163,12 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
     fill_in 'Data de término', with: 4.days.from_now
     click_on 'Atualizar Preço de Temporada'
 
     # assert
-    expect(current_path).not_to eq inn_room_seasonal_rates_path(inn.id, room.id)
+    expect(current_path).not_to eq room_seasonal_rates_path(room.id)
     expect(page).to have_content 'Não foi possível atualizar seu preço de temporada'
     expect(page).to have_content 'Data de término não pode ser anterior à data de início'
   end
@@ -195,7 +195,7 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
     fill_in 'Data de início', with: 1.day.ago
     click_on 'Atualizar Preço de Temporada'
 
@@ -225,14 +225,14 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
     fill_in 'Data de início', with: 20.days.from_now
     fill_in 'Data de término', with: 30.days.from_now
     fill_in 'Preço de temporada', with: '99.99'
     click_on 'Atualizar Preço de Temporada'
 
     # arrange
-    expect(current_path).to eq inn_room_seasonal_rates_path(inn.id, room.id)
+    expect(current_path).to eq room_seasonal_rates_path(room.id)
     expect(page).to have_content 'Seu preço de temporada foi atualizado com sucesso'
     start_date = I18n.localize 20.days.from_now.to_date
     end_date = I18n.localize 30.days.from_now.to_date
@@ -265,10 +265,10 @@ describe 'Host edits a seasonal rate for a room' do
 
     # act
     login_as user
-    visit edit_inn_room_seasonal_rate_path(inn.id, room.id, rate.id)
+    visit edit_seasonal_rate_path(rate.id)
 
     # assert
-    expect(current_path).to eq inn_room_seasonal_rates_path(inn.id, room.id)
+    expect(current_path).to eq room_seasonal_rates_path(room.id)
     expect(page).to have_content 'Não é possível alterar um preço de temporada que já iniciou'
   end
 end

@@ -22,7 +22,7 @@ describe "Host visits the list of his/hers inn's seasonal rates" do
                                        price: '60.99')
 
     # act
-    visit inn_room_seasonal_rates_path(inn.id, room.id)
+    visit room_seasonal_rates_path(room.id)
 
     # assert
     expect(current_path).to eq new_user_session_path
@@ -61,7 +61,7 @@ describe "Host visits the list of his/hers inn's seasonal rates" do
 
     # act
     login_as another_user
-    visit inn_room_seasonal_rates_path(inn.id, room.id)
+    visit room_seasonal_rates_path(room.id)
 
     # assert
     expect(current_path).to eq root_path
@@ -99,7 +99,7 @@ describe "Host visits the list of his/hers inn's seasonal rates" do
     click_on 'Ver Preços de Temporada deste quarto'
 
     # assert
-    expect(current_path).to eq inn_room_seasonal_rates_path(inn.id, room.id)
+    expect(current_path).to eq room_seasonal_rates_path(room.id)
     expect(page).to have_content 'Meus Preços de Temporada para Quarto de Aluguel'
     start_date_1 = I18n.localize 10.days.from_now.to_date
     end_date_1 = I18n.localize 20.days.from_now.to_date

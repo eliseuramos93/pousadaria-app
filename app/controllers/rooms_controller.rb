@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :force_inn_creation_for_hosts
-  before_action :redirect_invalid_inn, only: [:index, :show, :create, :edit, :update]
+  before_action :redirect_invalid_inn, only: [:index, :create]
   before_action :redirect_invalid_room, only: [:show, :edit, :update]
   before_action :ensure_user_owns_inn, only: [:index, :create, :edit, :update]
   before_action :ensure_room_belongs_to_inn, only: [:edit, :update]
@@ -10,17 +10,16 @@ class RoomsController < ApplicationController
     @rooms = @inn.rooms
   end
 
-  def create_new_room
+  def new
     @inn = current_user.inn
     @room = @inn.rooms.build
-    render 'new'
   end
 
   def create
     @room = @inn.rooms.build(room_params)
 
     if @room.save
-      redirect_to [@inn, @room], notice: 'Quarto criado com sucesso'
+      redirect_to @room, notice: 'Quarto criado com sucesso'
     else
       flash.now[:notice] = 'Não foi possível criar novo quarto'
       render 'new', status: :unprocessable_entity
@@ -37,7 +36,7 @@ class RoomsController < ApplicationController
 
   def update
     if @room.update(room_params)
-      redirect_to [@inn, @room], notice: 'Quarto atualizado com sucesso'
+      redirect_to @room, notice: 'Quarto atualizado com sucesso'
     else
       flash.now[:notice] = 'Não foi possível atualizar o quarto'
       render 'edit', status: :unprocessable_entity
@@ -62,10 +61,12 @@ class RoomsController < ApplicationController
   end
 
   def redirect_invalid_room
-    @room = @inn.rooms.find_by(id: params[:id])
+    @room = Room.find_by(params[:id])
 
     if @room.nil?
       redirect_to root_path, alert: 'Essa página não existe'
+    else
+      @inn = @room.inn
     end
   end
 

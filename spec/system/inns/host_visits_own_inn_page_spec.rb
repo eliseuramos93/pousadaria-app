@@ -66,7 +66,7 @@ describe 'Host visits own inn details page' do
     expect(page).to have_content 'Pousada Disponível'
     expect(page).to have_button 'Marcar como Indisponível'
     expect(page).to have_link 'Editar Pousada', href: edit_inn_path(inn)
-    expect(page).to have_link 'Adicionar Quarto', href: create_new_room_path
+    expect(page).to have_link 'Adicionar Quarto', href: new_inn_room_path(inn)
     expect(page).to have_link 'Ver Meus Quartos', href: inn_rooms_path(inn)
   end 
 end

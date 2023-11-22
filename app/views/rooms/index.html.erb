@@ -7,7 +7,7 @@
     <% else %>
       <% @rooms.each do |room| %>
         <div class="rooms-list-item">
-          <h3><%= link_to room.name, [@inn, room], class: 'clean-link' %></h3>
+          <h3><%= link_to room.name, room, class: 'clean-link' %></h3>
           <% if room.active? %>
           <p class="status-active">Disponível</p>
           <% else %>

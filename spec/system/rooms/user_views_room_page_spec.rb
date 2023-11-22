@@ -16,10 +16,10 @@ describe 'User visits a room details page' do
                              max_capacity: 2, rent_price: 50, status: :active)
 
     # act
-    visit inn_room_path(inn.id, room.id)
+    visit room_path(room)
 
     # assert
-    expect(current_path).to eq inn_room_path(inn.id, room.id)
+    expect(current_path).to eq room_path(room)
   end
 
   it 'only when the room is available' do
@@ -37,7 +37,7 @@ describe 'User visits a room details page' do
                              max_capacity: 2, rent_price: 50, status: :inactive)
 
     # act
-    visit inn_room_path(inn.id, room.id)
+    visit room_path(room)
 
     # assert
     expect(current_path).to eq root_path
@@ -59,7 +59,7 @@ describe 'User visits a room details page' do
                              max_capacity: 2, rent_price: 50, status: :active)
 
     # act
-    visit inn_room_path(inn.id, room.id)
+    visit room_path(room)
 
     # assert
     expect(page).to have_content 'Quarto Bedroom'
@@ -90,7 +90,7 @@ describe 'User visits a room details page' do
                              max_capacity: 2, rent_price: 50, status: :active)
 
     # act
-    visit inn_room_path(inn.id, room.id)
+    visit room_path(room)
     click_on 'Voltar para Pousada Teste'
 
     # assert
@@ -120,7 +120,7 @@ describe 'User visits a room details page' do
                                          price: '40.95')
 
     # act
-    visit inn_room_path(inn.id, room.id)
+    visit room_path(room)
 
     # assert
     expect(page).not_to have_content 'Preços Diferenciados para Quarto'

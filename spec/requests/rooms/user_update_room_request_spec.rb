@@ -3,11 +3,11 @@ require 'rails_helper'
 describe 'User requests to update a room' do
   it 'but must be authenticated' do
     # arrange
-    foobar_inn_id = 128390128   # mashed the numpad for a random number
+    # mashed the numpad for a random number
     foobar_room_id = 19283091823
 
     # act
-    patch inn_room_path(foobar_inn_id, foobar_room_id, room: {foo_attr: 'lorem ipsum'})
+    patch room_path(foobar_room_id, room: {foo_attr: 'lorem ipsum'})
 
     # assert
     expect(response).to redirect_to new_user_session_path
@@ -31,7 +31,7 @@ describe 'User requests to update a room' do
 
     # act
     login_as user
-    patch inn_room_path(inn.id, room.id, room:  {name: 'lorem ipsum'})
+    patch room_path(room.id, room:  {name: 'lorem ipsum'})
 
     # assert
       # prove that rails prevents a regular user to edit an inn, even if the 
@@ -64,7 +64,7 @@ describe 'User requests to update a room' do
 
     # act
     login_as another_user
-    patch inn_room_path(inn.id, room.id, room:  {name: 'lorem ipsum'})
+    patch room_path(room.id, room:  {name: 'lorem ipsum'})
 
     # assert
     expect(response).to redirect_to root_path

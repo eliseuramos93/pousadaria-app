@@ -13,9 +13,9 @@ Rails.application.routes.draw do
     get 'city_list', on: :collection
     get 'search', on: :collection
 
-    resources :rooms, only: [:create, :show, :edit, :update, :index] do
-      resources :seasonal_rates, only: [:index, :new, :create, :edit, :update]
-      resources :reservations, shallow: true, except: [:destroy] do
+    resources :rooms, shallow: true, only: [:new, :create, :show, :edit, :update, :index] do
+      resources :seasonal_rates, shallow: true, only: [:index, :new, :create, :edit, :update]
+      resources :reservations, shallow: true, except: [:index, :destroy] do
         get 'validate', on: :member
         post 'confirm', on: :member
         post 'cancel', on: :member
@@ -29,6 +29,5 @@ Rails.application.routes.draw do
   
   get 'my_inn', to: 'inns#my_inn'
   get 'my_inn_reservations', to: 'inns#my_inn_reservations'
-  get 'create_new_room', to: 'rooms#create_new_room'
   get 'my_reservations', to: 'users#my_reservations'
 end

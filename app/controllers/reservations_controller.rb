@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:confirm, :cancel, :show] 
-  before_action :fetch_inn_and_room, except: [:validate, :confirm, :cancel, 
+  before_action :fetch_room, except: [:validate, :confirm, :cancel, 
                                               :show, :host_cancel]
   before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
   before_action :ensure_user_is_regular, only: [:confirm, :cancel]
@@ -72,9 +72,9 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.find(params[:id])
   end
 
-  def fetch_inn_and_room
-    @inn = Inn.find(params[:inn_id])
+  def fetch_room
     @room = Room.find(params[:room_id])
+    @inn = @room.inn
   end
 
   def ensure_user_is_regular

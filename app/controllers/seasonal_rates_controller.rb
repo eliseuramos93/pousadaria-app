@@ -1,9 +1,9 @@
 class SeasonalRatesController < ApplicationController
   before_action :authenticate_user!
   before_action :force_inn_creation_for_hosts
-  before_action :redirect_invalid_inn_or_room
+  before_action :redirect_invalid_inn_or_room, only: [:index, :create, :new]
+  before_action :redirect_invalid_seasonal_rate, only: [:edit, :update]
   before_action :ensure_user_owns_inn
-  before_action :redirect_invalid_rate_params, only: [:edit, :update]
   before_action :block_past_seasonal_rates_alteration, only: [:edit, :update]
 
   def index
@@ -18,7 +18,7 @@ class SeasonalRatesController < ApplicationController
     @seasonal_rate = @room.seasonal_rates.build(seasonal_rate_params)
 
     if @seasonal_rate.save
-      redirect_to [@inn, @room], notice: 'Preço de Temporada criado com sucesso'
+      redirect_to room_path(@room), notice: 'Preço de Temporada criado com sucesso'
     else
       flash.now[:notice] = 'Não foi possível criar novo preço de temporada'
       render 'new'
@@ -29,7 +29,7 @@ class SeasonalRatesController < ApplicationController
 
   def update
     if @seasonal_rate.update(seasonal_rate_params)
-      redirect_to inn_room_seasonal_rates_path(@inn, @room), 
+      redirect_to room_seasonal_rates_path(@room), 
         notice: 'Seu preço de temporada foi atualizado com sucesso'
     else
       flash.now[:notice] = 'Não foi possível atualizar seu preço de temporada'
@@ -44,11 +44,23 @@ class SeasonalRatesController < ApplicationController
   end
 
   def redirect_invalid_inn_or_room
-    @inn = Inn.find_by(id: params[:inn_id])
-    @room = @inn.rooms.find_by(id: params[:room_id])
+    @room = Room.find_by(id: params[:room_id])
 
-    if @inn.nil? || @room.nil?
+    if @room.nil?
       redirect_to root_path, notice: 'Essa página não existe'
+    else
+      @inn = @room.inn
+    end
+  end
+
+  def redirect_invalid_seasonal_rate
+    @seasonal_rate = SeasonalRate.find_by(id: params[:id])
+
+    if @seasonal_rate.nil?
+      redirect_to root_path, notice: 'Essa página não existe'
+    else
+      @room = @seasonal_rate.room
+      @inn = @room.inn
     end
   end
 
@@ -58,17 +70,9 @@ class SeasonalRatesController < ApplicationController
     end
   end
 
-  def redirect_invalid_rate_params
-    @seasonal_rate = @room.seasonal_rates.find_by(params[:id])
-
-    if @seasonal_rate.nil?
-      redirect_to root_path, notice: 'A página não existe'
-    end
-  end
-
   def block_past_seasonal_rates_alteration
     if @seasonal_rate.start_date.past?
-      redirect_to inn_room_seasonal_rates_path(@inn, @room),
+      redirect_to room_seasonal_rates_path(@room),
         notice: 'Não é possível alterar um preço de temporada que já iniciou'
     end
   end

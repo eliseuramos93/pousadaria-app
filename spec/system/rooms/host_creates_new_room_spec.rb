@@ -14,7 +14,7 @@ describe 'User creates a new room for an inn' do
                         state: 'SP', zip_code: '05616-090'})
 
     # act
-    visit create_new_room_path
+    visit new_inn_room_path(inn)
 
     # assert
     expect(current_path).to eq new_user_session_path
@@ -39,7 +39,7 @@ describe 'User creates a new room for an inn' do
     click_on 'Adicionar Quarto'
 
     # assert
-    expect(current_path).to eq create_new_room_path
+    expect(current_path).to eq new_inn_room_path(inn)
     expect(page).to have_field 'Nome do Quarto'
     expect(page).to have_field 'Descrição do Quarto'
     expect(page).to have_field 'Área do Quarto (m²)'
@@ -75,7 +75,7 @@ describe 'User creates a new room for an inn' do
 
     # act
     login_as user
-    visit create_new_room_path
+    visit new_inn_room_path(inn)
 
     fill_in 'Nome do Quarto', with: 'The Legend of Zelda'
     fill_in 'Descrição do Quarto', with: 'Um quarto baseado na melhor franquia dos games!'
@@ -95,7 +95,7 @@ describe 'User creates a new room for an inn' do
     click_on 'Criar Quarto'
 
     # assert
-    expect(current_path).to eq inn_room_path(inn.id, inn.rooms.first.id)
+    expect(current_path).to eq room_path(inn.rooms.first.id)
     expect(page).to have_content 'Quarto criado com sucesso'
     expect(page).to have_content 'Quarto The Legend of Zelda'
     expect(page).to have_content 'Quarto disponível para reservas'
@@ -126,7 +126,7 @@ describe 'User creates a new room for an inn' do
 
     # act
     login_as user
-    visit create_new_room_path
+    visit new_inn_room_path(inn)
 
     fill_in 'Nome do Quarto', with: ''
     fill_in 'Descrição do Quarto', with: ''

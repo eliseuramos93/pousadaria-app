@@ -1,4 +1,4 @@
-<%= form_with model: [@inn, @room, @seasonal_rate] do |f| %>
+<%= form_with model: [@room, @seasonal_rate] do |f| %>
   <div id="seasonal-start-date">
     <%= f.label :start_date %>
     <%= f.date_field :start_date %>
@@ -11,6 +11,5 @@
     <%= f.label :price %>
     <%= f.number_field :price, step: 0.01 %>
   </div>
-
   <%= f.submit %>
 <% end %>

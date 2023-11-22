@@ -19,8 +19,8 @@
         <% else %>
           <%= button_to 'Marcar como Disponível', active_inn_path(@inn), class: 'btn-to page-btn' %>
         <% end %>
-        <%= link_to 'Editar Pousada', edit_inn_path(@inn.id), class: 'page-btn' %> <br>
-        <%= link_to 'Adicionar Quarto', create_new_room_path, class: 'page-btn' %> <br>
+        <%= link_to 'Editar Pousada', edit_inn_path(@inn), class: 'page-btn' %> <br>
+        <%= link_to 'Adicionar Quarto', new_inn_room_path(@inn), class: 'page-btn' %> <br>
         <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %>
       </div>
     </section>
@@ -79,7 +79,7 @@
     <h3 class="section-title">Quartos disponíveis</h2>
       <% if @inn.rooms.active.any? %>
         <% @inn.rooms.active.each do |room| %>
-          <h3 class='section-title'><%= link_to room.name, [@inn, room], class: 'clean-link' %></h3>
+          <h3 class='section-title'><%= link_to room.name, room, class: 'clean-link' %></h3>
         <% end %>
       <% else %>
       <p>A pousada não possui quartos disponíveis para consulta.</p>

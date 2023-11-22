@@ -134,7 +134,7 @@ describe 'User visits the inn details page' do
     # assert
     expect(page).not_to have_button 'Marcar como Indisponível'
     expect(page).not_to have_link 'Editar Pousada', href: edit_inn_path(inn)
-    expect(page).not_to have_link 'Adicionar Quarto', href: create_new_room_path
+    expect(page).not_to have_link 'Adicionar Quarto', href: new_inn_room_path(inn)
     expect(page).not_to have_link 'Ver Meus Quartos', href: inn_rooms_path(inn)
   end
 
@@ -171,7 +171,7 @@ describe 'User visits the inn details page' do
     # assert
     expect(page).not_to have_button 'Marcar como Indisponível'
     expect(page).not_to have_link 'Editar Pousada', href: edit_inn_path(inn_a)
-    expect(page).not_to have_link 'Adicionar Quarto', href: create_new_room_path
+    expect(page).not_to have_link 'Adicionar Quarto', href: new_inn_room_path(inn_a)
     expect(page).not_to have_link 'Ver Meus Quartos', href: inn_rooms_path(inn_a)
   end
 
@@ -221,11 +221,11 @@ describe 'User visits the inn details page' do
     visit inn_path(inn.id)
     
     # assert
-    expect(page).to have_link 'Bedroom #1', href: inn_room_path(inn.id, room_a.id)
-    expect(page).to have_link 'Bedroom #2', href: inn_room_path(inn.id, room_b.id)
-    expect(page).not_to have_link 'Bedroom #3', href: inn_room_path(inn.id, room_c.id)
-    expect(page).to have_link 'Bedroom #4', href: inn_room_path(inn.id, room_d.id)
-    expect(page).not_to have_link 'Bedroom #5', href: inn_room_path(inn.id, room_e.id)
+    expect(page).to have_link 'Bedroom #1', href: room_path(room_a.id)
+    expect(page).to have_link 'Bedroom #2', href: room_path(room_b.id)
+    expect(page).not_to have_link 'Bedroom #3', href: room_path(room_c.id)
+    expect(page).to have_link 'Bedroom #4', href: room_path(room_d.id)
+    expect(page).not_to have_link 'Bedroom #5', href: room_path(room_e.id)
   end
 
   it 'sees a warning of no available rooms in this inn' do
@@ -255,11 +255,11 @@ describe 'User visits the inn details page' do
     visit inn_path(inn.id)
     
     # assert
-    expect(page).not_to have_link 'Bedroom #1', href: inn_room_path(inn.id, room_a.id)
-    expect(page).not_to have_link 'Bedroom #2', href: inn_room_path(inn.id, room_b.id)
-    expect(page).not_to have_link 'Bedroom #3', href: inn_room_path(inn.id, room_c.id)
-    expect(page).not_to have_link 'Bedroom #4', href: inn_room_path(inn.id, room_d.id)
-    expect(page).not_to have_link 'Bedroom #5', href: inn_room_path(inn.id, room_e.id)
+    expect(page).not_to have_link 'Bedroom #1', href: room_path(room_a.id)
+    expect(page).not_to have_link 'Bedroom #2', href: room_path(room_b.id)
+    expect(page).not_to have_link 'Bedroom #3', href: room_path(room_c.id)
+    expect(page).not_to have_link 'Bedroom #4', href: room_path(room_d.id)
+    expect(page).not_to have_link 'Bedroom #5', href: room_path(room_e.id)
     expect(page).to have_content 'A pousada não possui quartos disponíveis para consulta.'
   end
 end

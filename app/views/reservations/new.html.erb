@@ -6,7 +6,7 @@
   <% end %>
 <% end %>
 
-<%= form_with model: [@inn, @room, @reservation] do |f| %>
+<%= form_with model: [@room, @reservation] do |f| %>
   <%= f.label :start_date %>
   <%= f.date_field :start_date %> <br>
   <%= f.label :end_date %>

@@ -18,7 +18,7 @@ describe 'Host edits a room of an inn' do
                              max_capacity: 2, rent_price: 50, status: :active)
     
     # act
-    visit edit_inn_room_path(inn.id, room.id)
+    visit edit_room_path(room.id)
 
     # assert
     expect(current_path).to eq new_user_session_path
@@ -53,7 +53,7 @@ describe 'Host edits a room of an inn' do
 
     # act
     login_as another_user
-    visit edit_inn_room_path(inn.id, room.id)
+    visit edit_room_path(room.id)
 
     # assert
     expect(page).to have_content 'Você não possui autorização para essa ação.'
@@ -84,7 +84,7 @@ describe 'Host edits a room of an inn' do
     click_on 'Editar Quarto'
 
     # assert
-    expect(current_path).to eq edit_inn_room_path(inn.id, room.id)
+    expect(current_path).to eq edit_room_path(room.id)
     expect(page).to have_content 'Editar Bedroom'
     expect(page).to have_field 'Nome do Quarto'
     expect(page).to have_field 'Descrição do Quarto'
@@ -148,7 +148,7 @@ describe 'Host edits a room of an inn' do
     click_on 'Atualizar Quarto'
 
     # assert
-    expect(current_path).to eq inn_room_path(inn.id, inn.rooms.first.id)
+    expect(current_path).to eq room_path(inn.rooms.first.id)
     expect(page).to have_content 'Quarto atualizado com sucesso'
     expect(page).to have_content 'Quarto The Legend of Zelda'
     expect(page).to have_content 'Quarto disponível para reservas'
