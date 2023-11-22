@@ -1,0 +1,17 @@
+<h2 class="section-title">
+  <%= "Avaliações - #{@inn.brand_name}" %>
+</h2>
+
+<dl>
+  <% @reviews.each do |review| %>
+    <dt>
+      <%= "Reserva #{review.reservation.code}" %>
+    </dt>
+    <dd>
+      <%= "Nota: #{review.rating}" %>
+    </dd>
+    <dd>
+      <%= "Comentário: #{review.comment}" %>
+    </dd>
+  <% end %>
+</dl>

@@ -30,5 +30,6 @@ Rails.application.routes.draw do
   
   get 'my_inn', to: 'inns#my_inn'
   get 'my_inn_reservations', to: 'inns#my_inn_reservations'
+  get 'my_inn_reviews', to: 'inns#my_inn_reviews'
   get 'my_reservations', to: 'users#my_reservations'
 end

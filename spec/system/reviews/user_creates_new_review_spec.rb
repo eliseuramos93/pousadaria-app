@@ -4,6 +4,7 @@ describe 'User creates a new review' do
   it 'only when authenticated' do
     # arrange
     foo_reservation_id = 198237198
+    
     # act
     visit new_reservation_review_path(foo_reservation_id)
 
@@ -299,7 +300,7 @@ describe 'User creates a new review' do
       reservation = room.reservations.create!(start_date: 10.days.from_now,
                                                 end_date: 20.days.from_now,
                                                 number_guests: '2',
-                                                status: 'active',
+                                                status: 'finished',
                                                 user: guest)
 
       reservation.create_review!(rating: 5, comment: 'Muito bom!')

@@ -5,6 +5,7 @@ class Inn < ApplicationRecord
   has_one :payment_method
   has_many :rooms
   has_many :reservations, through: :rooms
+  has_many :reviews, through: :reservations
 
   accepts_nested_attributes_for :payment_method
   accepts_nested_attributes_for :address

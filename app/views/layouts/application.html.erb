@@ -30,6 +30,7 @@
           <% if current_user.host? %>
             <%= link_to 'Minha Pousada', my_inn_path, class: 'nav-button' %>
             <%= link_to 'Reservas', my_inn_reservations_path, class: 'nav-button' %>
+            <%= link_to 'Avaliações', my_inn_reviews_path, class: 'nav-button' %>
           <% end %>
           <% if current_user.regular? %>
             <%= link_to 'Minhas Reservas', my_reservations_path, class: 'nav-button' %>

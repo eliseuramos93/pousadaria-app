@@ -10,7 +10,6 @@ class ReviewsController < ApplicationController
 
   def create
     @review = @reservation.build_review(review_params)
-    
 
     if @review.save
       redirect_to @reservation, notice: 'Sua avaliação foi criada com sucesso'
@@ -27,9 +26,11 @@ class ReviewsController < ApplicationController
   end
 
   def set_instance_variables
-    @reservation = Reservation.find(params[:reservation_id])
-    @room = @reservation.room
-    @inn = @reservation.inn
+    @reservation = Reservation.find_by(params[:reservation_id])
+    if @reservation.present?
+      @room = @reservation.room
+      @inn = @reservation.inn
+    end
   end
 
   def redirect_invalid_user_for_reservation
