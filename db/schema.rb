@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_22_154130) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_22_182022) do
   create_table "addresses", force: :cascade do |t|
     t.integer "inn_id", null: false
     t.string "street_name"
@@ -53,6 +53,14 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_22_154130) do
     t.string "last_name"
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
+  end
+
+  create_table "host_replies", force: :cascade do |t|
+    t.integer "review_id", null: false
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["review_id"], name: "index_host_replies_on_review_id"
   end
 
   create_table "inns", force: :cascade do |t|
@@ -156,6 +164,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_22_154130) do
   add_foreign_key "addresses", "inns"
   add_foreign_key "checkins", "reservations"
   add_foreign_key "checkouts", "reservations"
+  add_foreign_key "host_replies", "reviews"
   add_foreign_key "inns", "users"
   add_foreign_key "payment_methods", "inns"
   add_foreign_key "reservations", "rooms"

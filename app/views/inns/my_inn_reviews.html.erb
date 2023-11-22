@@ -8,10 +8,22 @@
       <%= "Reserva #{review.reservation.code}" %>
     </dt>
     <dd>
+      <%= "Hóspede: #{review.user.first_name} #{review.user.last_name}" %>
+    </dd>
+    <dd>
       <%= "Nota: #{review.rating}" %>
     </dd>
     <dd>
       <%= "Comentário: #{review.comment}" %>
     </dd>
+    <% if review.host_reply.present? %>
+      <dd>
+        <%= "Sua resposta: #{review.host_reply.text}" %>
+      </dd>
+    <% else %>
+      <dd>
+      <%= link_to 'Responder avaliação', new_review_host_reply_path(review) %>
+      </dd>
+    <% end %>
   <% end %>
 </dl>

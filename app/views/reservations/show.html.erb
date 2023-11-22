@@ -9,6 +9,9 @@
 <% if @reservation.review.present? %>
   <p><%= "Sua nota para estadia: #{@reservation.review.rating}" %></p>
   <p><%= "Seu comentário sobre a estadia: #{@reservation.review.comment}" %></p>
+  <% if @reservation.review.host_reply.present? %>
+    <p><%= "Resposta do anfitrião: #{@reservation.review.host_reply.text}" %></p>
+  <% end %>
 <% end %>
 
 <% if user_signed_in? && @reservation.user == current_user && @reservation.able_to_be_reviewed? %>

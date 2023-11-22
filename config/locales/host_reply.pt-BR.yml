@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      host_reply:
+        one: Resposta
+        other: Respostas
+    attributes:
+      host_reply:
+        text: Texto da resposta

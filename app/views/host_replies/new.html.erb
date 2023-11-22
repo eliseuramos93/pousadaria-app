@@ -1,0 +1,35 @@
+<h2 class="section-title">
+  <%= "Responder a avaliação da reserva #{@reservation.code}" %>
+</h2>
+
+<dl>
+  <dt>Hóspede:</dt>
+  <dd>
+    <%= "#{@review.user.first_name} #{@review.user.last_name}" %>
+  </dd>
+  <dt>Quarto:</dt>
+  <dd>
+    <%= @room.name %>
+  </dd>
+  <dt>Período:</dt>
+  <dd>
+    <%= "#{I18n.l(@reservation.start_date)} - #{I18n.l(@reservation.end_date)}" %>
+  </dd>
+  <dt>Nota:</dt>
+  <dd>
+    <%= @review.rating %>
+  </dd>
+  <dt>Comentário:</dt>
+  <dd>
+    <%= @review.comment %>
+  </dd>
+</dl>
+
+<h3 class="section-title">Criar resposta</h3>
+
+<%= form_with model: [@review, @host_reply] do |f| %>
+  <%= f.label :text %>
+  <%= f.text_area :text %> <br>
+
+  <%= f.submit %>
+<% end %>

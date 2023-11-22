@@ -1,17 +1,17 @@
 require 'rails_helper'
 
-describe 'Host visits the reviews list page' do
+describe 'Regular user visits reservation list page' do
   it 'only when authenticated' do
     # arrange
 
     # act
-    visit my_inn_reviews_path
+    visit my_reservations_path
 
     # assert
     expect(current_path).to eq new_user_session_path
   end
 
-  it 'from any page through the navigation bar' do
+  it 'from a link at the navigation bar' do
     # arrange
     host = User.create!(email: 'test@gmail.com', password: 'password', 
                           role: :host)
@@ -31,39 +31,30 @@ describe 'Host visits the reviews list page' do
                               max_capacity: 5, rent_price: 50, status: :active)
     
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABC00001')
-    reservation_a = room.reservations.create!(start_date: 5.days.from_now,
+    reservation = room.reservations.create!(start_date: 5.days.from_now,
                                               end_date: 9.days.from_now,
                                               number_guests: '2',
-                                              status: 'finished',
+                                              status: 'confirmed',
                                               user: guest)
-
-    reservation_a.create_review!(rating: 5, comment: 'Muito bom!')
-
-    allow(SecureRandom).to receive(:alphanumeric).and_return('ABC00002')
-    reservation_b = room.reservations.create!(start_date: 10.days.from_now,
-                                              end_date: 20.days.from_now,
-                                              number_guests: '2',
-                                              status: 'finished',
-                                              user: guest)
-
-    reservation_b.create_review!(rating: 1, comment: 'Não foi tão bom assim!')
 
     # act
-    login_as host
+    login_as guest
     visit root_path
-    within '#nav-links' do
-      click_on 'Avaliações'
+    within 'nav' do
+      click_on 'Minhas Reservas'
     end
 
     # assert
-    expect(current_path).to eq my_inn_reviews_path
-    expect(page).to have_content 'Avaliações - Albergue do Billy'
-    expect(page).to have_content 'Reserva ABC00001'
-    expect(page).to have_content 'Hóspede: Reginaldo Rossi'
-    expect(page).to have_content 'Nota: 5'
-    expect(page).to have_content 'Comentário: Muito bom!'
-    expect(page).to have_content 'Reserva ABC00002'
-    expect(page).to have_content 'Nota: 1'
-    expect(page).to have_content 'Comentário: Não foi tão bom assim!'
+    expect(page).to have_content 'Minhas Reservas'
+    expect(page).to have_link "Reserva ABC00001", href: reservation_path(reservation)
+    expect(page).to have_content 'Pousada: Albergue do Billy'
+    expect(page).to have_content 'Quarto El Dormitorio'
+    start_date = 5.days.from_now.to_date
+    end_date = 9.days.from_now.to_date
+    expect(page).to have_content "Check-in: #{I18n.l(start_date)} - 18:00"
+    expect(page).to have_content "Check-out: #{I18n.l(end_date)} - 11:00"
+    expect(page).to have_content 'Valor: R$ 200,00'
+    expect(page).to have_content 'Status da reserva: Confirmada'
+    expect(page).to have_button 'Cancelar Reserva de El Dormitorio'
   end
 end
