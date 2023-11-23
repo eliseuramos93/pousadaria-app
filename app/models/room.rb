@@ -19,8 +19,8 @@ class Room < ApplicationRecord
   end
 
   def calculate_checkout_price(reservation)
-    checkin_date = reservation.checkin.created_at.utc
-    checkout_date = reservation.checkout.created_at.utc
+    checkin_date = reservation.checkin.created_at
+    checkout_date = reservation.checkout.created_at
 
     limit_checkout = Time.new(checkout_date.year, checkout_date.month,
                                   checkout_date.day, self.inn.checkout_time.hour,

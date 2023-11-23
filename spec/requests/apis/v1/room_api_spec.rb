@@ -79,7 +79,7 @@ describe 'Rooms API' do
 
       # assert
       expect(response).to have_http_status(404)
-      expect(response.body).to include 'Não existe pousada com esse id.'
+      expect(response.body).to include 'O id informado não foi encontrado.'
     end
 
     it 'raises an internal server error' do

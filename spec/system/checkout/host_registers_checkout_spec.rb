@@ -69,7 +69,7 @@ describe 'Host registers a checkout for a reservation' do
                               max_capacity: 5, rent_price: 50, status: :active)
     
     allow(SecureRandom).to receive(:alphanumeric).and_return 'ABC00001'
-    reservation = room_a.reservations.create!(start_date: 0.days.ago,
+    reservation = room_a.reservations.create!(start_date: Date.today,
                                             end_date: 10.days.from_now,
                                             number_guests: '2',
                                             status: 'confirmed')
