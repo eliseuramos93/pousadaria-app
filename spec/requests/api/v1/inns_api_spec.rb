@@ -1,10 +1,6 @@
 require 'rails_helper'
 
-# Listagem de pousadas: uma listagem completa das pousadas cadastradas e ativas 
-# na plataforma. Deve haver uma opção de informar um texto e usar como filtro de 
-# busca pelo nome da pousada.
-
-describe 'Inn API' do
+describe 'Inns API' do
   context 'GET /api/v1/inns/' do
     it 'list all active inns' do
       # arrange
@@ -47,7 +43,7 @@ describe 'Inn API' do
       get "/api/v1/inns/"
 
       # assert
-      expect(response).to have_http_status(200)
+      expect(response.status).to eq(200)
       expect(response.content_type).to include 'application/json'
       json_response = JSON.parse(response.body)
       expect(json_response.class).to eq Array
@@ -135,6 +131,18 @@ describe 'Inn API' do
       expect(response.content_type).to include 'application/json'
       json_response = JSON.parse(response.body)
       expect(json_response).to eq []
+    end
+
+    it 'and raise internal error' do
+      # arrange
+      allow(Inn).to receive(:active).and_raise(ActiveRecord::QueryCanceled)
+
+      # act
+      get '/api/v1/inns/'
+
+      # assert
+      expect(response).to have_http_status(500)
+      expect(response.body).to include 'Ops, tivemos um erro no servidor.'
     end
   end
 end
