@@ -19,28 +19,8 @@ class Api::V1::InnsController < Api::V1::ApiController
   def show
     inn = Inn.find(params[:id])
 
-    inn_json = generate_show_inn_json(inn)
+    inn_json = inn.generate_show_inn_json
 
     render status: 200, json: inn_json
-  end
-
-  private
-
-  def generate_show_inn_json(inn)
-    average_rating = generate_average_rating(inn)
-
-    inn_json = inn.as_json(
-      include: { 
-        address: { 
-          except: [:id, :inn_id, :created_at, :updated_at]}},
-      except: [:created_at, :updated_at, :user_id, :registration_number])
-
-    inn_json.merge!(average_rating: average_rating)
-  end
-
-  def generate_average_rating(inn)
-    return '' if inn.average_rating.blank?
-
-    inn.average_rating.to_f
   end
 end

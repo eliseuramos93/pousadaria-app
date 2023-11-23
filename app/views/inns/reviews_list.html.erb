@@ -5,7 +5,7 @@
 <p id="reviews-info">
   <%= @reviews.length %>
   <%= " #{Review.human_attribute_name(:comment, count: @reviews.length).downcase}" %>
-  <%= " - Nota média: #{number_with_precision(@inn.average_rating, precision: 2)}" %>
+  <%= " - Nota média: #{number_with_precision(@inn.calculate_average_rating, precision: 2)}" %>
 </p>
 
 <dl>

@@ -16,7 +16,7 @@
             </h3>
             <h4 class="section-title"><%= inn.address.city %></h4>
             <% if inn.reviews.present? %>
-            <p><%= "Nota média: #{number_with_precision(inn.average_rating, precision: 2)}" %></p>
+            <p><%= "Nota média: #{number_with_precision(inn.calculate_average_rating, precision: 2)}" %></p>
             <% end %>
           </div>
         <% end %>
