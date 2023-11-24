@@ -94,4 +94,114 @@ describe 'Rooms API' do
       expect(response.body).to include 'Ops, tivemos um erro no servidor.'
     end
   end
+
+  context 'GET /api/v1/rooms/:room_id/check_availability/' do
+    it 'returns the price of the room if it is available' do
+      # arrange
+      user = User.create!(email: 'test@gmail.com', password: 'password', 
+                          role: :host)
+
+      inn = user.create_inn!(brand_name: 'Pousadinha do Teste', 
+                            registration_number: '58277983000198', 
+                            phone_number: '(11) 976834383', checkin_time: '18:00',
+                            checkout_time: '11:00', address_attributes: {
+                              street_name: 'Av. da Pousada', number: '10', 
+                              neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                              state: 'SP', zip_code: '05616-090'}, 
+                            status: 'active')
+
+      room = inn.rooms.create!(name: 'Quarto', description: 'Nice', area: 10,
+                              max_capacity: 4, rent_price: 50, status: 'active')
+
+      rate = room.seasonal_rates.create!(start_date: 10.days.from_now,
+                                          end_date: 20.days.from_now,
+                                          price: '100')
+
+      reservation_params = { reservation: { start_date: 9.days.from_now,
+                            end_date: 11.days.from_now,
+                            number_guests: 3 } }
+
+      # act
+      get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json'
+      json_response = JSON.parse(response.body)
+      expect(json_response.class).to eq Hash
+      expect(json_response['price']).to eq 200.0
+      expect(json_response.keys).not_to include 'user_id'
+      expect(json_response.keys).not_to include 'room_id'
+      expect(json_response.keys).not_to include 'status'
+      expect(json_response.keys).not_to include 'created_at'
+      expect(json_response.keys).not_to include 'updated_at'
+      
+    end
+
+    it 'returns an error hash if the room is not available' do
+      # arrange
+      user = User.create!(email: 'test@gmail.com', password: 'password', 
+                          role: :host)
+
+      inn = user.create_inn!(brand_name: 'Pousadinha do Teste', 
+                            registration_number: '58277983000198', 
+                            phone_number: '(11) 976834383', checkin_time: '18:00',
+                            checkout_time: '11:00', address_attributes: {
+                              street_name: 'Av. da Pousada', number: '10', 
+                              neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                              state: 'SP', zip_code: '05616-090'}, 
+                            status: 'active')
+
+      room = inn.rooms.create!(name: 'Quarto', description: 'Nice', area: 10,
+                              max_capacity: 4, rent_price: 50, status: 'active')
+
+      rate = room.seasonal_rates.create!(start_date: 10.days.from_now,
+                                          end_date: 20.days.from_now,
+                                          price: '100')
+      room.reservations.create!(start_date: 5.days.from_now, 
+                                end_date: 20.days.from_now,
+                                number_guests: 3)
+
+      reservation_params = { reservation: { start_date: 9.days.from_now,
+                            end_date: 11.days.from_now,
+                            number_guests: 5 } }
+
+      # act
+      get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json'
+      json_response = JSON.parse(response.body)
+      expect(json_response.class).to eq Hash
+      expect(json_response['errors']).to include 'Número de hóspedes não pode ser maior que a capacidade do quarto'
+      expect(json_response['errors']).to include 'O quarto já está reservado neste período'
+      expect(json_response.keys).not_to include 'price'
+    end
+
+    it 'fails if the room does not exist' do
+      # arrange
+
+      # act
+      get '/api/v1/rooms/99999999999/check_availability'
+
+      # assert
+      expect(response).to have_http_status(404)
+      expect(response.content_type).to include 'application/json'
+      expect(response.body).to include 'O id informado não foi encontrado'
+    end
+
+    it 'raises an internal server error' do
+      # arrange
+      allow(Room).to receive(:find).and_raise(ActiveRecord::QueryCanceled)
+
+      # act
+      get '/api/v1/rooms/1/check_availability/'
+
+      # assert
+      expect(response).to have_http_status(500)
+      expect(response.content_type).to include 'application/json'
+      expect(response.body).to include 'Ops, tivemos um erro no servidor.'
+    end
+  end
 end
