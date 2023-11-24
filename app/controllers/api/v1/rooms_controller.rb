@@ -9,9 +9,7 @@ class Api::V1::RoomsController < Api::V1::ApiController
 
   def check_availability
     room = Room.find(params[:id])
-    reservation = room.reservations.build(start_date: params['reservation']['start_date'],
-                                            end_date: params['reservation']['end_date'],
-                                            number_guests: params['reservation']['number_guests'])
+    reservation = room.reservations.build(reservation_params)
     if reservation.save
       render status: 200, json: reservation.as_json(except: [:user_id, :room_id, :status,
                                                            :created_at, :updated_at])
@@ -19,5 +17,11 @@ class Api::V1::RoomsController < Api::V1::ApiController
       errors_json = { errors: reservation.errors.full_messages }
       render status: 200, json: errors_json.as_json
     end
+  end
+
+  private
+
+  def reservation_params
+    params.permit(:start_date, :end_date, :number_guests)
   end
 end

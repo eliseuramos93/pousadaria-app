@@ -15,6 +15,9 @@ Este é um projeto desenvolvido durante meus estudos no programa TreinaDev, turm
   * [Erros](https://github.com/eliseuramos93/pousadaria-app#erros)
   * [Endpoints](https://github.com/eliseuramos93/pousadaria-app#endpoints)
     * [Lista de pousadas ativas](https://github.com/eliseuramos93/pousadaria-app#lista-de-pousadas-ativas)
+    * [Listagem de quartos de uma pousada](https://github.com/eliseuramos93/pousadaria-app#listagem-de-quartos-de-uma-pousada)
+    * [Detalhes de uma pousada](https://github.com/eliseuramos93/pousadaria-app#detalhes-de-uma-pousada)
+    * [Consulta de disponibilidade](https://github.com/eliseuramos93/pousadaria-app#consulta-de-disponibilidade)
 
 ## Sprints de desenvolvimento
 ### Primeiro sprint
@@ -59,10 +62,77 @@ Em caso de erro, será retornado um objeto JSON simples com a descrição do err
 
 #### Lista de pousadas ativas
 
-Você pode fazer o requerimento de todas as pousadas ativas na Pousadaria através do endpoint abaixo:
-
 `https://localhost:3000/api/v1/inns`
 
-Você também pode filtrar as pousadas ativas pelo nome, usando o parâmetro **name**.
+Retorna uma listagem completa das pousadas cadastradas e ativas na plataforma. É possível informar um texto e usar como filtro de busca pelo nome da pousada. 
+
+> Parâmetros necessários:
+>
+> Nenhum
+>
+> Parâmetros opcionais:
+> 
+> * name: Texto para utilizar no filtro de nome da pousada
+
+Exemplo: 
 
 `https://localhost:3000/api/v1/inns/?name=Pousadinha`
+
+#### Listagem de quartos de uma pousada
+
+`https://localhost:3000/api/v1/inns/:inn_id/rooms`
+
+A partir do ID de uma pousada, você pode fazer o requerimento de uma lista com informações sobre os tipos de quartos disponíveis para hospedagem nesta pousada
+
+> Parâmetros necessários:
+>
+> * inn_id: ID da pousada
+>
+> Parâmetros opcionais:
+> 
+> Nenhum
+
+Exemplo:
+
+`https://localhost:3000/api/v1/inns/1/rooms`
+
+#### Detalhes de uma pousada
+
+`https://localhost:3000/api/v1/inns/:inn_id`
+
+A partir do ID de uma pousada, são exibids todos os detalhes púlbicos de uma pousada. O retorno inclui a nota média da pousada a partir de suas avaliações. Caso não existam avaliações o campo virá como uma string vazia.
+
+> Parâmetros necessários:
+>
+> * inn_id: ID da pousada
+>
+> Parâmetros opcionais:
+> 
+> Nenhum
+
+Exemplo:
+
+`https://localhost:3000/api/v1/inns/1`
+
+#### Consulta de disponibilidade
+
+`https://localhost:3000/api/v1/rooms/:room_id/check_avaibility/?parametros`
+
+Informando um ID de um quarto, a data de entrada, data de saída e quantidade de hóspedes, é ser possível verificar a disponibilidade para reserva. 
+
+Se o quarto estiver disponível, será retornado o valor da reserva assim como um código da pré-reserva, em caso negativo será retornada uma lista de mensagens informando o motivo da requisição não gerar uma pré-reserva.
+
+> Parâmetros necessários:
+> 
+> * room_id: ID do quarto que será reservado
+> * start_date: Data de check-in, em formato yyyy-MM-dd, sem necessidade  de aspas
+> * end_date: Data de check-out, em formato yyyy-MM-dd, sem necessidade de aspas
+> * number_guests: Número de hóspedes da reserva
+>
+> Parâmetros opcionais:
+>
+> Nenhum.
+
+Exemplo:
+
+`http://localhost:3000/api/v1/rooms/2/check_availability/?start_date=2023-12-27&end_date=2023-12-29&number_guests=3&teste=%27reginaldo%27`
