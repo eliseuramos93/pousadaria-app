@@ -49,7 +49,7 @@ class Room < ApplicationRecord
   end
 
   def calculate_regular_days(start_date, end_date, rates_hash)
-    regular_days = (end_date - start_date).to_i
+    regular_days = (end_date - (start_date - 1.day)).to_i
     rates_hash.each do |price, days|
       regular_days -= days.to_i
     end
