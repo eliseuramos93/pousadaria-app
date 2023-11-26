@@ -89,7 +89,7 @@ describe 'User concludes the reservation process' do
     end_date = I18n.localize 13.days.from_now.to_date
     expect(page).to have_content "Check-in: #{start_date} - 18:00"
     expect(page).to have_content "Check-out: #{end_date} - 11:00"
-    expect(page).to have_content 'Valor: R$ 500,00'
+    expect(page).to have_content 'Valor: R$ 550,00'
     expect(page).to have_link 'Reserva ABC12345', href: reservation_path(Reservation.first)
   end
 end

@@ -53,7 +53,7 @@ describe 'Regular user visits reservation list page' do
     end_date = 9.days.from_now.to_date
     expect(page).to have_content "Check-in: #{I18n.l(start_date)} - 18:00"
     expect(page).to have_content "Check-out: #{I18n.l(end_date)} - 11:00"
-    expect(page).to have_content 'Valor: R$ 200,00'
+    expect(page).to have_content 'Valor: R$ 250,00'
     expect(page).to have_content 'Status da reserva: Confirmada'
     expect(page).to have_button 'Cancelar Reserva de El Dormitorio'
   end

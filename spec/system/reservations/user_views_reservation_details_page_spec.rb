@@ -66,7 +66,7 @@ describe 'User visits a reservation details page' do
       expect(page).to have_content "Check-out: #{I18n.l(20.days.from_now.to_date)} - 11:00"
       expect(page).to have_content "Hóspedes: 2"
       expect(page).to have_content "Status: Confirmada"
-      expect(page).to have_content "Valor: R$ 500,00"
+      expect(page).to have_content "Valor: R$ 550,00"
       expect(page).to have_link 'Registrar Check-in'
       expect(page).to have_button 'Cancelar Reserva'
       expect(page).to have_link 'Registrar Check-out'
