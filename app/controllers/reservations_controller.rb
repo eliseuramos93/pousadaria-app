@@ -1,8 +1,9 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!, only: [:confirm, :cancel, :show] 
-  before_action :fetch_room, except: [:validate, :confirm, :cancel, 
-                                              :show, :host_cancel]
-  before_action :fetch_reservation, only: [:validate, :confirm, :cancel]
+  before_action :authenticate_user!, only: [:confirm, :cancel, :show, :host_cancel] 
+  before_action :fetch_room, only: [:new, :create]
+  before_action :fetch_reservation, only: [:validate, :confirm, :cancel, :show,
+                                            :host_cancel]
+  before_action :ensure_user_owns_inn, only: [:host_cancel]
   before_action :ensure_user_is_regular, only: [:confirm, :cancel]
 
   def new
@@ -22,7 +23,6 @@ class ReservationsController < ApplicationController
   end
 
   def show
-    @reservation = Reservation.find(params[:id])
     @inn = @reservation.inn
   end
 
@@ -49,8 +49,6 @@ class ReservationsController < ApplicationController
   end
 
   def host_cancel
-    @reservation = Reservation.find(params[:id])
-
     if @reservation.host_allowed_to_cancel?
       @reservation.canceled!
       redirect_to my_inn_reservations_path, 
@@ -70,6 +68,7 @@ class ReservationsController < ApplicationController
 
   def fetch_reservation
     @reservation = Reservation.find(params[:id])
+    @inn = @reservation.inn
   end
 
   def fetch_room
@@ -79,6 +78,13 @@ class ReservationsController < ApplicationController
 
   def ensure_user_is_regular
     unless user_signed_in? && current_user.regular?
+      redirect_to root_path, 
+        alert: 'Você não possui autorização para acessar essa página'
+    end
+  end
+
+  def ensure_user_owns_inn
+    unless current_user == @inn.user
       redirect_to root_path, 
         alert: 'Você não possui autorização para acessar essa página'
     end

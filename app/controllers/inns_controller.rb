@@ -1,17 +1,19 @@
 class InnsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :city_list, :search, 
-                                              :reviews_list]
-  before_action :force_inn_creation_for_hosts, except: [:new, :create, 
-                                                        :city_list, :search]
-  before_action :ensure_inn_exists, except: [:new, :create, :my_inn, :city_list, 
-                                            :search, :my_inn_reservations,
-                                            :my_inn_reviews]
-  before_action :ensure_user_is_host, except: [:show, :my_inn, :city_list, 
-                                              :search, :reviews_list]
-  before_action :ensure_user_owns_inn, except: [:new, :create, :my_inn, :show, 
-                                                :city_list, :search, 
-                                                :my_inn_reservations, 
-                                                :my_inn_reviews, :reviews_list] 
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, 
+                                            :my_inn, :my_inn_reservations, 
+                                            :my_inn_reviews, :inactive, :active ]
+  before_action :force_inn_creation_for_hosts, only: [:edit, :update, :my_inn, 
+                                                      :my_inn_reservations, 
+                                                      :my_inn_reviews, :inactive, 
+                                                      :active, :search, 
+                                                      :city_list] 
+  before_action :ensure_inn_exists, only: [:show, :edit, :update, :reviews_list, 
+                                            :inactive, :active]
+  before_action :ensure_user_is_host, only: [:new, :create, :edit, :update, 
+                                              :inactive, :active, :my_inn, 
+                                              :my_inn_reservations, 
+                                              :my_inn_reviews]
+  before_action :ensure_user_owns_inn, only: [:edit, :update, :active, :inactive]
   before_action :fetch_address_and_payment_methods, only: [:edit, :update]
 
   # restful routes

@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, only: [:index, :new, :create, :edit, :update]
   before_action :force_inn_creation_for_hosts
   before_action :redirect_invalid_inn, only: [:index, :create]
   before_action :redirect_invalid_room, only: [:show, :edit, :update]

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
     resources :rooms, shallow: true, only: [:new, :create, :show, :edit, :update, :index] do
       resources :seasonal_rates, shallow: true, only: [:index, :new, :create, :edit, :update]
-      resources :reservations, shallow: true, except: [:index, :destroy] do
+      resources :reservations, shallow: true, only: [:new, :create, :edit, :update, :show] do
         get 'validate', on: :member
         post 'confirm', on: :member
         post 'cancel', on: :member
