@@ -15,6 +15,7 @@ class Room < ApplicationRecord
     rates_hash = generate_rates_hash(start_date, end_date)
     regular_rate_days = calculate_regular_days(start_date, end_date, rates_hash)
     rates_hash[self.rent_price] = regular_rate_days
+
     calculate_period_price(rates_hash)
   end
 
@@ -25,7 +26,7 @@ class Room < ApplicationRecord
     limit_checkout = Time.new(checkout_date.year, checkout_date.month,
                                   checkout_date.day, self.inn.checkout_time.hour,
                                   self.inn.checkout_time.min, 
-                                  self.inn.checkout_time.sec, 0)
+                                  self.inn.checkout_time.sec)
 
     checkout_date += 1.day if checkout_date > limit_checkout
 
@@ -38,7 +39,7 @@ class Room < ApplicationRecord
     rates_hash = Hash.new(0)
 
     self.seasonal_rates.each do |rate|
-      (start_date..end_date).each do |date|
+      (start_date...end_date).each do |date|
         if date.to_date.between?(rate.start_date,rate.end_date)
           rates_hash[rate.price] += 1
         end
@@ -49,7 +50,7 @@ class Room < ApplicationRecord
   end
 
   def calculate_regular_days(start_date, end_date, rates_hash)
-    regular_days = (end_date - (start_date - 1.day)).to_i
+    regular_days = (end_date - start_date).to_i
     rates_hash.each do |price, days|
       regular_days -= days.to_i
     end

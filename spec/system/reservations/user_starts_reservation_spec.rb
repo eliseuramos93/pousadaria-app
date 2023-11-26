@@ -42,7 +42,7 @@ describe 'User starts to reserve a room' do
     expect(page).to have_content "Checkout: #{end_date}"
     expect(page).to have_content "11:00"
     expect(page).to have_content 'Número de hóspedes: 3'
-    expect(page).to have_content "Valor total: R$ 550,00" 
+    expect(page).to have_content "Valor total: R$ 450,00" 
   end
 
   it 'but fails due to the room not being available in the period' do

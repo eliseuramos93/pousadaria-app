@@ -129,7 +129,7 @@ describe 'Rooms API' do
       expect(response.content_type).to include 'application/json'
       json_response = JSON.parse(response.body)
       expect(json_response.class).to eq Hash
-      expect(json_response['price']).to eq 250.0
+      expect(json_response['price']).to eq 150.0
       expect(json_response.keys).not_to include 'user_id'
       expect(json_response.keys).not_to include 'room_id'
       expect(json_response.keys).not_to include 'status'

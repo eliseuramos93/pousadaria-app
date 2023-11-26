@@ -97,7 +97,7 @@ describe 'Host registers a checkout for a reservation' do
     # assert
     expect(page).to have_content "Check-out: #{I18n.l(5.days.from_now.to_date)}"
     expect(page).to have_content 'Status: Concluída'
-    expect(page).to have_content 'Valor: R$ 350,00'
+    expect(page).to have_content 'Valor: R$ 300,00'
     
   end
 end
