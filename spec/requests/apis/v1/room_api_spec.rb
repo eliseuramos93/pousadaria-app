@@ -117,9 +117,9 @@ describe 'Rooms API' do
                                           end_date: 20.days.from_now,
                                           price: '100')
 
-      reservation_params = { reservation: { start_date: 9.days.from_now,
+      reservation_params = { start_date: 9.days.from_now,
                             end_date: 11.days.from_now,
-                            number_guests: 3 } }
+                            number_guests: 3 }
 
       # act
       get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
@@ -162,9 +162,9 @@ describe 'Rooms API' do
                                 end_date: 20.days.from_now,
                                 number_guests: 3)
 
-      reservation_params = { reservation: { start_date: 9.days.from_now,
+      reservation_params = { start_date: 9.days.from_now,
                             end_date: 11.days.from_now,
-                            number_guests: 5 } }
+                            number_guests: 5 }
 
       # act
       get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params

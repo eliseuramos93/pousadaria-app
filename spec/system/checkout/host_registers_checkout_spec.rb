@@ -95,7 +95,7 @@ describe 'Host registers a checkout for a reservation' do
     visit reservation_path(reservation)
 
     # assert
-    expect(page).to have_content "Check-out: #{day}/#{month}/#{year}"
+    expect(page).to have_content "Check-out: #{I18n.l(5.days.from_now.to_date)}"
     expect(page).to have_content 'Status: Concluída'
     expect(page).to have_content 'Valor: R$ 300,00'
     
