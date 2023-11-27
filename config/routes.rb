@@ -30,7 +30,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :albums, shallow: true, only: [:create]
+    resources :albums, shallow: true, only: [:create] do
+      resources :photos, only: [:destroy]
+    end
   end
   
   get 'my_inn', to: 'inns#my_inn'

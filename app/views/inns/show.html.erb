@@ -32,6 +32,9 @@
       <h3 class="section-title">Fotos</h3>
       <% @inn.album.photos.each do |photo| %>
         <%= image_tag photo %>
+        <% if user_signed_in? && current_user == @inn.user %>
+          <%= button_to 'Deletar foto', photo_path(photo), method: :delete %>
+        <% end %>
       <% end %>
     </section>
   <% end %>
