@@ -5,7 +5,7 @@ describe 'User creates an user account' do
     # arrange
     # act
     visit root_path
-    click_on 'Seja um Pousadeiro'
+    click_on 'Criar uma conta'
 
     # assert
     expect(current_path).to eq new_user_registration_path
@@ -20,7 +20,7 @@ describe 'User creates an user account' do
 
     # act
     visit root_path
-    click_on 'Seja um Pousadeiro'
+    click_on 'Criar uma conta'
 
     fill_in 'E-mail', with: 'teste@gmail.com'
     fill_in 'Senha', with: 'senhaforte1234!'
@@ -40,7 +40,7 @@ describe 'User creates an user account' do
 
     # act
     visit root_path
-    click_on 'Seja um Pousadeiro'
+    click_on 'Criar uma conta'
 
     fill_in 'E-mail', with: 'teste@gmail.com'
     fill_in 'Senha', with: 'senhaforte1234!'

@@ -7,3 +7,6 @@ pt-BR:
     attributes:
       user:
         email: E-mail
+        first_name: Nome
+        last_name: Sobrenome
+        personal_id_number: CPF

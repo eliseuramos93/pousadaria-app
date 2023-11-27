@@ -37,7 +37,7 @@
           <% end %>
           <%= button_to 'Sair', destroy_user_session_path, method: :delete, class: 'nav-button btn-to' %>
         <% else %>
-          <%= link_to 'Seja um Pousadeiro', new_user_registration_path, class: 'nav-button' %>
+          <%= link_to 'Criar uma conta', new_user_registration_path, class: 'nav-button' %>
           <%= link_to 'Entrar', new_user_session_path, class: 'nav-button' %>
         <% end %>
       </div>

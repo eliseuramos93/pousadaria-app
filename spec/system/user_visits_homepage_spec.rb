@@ -18,7 +18,7 @@ describe 'User visits homepage' do
     visit root_path
 
     # assert
-    expect(page).to have_link 'Seja um Pousadeiro', 
+    expect(page).to have_link 'Criar uma conta', 
                                href: new_user_registration_path
   end
 

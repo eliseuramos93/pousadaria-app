@@ -30,7 +30,7 @@ describe 'User visits the inn creation page' do
 
     # act
     visit root_path
-    click_on 'Seja um Pousadeiro'
+    click_on 'Criar uma conta'
 
     fill_in 'E-mail', with: 'teste@gmail.com'
     fill_in 'Senha', with: 'senhaforte1234!'
