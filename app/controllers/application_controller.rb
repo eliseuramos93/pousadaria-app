@@ -16,4 +16,10 @@ class ApplicationController < ActionController::Base
       redirect_to new_inn_path, alert: 'É necessário cadastrar uma pousada para continuar.'
     end
   end
+
+  def ensure_user_is_host
+    unless current_user.host? 
+      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
+    end
+  end
 end

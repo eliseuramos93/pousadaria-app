@@ -21,8 +21,18 @@
         <% end %>
         <%= link_to 'Editar Pousada', edit_inn_path(@inn), class: 'page-btn' %> <br>
         <%= link_to 'Adicionar Quarto', new_inn_room_path(@inn), class: 'page-btn' %> <br>
-        <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %>
+        <%= link_to 'Ver Meus Quartos', inn_rooms_path(@inn), class: 'page-btn' %> <br>
+        <%= link_to 'Adicionar Fotos', new_inn_pictures_path, class: 'page-btn' %>
       </div>
+    </section>
+  <% end %>
+
+  <% if @inn.album.present? %>
+    <section id="inn-photos">
+      <h3 class="section-title">Fotos</h3>
+      <% @inn.album.photos.each do |photo| %>
+        <%= image_tag photo %>
+      <% end %>
     </section>
   <% end %>
 

@@ -3,6 +3,7 @@ class Inn < ApplicationRecord
   
   has_one :address
   has_one :payment_method
+  has_one :album, as: :imageable
   has_many :rooms
   has_many :reservations, through: :rooms
   has_many :reviews, through: :reservations

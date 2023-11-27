@@ -140,12 +140,6 @@ class InnsController < ApplicationController
     end
   end
 
-  def ensure_user_is_host
-    unless current_user.host? 
-      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
-    end
-  end
-
   def fetch_address_and_payment_methods
     @address = @inn.address
     @payment_method = @inn.payment_method

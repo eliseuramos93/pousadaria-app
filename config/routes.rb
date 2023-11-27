@@ -29,12 +29,15 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :albums, shallow: true, only: [:create]
   end
   
   get 'my_inn', to: 'inns#my_inn'
   get 'my_inn_reservations', to: 'inns#my_inn_reservations'
   get 'my_inn_reviews', to: 'inns#my_inn_reviews'
   get 'my_reservations', to: 'users#my_reservations'
+  get 'new_inn_pictures', to: 'albums#new_inn_pictures'
 
   # api routes
 
