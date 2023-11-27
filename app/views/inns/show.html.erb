@@ -33,7 +33,7 @@
       <% @inn.album.photos.each do |photo| %>
         <%= image_tag photo %>
         <% if user_signed_in? && current_user == @inn.user %>
-          <%= button_to 'Deletar foto', photo_path(photo), method: :delete %>
+          <%= button_to 'Deletar foto', album_photo_path(@inn.album, photo), method: :delete %>
         <% end %>
       <% end %>
     </section>

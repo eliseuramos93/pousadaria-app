@@ -28,10 +28,14 @@ Rails.application.routes.draw do
           resources :host_replies, shallow: true, only: [:new, :create]
         end
       end
+
+      resources :albums, only: [:new, :create] do
+        resources :photos, shallow: false, only: [:destroy]
+      end
     end
 
     resources :albums, shallow: true, only: [:create] do
-      resources :photos, only: [:destroy]
+      resources :photos, shallow: false, only: [:destroy]
     end
   end
   

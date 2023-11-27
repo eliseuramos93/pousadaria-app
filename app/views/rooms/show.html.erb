@@ -15,7 +15,20 @@
         <%= link_to 'Editar Quarto', edit_room_path(@room), class: 'page-btn' %>
         <%= link_to 'Adicionar Preço de Temporada', new_room_seasonal_rate_path(@room), class: 'page-btn' %>
         <%= link_to 'Ver Preços de Temporada deste quarto', room_seasonal_rates_path(@room), class: 'page-btn' %>
+        <%= link_to 'Adicionar Fotos', new_room_album_path(@room), class: 'page-btn' %>
       </div>
+    </section>
+  <% end %>
+
+  <% if @room.album.present? %>
+    <section id="room-photos">
+      <h3 class="section-title">Fotos</h3>
+      <% @room.album.photos.each do |photo| %>
+        <%= image_tag photo %>
+        <% if user_signed_in? && current_user == @inn.user %>
+          <%= button_to 'Deletar foto', album_photo_path(@room.album, photo), method: :delete %>
+        <% end %>
+      <% end %>
     </section>
   <% end %>
 

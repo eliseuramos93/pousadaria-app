@@ -2,6 +2,7 @@ class Room < ApplicationRecord
   belongs_to :inn
   has_many :seasonal_rates
   has_many :reservations
+  has_one :album, as: :imageable
 
   validates :name, :description, :area, :max_capacity, :rent_price, presence: true
   

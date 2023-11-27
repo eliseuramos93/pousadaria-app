@@ -60,6 +60,12 @@ class RoomsController < ApplicationController
     end
   end
 
+  def ensure_user_owns_inn
+    unless current_user.host? && current_user == @inn.user
+      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
+    end
+  end
+
   def redirect_invalid_room
     @room = Room.find_by(params[:id])
 
@@ -67,12 +73,6 @@ class RoomsController < ApplicationController
       redirect_to root_path, alert: 'Essa página não existe'
     else
       @inn = @room.inn
-    end
-  end
-
-  def ensure_user_owns_inn
-    unless current_user.host? && current_user == @inn.user
-      redirect_to root_path, alert: 'Você não possui autorização para essa ação.'
     end
   end
 
