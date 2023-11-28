@@ -1,0 +1,4 @@
+pt-BR:
+  errors:
+    messages:
+      content_type_invalid: Um arquivo possui um formato não permitido. Envie fotos no formato .jpeg, .jpg ou .png

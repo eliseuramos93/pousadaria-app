@@ -19,6 +19,12 @@ class AlbumsController < ApplicationController
       redirect_to inn_path(@inn), notice: 'Suas fotos foram adicionadas com sucesso!'
     elsif @album.imageable_type == 'Room' && @album.save
       redirect_to room_path(@room), notice: 'Suas fotos foram adicionadas com sucesso!'
+    elsif @album.imageable_type == 'Inn'
+      flash.now[:notice] = 'Houve um erro no envio dos arquivos'
+      render 'new_inn_pictures'
+    elsif @album.imageable_type == 'Room' # invalid album w/ room as imageable
+      flash.now[:notice] = 'Houve um erro no envio dos arquivos'
+      render 'new'
     end
   end
 

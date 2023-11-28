@@ -1,5 +1,11 @@
 <h2 class="section-title"><%= "Adicionar fotos em " + @inn.brand_name %></h2>
 
+<% if @album.errors.any? %>
+  <% @album.errors.full_messages.each do |msg| %>
+    <%= msg %>
+  <% end %>
+<% end %>
+
 <p>Formatos permitidos de imagem: JPEG e PNG</p>
 <p>As imagens devem ser relacionadas a sua pousada</p>
 
