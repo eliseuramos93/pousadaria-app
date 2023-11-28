@@ -24,7 +24,7 @@ class Invoice < ApplicationRecord
 
     checkout_date += 1.day if checkout_date > limit_checkout
 
-    self.room.calculate_rental_price(checkin_date.to_date, checkout_date.to_date)
+    rental_total = self.room.calculate_rental_price(checkin_date.to_date, checkout_date.to_date)
   end
 
   def calculate_post_checkout_consumables_price
