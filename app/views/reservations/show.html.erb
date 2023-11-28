@@ -5,7 +5,12 @@
 <p><%= "Check-out: #{I18n.l(@reservation.end_date.to_date)} - #{@inn.checkout_time.to_fs(:time)}" %></p>
 <p><%= "Hóspedes: #{@reservation.number_guests}" %></p>
 <p><%= "Status: #{I18n.t("status.#{@reservation.status}")}" %></p>
-<p><%= "Valor: #{number_to_currency(@reservation.price)} "%></p>
+
+<% unless @reservation.invoice.present? %>
+  <p><%= "Valor: #{number_to_currency(@reservation.price)} "%></p>
+<% else %>
+  <p><%= "Valor: #{number_to_currency(@reservation.invoice.calculate_total_reservation_price)} "%></p>
+<% end %>
 <% if @reservation.review.present? %>
   <p><%= "Sua nota para estadia: #{@reservation.review.rating}" %></p>
   <p><%= "Seu comentário sobre a estadia: #{@reservation.review.comment}" %></p>

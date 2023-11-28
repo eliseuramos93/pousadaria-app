@@ -19,20 +19,6 @@ class Room < ApplicationRecord
 
     calculate_period_price(rates_hash)
   end
-
-  def calculate_checkout_price(reservation)
-    checkin_date = reservation.checkin.created_at
-    checkout_date = reservation.checkout.created_at
-
-    limit_checkout = Time.new(checkout_date.year, checkout_date.month,
-                                  checkout_date.day, self.inn.checkout_time.hour,
-                                  self.inn.checkout_time.min, 
-                                  self.inn.checkout_time.sec)
-
-    checkout_date += 1.day if checkout_date > limit_checkout
-
-    calculate_rental_price(checkin_date.to_date, checkout_date.to_date)
-  end
     
   private
 

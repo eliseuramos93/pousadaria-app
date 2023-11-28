@@ -100,7 +100,7 @@ describe 'Host registers a checkout for a reservation' do
     expect(page).to have_content 'Valor: R$ 300,00'
   end
 
-  xit 'and updates the price with the registered consumables' do
+  it 'and updates the price with the registered consumables' do
     # arrange
     # arrange
     user = User.create!(email: 'test@gmail.com', password: 'password', 

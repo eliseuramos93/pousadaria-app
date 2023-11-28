@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_28_160609) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_28_164950) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -109,6 +109,13 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_160609) do
     t.index ["user_id"], name: "index_inns_on_user_id"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.integer "reservation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reservation_id"], name: "index_invoices_on_reservation_id"
+  end
+
   create_table "payment_methods", force: :cascade do |t|
     t.integer "inn_id", null: false
     t.boolean "bank_transfer"
@@ -199,6 +206,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_28_160609) do
   add_foreign_key "consumables", "reservations"
   add_foreign_key "host_replies", "reviews"
   add_foreign_key "inns", "users"
+  add_foreign_key "invoices", "reservations"
   add_foreign_key "payment_methods", "inns"
   add_foreign_key "reservations", "rooms"
   add_foreign_key "reservations", "users"
