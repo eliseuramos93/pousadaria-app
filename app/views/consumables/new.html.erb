@@ -1,0 +1,16 @@
+<h2 class="section-title">Registrar consumo - Reserva <%= @reservation.code %></h2>
+<h3 class="section-title">Quarto <%= @reservation.room.name %></h3>
+
+<% if @consumable.errors.any? %>
+  <% @consumable.errors.full_messages.each do |msg| %>
+    <%= msg %>
+  <% end %>
+<% end %>
+
+<%= form_with model: [@reservation, @consumable] do |f| %>
+  <%= f.label :description %>
+  <%= f.text_field :description %> <br>
+  <%= f.label :price %>
+  <%= f.number_field :price, step: 0.01 %> <br>
+  <%= f.submit 'Registrar Consumo' %>
+<% end %>

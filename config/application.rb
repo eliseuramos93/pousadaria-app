@@ -22,6 +22,7 @@ module PousadariaApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
+    
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -29,7 +30,7 @@ module PousadariaApp
     config.autoload_lib(ignore: %w(assets tasks))
 
     # Configuration for the application, engines, and railties goes here.
-    #
+    config.active_storage.variant_processor = :image_processing
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #

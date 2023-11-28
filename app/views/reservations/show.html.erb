@@ -14,12 +14,31 @@
   <% end %>
 <% end %>
 
+<% if @reservation.consumables.present? %>
+  <section id="reservation-consumables">
+    <h3 class="section-title">Consumíveis</h3>
+    <dl>
+    <% @reservation.consumables.each do |consumable| %>
+        <dt><%= consumable.description %> - <%= number_to_currency(consumable.price) %></dt>
+        <dd>
+          Registrado em: 
+          <%= I18n.l(consumable.created_at.to_date) %> - <%= consumable.created_at.to_fs(:time) %>
+        </dd>
+    <% end %>
+    </dl>
+  </section>
+<% end %>
+
 <% if user_signed_in? && @reservation.user == current_user && @reservation.able_to_be_reviewed? %>
   <%= link_to 'Avalie sua estadia', new_reservation_review_path(@reservation), class: 'page-btn' %>
 <% end %>
 
 <% if user_signed_in? && @inn.user == current_user %>
-  <%= link_to 'Registrar Check-in', new_reservation_checkin_path(@reservation), class: 'page-btn' %>
-  <%= button_to 'Cancelar Reserva', host_cancel_reservation_path(@reservation), method: :post, class: 'page-btn' %>
-  <%= link_to 'Registrar Check-out', new_reservation_checkout_path(@reservation), class: 'page-btn' %>
+  <% if @reservation.active? %>
+    <%= link_to 'Registrar Check-out', new_reservation_checkout_path(@reservation), class: 'page-btn' %>
+    <%= link_to 'Registrar Consumo', new_reservation_consumable_path(@reservation), class: 'page-btn' %>
+  <% elsif @reservation.confirmed? %>
+    <%= link_to 'Registrar Check-in', new_reservation_checkin_path(@reservation), class: 'page-btn' %>
+    <%= button_to 'Cancelar Reserva', host_cancel_reservation_path(@reservation), method: :post, class: 'page-btn' %>
+  <% end %>
 <% end %>

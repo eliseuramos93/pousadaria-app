@@ -27,6 +27,8 @@ Rails.application.routes.draw do
         resources :reviews, shallow: true, only: [:new, :create] do
           resources :host_replies, shallow: true, only: [:new, :create]
         end
+
+        resources :consumables, shallow: true, only: [:new, :create]
       end
 
       resources :albums, only: [:new, :create] do

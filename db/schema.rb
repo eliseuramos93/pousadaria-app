@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_27_213704) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_28_160609) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -74,6 +74,15 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_213704) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reservation_id"], name: "index_checkouts_on_reservation_id"
+  end
+
+  create_table "consumables", force: :cascade do |t|
+    t.integer "reservation_id", null: false
+    t.string "description"
+    t.float "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reservation_id"], name: "index_consumables_on_reservation_id"
   end
 
   create_table "host_replies", force: :cascade do |t|
@@ -187,6 +196,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_213704) do
   add_foreign_key "addresses", "inns"
   add_foreign_key "checkins", "reservations"
   add_foreign_key "checkouts", "reservations"
+  add_foreign_key "consumables", "reservations"
   add_foreign_key "host_replies", "reviews"
   add_foreign_key "inns", "users"
   add_foreign_key "payment_methods", "inns"

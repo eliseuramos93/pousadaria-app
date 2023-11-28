@@ -31,7 +31,7 @@ describe 'User visits a reservation details page' do
   end
 
   context 'logged in as the owner of the inn' do
-    it 'and sees the options to make a checkin, checkout and cancel the reservation' do
+    it 'and sees the options to make a checkin and cancel the reservation if is not active' do
       # arrange
       user = User.create!(email: 'test@gmail.com', password: 'password', 
                             role: :host)
@@ -68,7 +68,40 @@ describe 'User visits a reservation details page' do
       expect(page).to have_content "Status: Confirmada"
       expect(page).to have_content "Valor: R$ 500,00"
       expect(page).to have_link 'Registrar Check-in'
+      expect(page).not_to have_link 'Registrar Check-out'
+      expect(page).not_to have_link 'Registrar Consumo'
       expect(page).to have_button 'Cancelar Reserva'
+    end
+
+    it 'and sees the options to make a checkout if the reservation is active' do
+      # arrange
+      user = User.create!(email: 'test@gmail.com', password: 'password', 
+                            role: :host)
+
+      inn = user.create_inn!(brand_name: 'Albergue do Billy', 
+                            registration_number: '58277983000198', 
+                            phone_number: '(11) 976834383', checkin_time: '18:00',
+                            checkout_time: '11:00', address_attributes: {
+                              street_name: 'Av. da Pousada', number: '10', 
+                              neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                              state: 'SP', zip_code: '05616-090'})
+
+      room_a = inn.rooms.create!(name: 'El Dormitorio', description: 'Nice', area: 10,
+                                max_capacity: 5, rent_price: 50, status: :active)
+
+      allow(SecureRandom).to receive(:alphanumeric).and_return('ABC00001')
+      reservation = room_a.reservations.create!(start_date: 10.day.from_now,
+                                              end_date: 20.days.from_now,
+                                              number_guests: '2',
+                                              status: 'active')
+
+      # act
+      login_as user
+      visit reservation_path(reservation)
+
+      # assert
+      expect(page).not_to have_link 'Registrar Check-in'
+      expect(page).not_to have_link 'Cancelar Reserva'
       expect(page).to have_link 'Registrar Check-out'
     end
   end

@@ -72,7 +72,7 @@ describe 'Host registers a checkout for a reservation' do
     reservation = room_a.reservations.create!(start_date: Date.today,
                                             end_date: 10.days.from_now,
                                             number_guests: '2',
-                                            status: 'confirmed')
+                                            status: 'active')
     reservation.create_checkin!
 
 
@@ -98,6 +98,54 @@ describe 'Host registers a checkout for a reservation' do
     expect(page).to have_content "Check-out: #{I18n.l(5.days.from_now.to_date)}"
     expect(page).to have_content 'Status: Concluída'
     expect(page).to have_content 'Valor: R$ 300,00'
+  end
+
+  xit 'and updates the price with the registered consumables' do
+    # arrange
+    # arrange
+    user = User.create!(email: 'test@gmail.com', password: 'password', 
+                          role: :host)
+
+    inn = user.create_inn!(brand_name: 'Albergue do Billy', 
+                          registration_number: '58277983000198', 
+                          phone_number: '(11) 976834383', checkin_time: '18:00',
+                          checkout_time: '11:00', address_attributes: {
+                            street_name: 'Av. da Pousada', number: '10', 
+                            neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                            state: 'SP', zip_code: '05616-090'})
+
+    room_a = inn.rooms.create!(name: 'El Dormitorio', description: 'Nice', area: 10,
+                              max_capacity: 5, rent_price: 50, status: :active)
     
+    allow(SecureRandom).to receive(:alphanumeric).and_return 'ABC00001'
+    reservation = room_a.reservations.create!(start_date: Date.today,
+                                            end_date: 10.days.from_now,
+                                            number_guests: '2',
+                                            status: 'active')
+    reservation.create_checkin!
+    reservation.consumables.create!(description: 'Coca-Cola', price: 14.99)
+
+    # act
+    login_as user
+    visit root_path
+    click_on 'Reservas'
+    click_on 'ABC00001'
+    click_on 'Registrar Check-out'
+    
+    day = 5.days.from_now.day
+    month = 5.days.from_now.month
+    year = 5.days.from_now.year
+
+    travel_to Time.zone.local(year, month, day, 11, 1, 0) do 
+      select 'PIX', from: 'Forma de pagamento'
+      click_on 'Confirmar Check-out'
+    end
+
+    visit reservation_path(reservation)
+
+    # assert
+    expect(page).to have_content "Check-out: #{I18n.l(5.days.from_now.to_date)}"
+    expect(page).to have_content 'Status: Concluída'
+    expect(page).to have_content 'Valor: R$ 314,99'
   end
 end
