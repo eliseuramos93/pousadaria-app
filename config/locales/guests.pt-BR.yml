@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      guest:
+        one: Hóspede
+        others: Hóspedes
+    attributes:
+      guest:
+        full_name: Nome do hóspede
+        document: Documento do hóspede

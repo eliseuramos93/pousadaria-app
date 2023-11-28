@@ -1,7 +1,23 @@
 <h1 class="section-title">Registrar Check-in - <%= @reservation.code %></h1>
 
-<p>Clique no botão abaixo para registrar o check-in dessa reserva</p>
+<p>Cadastre os hóspedes para confirmar o check-in</p>
+
+<% @checkin.guests.each do |guest| %>
+  <% if guest.errors.any? %>
+    <% guest.errors.full_messages.each do |msg| %>
+      <%= msg %>
+    <% end %>
+  <% end %>
+<% end %>
 
 <%= form_with model: [@reservation, @checkin] do |f| %>
+  <%= f.fields_for :guests do |guest_f| %>
+    <%= guest_f.label :full_name, "Nome - Hóspede #{guest_f.index+1}" %>
+    <%= guest_f.text_field :full_name %> <br>
+    <%= guest_f.label :document, "Documento - Hóspede #{guest_f.index+1}" %>
+    <%= guest_f.text_field :document %>
+    <br>
+  <% end %>
+
   <%= f.submit "Confirmar Check-in", class: 'page-btn' %>
 <% end %>

@@ -7,6 +7,7 @@ class Reservation < ApplicationRecord
   has_one :review
   has_one :invoice
   has_many :consumables
+  has_many :guests, through: :checkin
 
   validates :start_date, :end_date, :number_guests, presence: true
   validates :code, uniqueness: true
