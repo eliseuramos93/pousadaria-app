@@ -145,5 +145,45 @@ describe 'User visits a reservation details page' do
       expect(page).not_to have_link 'Avalie sua estadia', href: new_reservation_review_path(reservation)
       expect(page).to have_content 'Resposta do anfitrião: Obrigado pela avaliação!'
     end
-  end
+
+    it 'and sees the guests list after checkin' do
+      # arrange
+      user = User.create!(email: 'test@gmail.com', password: 'password', 
+                            role: 'host')
+      guest = User.create!(email: 'billy@mail.com', password: 'psswrd', role: 'regular')
+
+      inn = user.create_inn!(brand_name: 'Albergue do Billy', 
+                            registration_number: '58277983000198', 
+                            phone_number: '(11) 976834383', checkin_time: '18:00',
+                            checkout_time: '11:00', address_attributes: {
+                              street_name: 'Av. da Pousada', number: '10', 
+                              neighborhood: 'Bairro da Pousada', city: 'São Paulo',
+                              state: 'SP', zip_code: '05616-090'})
+
+      room_a = inn.rooms.create!(name: 'El Dormitorio', description: 'Nice', area: 10,
+                                max_capacity: 5, rent_price: 50, status: :active)
+
+      reservation = room_a.reservations.build(start_date: 1.day.ago,
+                                              end_date: 20.days.from_now,
+                                              number_guests: '2',
+                                              status: 'confirmed', 
+                                              code: 'ABC00001', user: guest)
+      reservation.save(validate: false)
+      
+      checkin = reservation.create_checkin!
+      checkin.guests.create!(full_name: 'Cassio Ramos', document:'61806739003')
+      checkin.guests.create!(full_name: 'Yuri Alberto', document:'33013560010')
+
+      # act
+      login_as guest
+      visit reservation_path(reservation)
+
+      # assert
+      expect(page).to have_content 'Lista de hóspedes'
+      expect(page).to have_content 'Nome: Cassio Ramos'
+      expect(page).to have_content 'Documento: 61806739003'
+      expect(page).to have_content 'Nome: Yuri Alberto'
+      expect(page).to have_content 'Documento: 33013560010'
+    end
+  end 
 end

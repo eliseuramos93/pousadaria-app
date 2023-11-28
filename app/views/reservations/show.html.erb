@@ -19,6 +19,18 @@
   <% end %>
 <% end %>
 
+<% if @reservation.checkin.present? %>
+  <section id="reservation-guests">
+    <h3 class="section-title">Lista de hóspedes</h3>
+    <dl>
+      <% @reservation.checkin.guests.each do |guest| %>
+        <dd>Nome: <%= guest.full_name %></dd>
+        <dd>Documento: <%= guest.document %></dd>
+      <% end %>
+    </dl>
+  </section>
+<% end %>
+
 <% if @reservation.consumables.present? %>
   <section id="reservation-consumables">
     <h3 class="section-title">Consumíveis</h3>
