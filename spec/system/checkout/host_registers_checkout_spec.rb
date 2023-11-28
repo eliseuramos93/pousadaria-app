@@ -124,6 +124,7 @@ describe 'Host registers a checkout for a reservation' do
                                             status: 'active')
     reservation.create_checkin!
     reservation.consumables.create!(description: 'Coca-Cola', price: 14.99)
+    reservation.consumables.create!(description: 'Pizza', price: 40.00)
 
     # act
     login_as user
@@ -146,6 +147,6 @@ describe 'Host registers a checkout for a reservation' do
     # assert
     expect(page).to have_content "Check-out: #{I18n.l(5.days.from_now.to_date)}"
     expect(page).to have_content 'Status: Concluída'
-    expect(page).to have_content 'Valor: R$ 314,99'
+    expect(page).to have_content 'Valor: R$ 354,99'
   end
 end
