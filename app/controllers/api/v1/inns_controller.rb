@@ -1,11 +1,9 @@
 class Api::V1::InnsController < Api::V1::ApiController
 
   def index
-    if params[:name]
-      inns = Inn.active.where("brand_name LIKE ?", "%#{params[:name]}%")
-    else
-      inns = Inn.active
-    end
+    inns = Inn.active
+    inns = inns.where("brand_name LIKE ?", "%#{params[:name]}%") if params[:name]
+    inns = inns.joins(:address).where("city LIKE ?", "%#{params[:city]}%") if params[:city]
 
     render status: 200, 
       json: inns.as_json(except: [:status, :created_at, :updated_at, :user_id], 

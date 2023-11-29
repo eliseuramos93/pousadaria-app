@@ -120,6 +120,109 @@ describe 'Inns API' do
       expect(json_response).not_to include 'Canto do Celso'
     end
 
+    it 'list all active inns filtered by city if parameter is given' do
+      # arrange
+      user_a = User.create!(email: 'a@mail.com', password: 'psswrda', role: 'host')
+      user_b = User.create!(email: 'b@mail.com', password: 'psswrdb', role: 'host')
+      user_c = User.create!(email: 'c@mail.com', password: 'psswrdc', role: 'host')
+
+      inn_a = user_a.create_inn!(brand_name: "Pousada do André", 
+                                  registration_number: '12345612318', 
+                                  phone_number: '(11) 109238019', 
+                                  checkin_time: '19:00', checkout_time: '12:00',
+                                  address_attributes: {
+                                    street_name: 'Av. Angelica', number: '1',
+                                    neighborhood: 'Bairro A', city: 'São Paulo',
+                                    state: 'SP', zip_code: '01000-000' },
+                                  status: 'active')
+      inn_b = user_b.create_inn!(brand_name: "Pousada do Bento", 
+                                  registration_number: '18273981731', 
+                                  phone_number: '(11) 189237189', 
+                                  checkin_time: '20:00', checkout_time: '11:00',
+                                  address_attributes: {
+                                      street_name: 'R. Birigui', number: '12',
+                                      neighborhood: 'Bairro B', city: 'Birigui',
+                                      state: 'SP', zip_code: '02000-000' },
+                                  status: 'inactive')
+      inn_c = user_c.create_inn!(brand_name: "Canto do Celso", 
+                                  registration_number: '18273981731', 
+                                  phone_number: '(11) 189237189', 
+                                  checkin_time: '20:00', checkout_time: '11:00',
+                                  address_attributes: {
+                                    street_name: 'R. Cubatão', number: '33',
+                                    neighborhood: 'São Paulo', city: 'Birigui',
+                                    state: 'SP', zip_code: '03000-000' },
+                                  status: 'active')
+      
+      search_params = { city: 'Birigui' }
+
+      # act
+      get '/api/v1/inns/', params: search_params
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json' 
+      json_response = JSON.parse(response.body)
+      expect(json_response.class).to eq Array
+      expect(json_response.length).to eq 1
+
+      expect(json_response.first['brand_name']).to eq 'Canto do Celso'
+      expect(json_response.first['registration_number']).to eq '18273981731'
+    end
+
+    it 'list all active inns respecting the combining filters' do
+      # arrange
+      user_a = User.create!(email: 'andre@gmail.com', password: 'password', 
+      role: 'host')
+      user_b = User.create!(email: 'bento@gmail.com', password: 'password', 
+          role: 'host')
+      user_c = User.create!(email: 'celso@gmail.com', password: 'password', 
+          role: 'host')
+
+      inn_a = user_a.create_inn!(brand_name: "Canto do André", 
+                                  registration_number: '12345612318', 
+                                  phone_number: '(11) 109238019', 
+                                  checkin_time: '19:00', checkout_time: '12:00',
+                                  address_attributes: {
+                                    street_name: 'Av. Angelica', number: '1',
+                                    neighborhood: 'Bairro A', city: 'São Paulo',
+                                    state: 'SP', zip_code: '01000-000' },
+                                  status: 'active')
+      inn_b = user_b.create_inn!(brand_name: "Canto do Bento", 
+                                  registration_number: '18273981731', 
+                                  phone_number: '(11) 189237189', 
+                                  checkin_time: '20:00', checkout_time: '11:00',
+                                  address_attributes: {
+                                      street_name: 'R. Birigui', number: '12',
+                                      neighborhood: 'Bairro B', city: 'Barueri',
+                                      state: 'SP', zip_code: '02000-000' },
+                                  status: 'inactive')
+      inn_c = user_c.create_inn!(brand_name: "Canto do Celso", 
+                                  registration_number: '18273981731', 
+                                  phone_number: '(11) 189237189', 
+                                  checkin_time: '20:00', checkout_time: '11:00',
+                                  address_attributes: {
+                                    street_name: 'R. Cubatão', number: '33',
+                                    neighborhood: 'São Paulo', city: 'Birigui',
+                                    state: 'SP', zip_code: '03000-000' },
+                                  status: 'active')
+      
+      search_params = {name: 'Canto', city: 'Birigui'}
+
+      # act
+      get "/api/v1/inns/", params: search_params
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json' 
+      json_response = JSON.parse(response.body)
+      expect(json_response.class).to eq Array
+      expect(json_response.length).to eq 1
+
+      expect(json_response.first['brand_name']).to eq 'Canto do Celso'
+      expect(json_response.first['registration_number']).to eq '18273981731'
+    end
+
     it 'returns empty if there is no inns found' do
       # arrange
 

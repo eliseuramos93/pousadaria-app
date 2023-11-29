@@ -64,7 +64,7 @@ Em caso de erro, será retornado um objeto JSON simples com a descrição do err
 
 `https://localhost:3000/api/v1/inns`
 
-Retorna uma listagem completa das pousadas cadastradas e ativas na plataforma. É possível informar um texto e usar como filtro de busca pelo nome da pousada. 
+Retorna uma listagem completa das pousadas cadastradas e ativas na plataforma. É possível informar um texto e usar como filtro de busca pelo nome da pousada, um nome de cidade para filtrar a listagem por cidades, e usar ambos os parâmetros para combinar os filtros. 
 
 > Parâmetros necessários:
 >
@@ -72,11 +72,16 @@ Retorna uma listagem completa das pousadas cadastradas e ativas na plataforma. �
 >
 > Parâmetros opcionais:
 > 
-> * name: Texto para utilizar no filtro de nome da pousada
+> * name: Texto para utilizar no filtro aplicado aos nomes das pousadas
+> * city: Texto com nome da cidade para utilizar no filtro 
 
-Exemplo: 
+Exemplos: 
 
 `https://localhost:3000/api/v1/inns/?name=Pousadinha`
+
+`https://localhost:3000/api/v1/inns/?city=São Paulo`
+
+`https://localhost:3000/api/v1/inns/?name=Pousadinha&city:Florianópolis`
 
 #### Listagem de quartos de uma pousada
 
@@ -136,3 +141,17 @@ Se o quarto estiver disponível, será retornado o valor da reserva assim como u
 Exemplo:
 
 `http://localhost:3000/api/v1/rooms/2/check_availability/?start_date=2023-12-27&end_date=2023-12-29&number_guests=3&teste=%27reginaldo%27`
+
+#### Listagem de cidades
+
+`https://localhost:3000/api/v1/inns/city_list/`
+
+Esse endpoint retorna uma listagem com todas as cidades em que existem pousadas cadastradas e ativas na plataforma.
+
+> Parâmetros necessários:
+> 
+> Nenhum
+>
+> Parâmetros opcionais:
+>
+> Nenhum.
