@@ -147,7 +147,7 @@ describe 'Inns API' do
   end
 
   context 'GET /api/v1/inns/:id' do
-    it 'returns the data of the inn', type: :request do
+    it 'returns the data of the inn' do
       # arrange
       host = User.create!(email: 'test@gmail.com', password: 'password', 
       role: :host)
@@ -269,6 +269,60 @@ describe 'Inns API' do
 
       # act
       get '/api/v1/inns/1'
+
+      # assert
+      expect(response).to have_http_status(500)
+      expect(response.body).to include 'Ops, tivemos um erro no servidor.'
+    end
+  end
+
+  context 'GET /api/v1/inns/city_list' do
+    it 'returns a list of cities that have at least one inn' do
+      # arrange
+      host_a = User.create!(email: 'a@mail.com', password: 'psswrd', role: 'host')
+      host_b = User.create!(email: 'b@mail.com', password: 'psswrd', role: 'host')
+      host_c = User.create!(email: 'c@mail.com', password: 'psswrd', role: 'host')
+
+      host_a.build_inn(status: 'active', address_attributes: {city: 'São Paulo'})
+        .save(validate: false)
+      host_b.build_inn(status: 'inactive', address_attributes: {city: 'Rio de Janeiro'})
+        .save(validate: false)
+      host_c.build_inn(status: 'active', address_attributes: {city: 'Porto Alegre'})
+        .save(validate: false)
+
+      # act
+      get '/api/v1/inns/city_list/'
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json'
+      json_response = JSON.parse(response.body)
+      expect(json_response.class).to eq Array
+      expect(json_response.length).to eq 2
+      expect(json_response).to include 'São Paulo'
+      expect(json_response).to include 'Porto Alegre'
+      expect(json_response).not_to include 'Rio de Janeiro'
+    end
+
+    it 'returns an empty array if there are no inns in database' do
+      # arrange
+
+      # act
+      get '/api/v1/inns/city_list/'
+
+      # assert
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include 'application/json'
+      json_response = JSON.parse(response.body)
+      expect(json_response).to eq []
+    end
+
+    it 'raises an internal server error' do
+      # arrange
+      allow(Inn).to receive(:active).and_raise(ActiveRecord::QueryCanceled)
+
+      # act
+      get '/api/v1/inns/city_list/'
 
       # assert
       expect(response).to have_http_status(500)

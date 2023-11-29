@@ -23,4 +23,12 @@ class Api::V1::InnsController < Api::V1::ApiController
 
     render status: 200, json: inn_json
   end
+
+  def city_list
+    cities = Inn.active.joins(:address).select('city').order(:city)
+    
+    cities_array = cities.reduce([]) { |array, object| array << object.city }
+    
+    render status: 200, json: cities_array.as_json
+  end
 end
