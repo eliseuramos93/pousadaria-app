@@ -48,14 +48,14 @@ describe 'Inns API' do
       json_response = JSON.parse(response.body)
       expect(json_response.class).to eq Array
       expect(json_response.length).to eq 2
-      expect(json_response.first['brand_name']).to eq 'Pousada do André'
-      expect(json_response.second['brand_name']).to eq 'Canto do Celso'
-      expect(json_response.first['registration_number']).to eq '12345612318'
-      expect(json_response.second['registration_number']).to eq '18273981731'
-      expect(json_response.first['phone_number']).to eq '(11) 109238019'
-      expect(json_response.second['phone_number']).to eq '(11) 189237189'
-      expect(json_response.first['address']['city']).to eq 'São Paulo'
-      expect(json_response.second['address']['city']).to eq 'Birigui'
+      expect(json_response.second['brand_name']).to eq 'Pousada do André'
+      expect(json_response.first['brand_name']).to eq 'Canto do Celso'
+      expect(json_response.second['registration_number']).to eq '12345612318'
+      expect(json_response.first['registration_number']).to eq '18273981731'
+      expect(json_response.second['phone_number']).to eq '(11) 109238019'
+      expect(json_response.first['phone_number']).to eq '(11) 189237189'
+      expect(json_response.second['address']['city']).to eq 'São Paulo'
+      expect(json_response.first['address']['city']).to eq 'Birigui'
       expect(json_response.first.keys).not_to include 'status'
       expect(json_response.first.keys).not_to include 'user_id'
       expect(json_response.first.keys).not_to include 'created_at'

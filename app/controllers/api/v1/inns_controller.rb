@@ -1,7 +1,7 @@
 class Api::V1::InnsController < Api::V1::ApiController
 
   def index
-    inns = Inn.active
+    inns = Inn.active.order(:brand_name)
     inns = inns.where("brand_name LIKE ?", "%#{params[:name]}%") if params[:name]
     inns = inns.joins(:address).where("city LIKE ?", "%#{params[:city]}%") if params[:city]
 
