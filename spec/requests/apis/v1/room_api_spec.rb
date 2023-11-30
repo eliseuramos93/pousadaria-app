@@ -95,7 +95,7 @@ describe 'Rooms API' do
     end
   end
 
-  context 'GET /api/v1/rooms/:room_id/check_availability/' do
+  context 'POST /api/v1/rooms/:room_id/check_availability/' do
     it 'returns the price of the room if it is available' do
       # arrange
       user = User.create!(email: 'test@gmail.com', password: 'password', 
@@ -122,7 +122,7 @@ describe 'Rooms API' do
                             number_guests: 3 }
 
       # act
-      get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
+      post "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
 
       # assert
       expect(response).to have_http_status(200)
@@ -167,7 +167,7 @@ describe 'Rooms API' do
                             number_guests: 5 }
 
       # act
-      get "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
+      post "/api/v1/rooms/#{room.id}/check_availability", params: reservation_params
 
       # assert
       expect(response).to have_http_status(200)
@@ -183,7 +183,7 @@ describe 'Rooms API' do
       # arrange
 
       # act
-      get '/api/v1/rooms/99999999999/check_availability'
+      post '/api/v1/rooms/99999999999/check_availability'
 
       # assert
       expect(response).to have_http_status(404)
@@ -196,7 +196,7 @@ describe 'Rooms API' do
       allow(Room).to receive(:find).and_raise(ActiveRecord::QueryCanceled)
 
       # act
-      get '/api/v1/rooms/1/check_availability/'
+      post '/api/v1/rooms/1/check_availability/'
 
       # assert
       expect(response).to have_http_status(500)

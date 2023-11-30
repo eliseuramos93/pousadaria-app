@@ -53,9 +53,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :inns, only: [:index, :show] do
         get 'city_list', on: :collection
-        
         resources :rooms, shallow: true, only: [:index] do
-          get 'check_availability', on: :member
+          post 'check_availability', on: :member
         end
       end
     end
