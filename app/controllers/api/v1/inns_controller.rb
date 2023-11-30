@@ -23,7 +23,7 @@ class Api::V1::InnsController < Api::V1::ApiController
   end
 
   def city_list
-    cities = Inn.active.joins(:address).select('city').order(:city)
+    cities = Inn.active.joins(:address).select('city').order(:city).distinct
     
     cities_array = cities.reduce([]) { |array, object| array << object.city }
     
